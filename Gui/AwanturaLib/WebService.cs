@@ -6,7 +6,7 @@ using System.Text;
 using System.Text.RegularExpressions;
 using System.IO;
 using System.Threading;
-using Newtonsoft.Json;
+//using Newtonsoft.Json;
 
 
 namespace AwanturaLib {
@@ -50,7 +50,7 @@ namespace AwanturaLib {
                 if(new Regex("^GET").IsMatch(request)) {
 
                     StreamWriter writer = new StreamWriter(client.GetStream());
-                    SendObject(writer, JsonConvert.SerializeObject(m_state));
+                    //SendObject(writer, JsonConvert.SerializeObject(m_state));
 
                     Console.WriteLine("Data has been sent.");
                 }
@@ -64,7 +64,7 @@ namespace AwanturaLib {
         }
 
         private void SendObject<T>(StreamWriter s, T o) {
-            s.WriteLine(JsonConvert.SerializeObject(o));
+            //s.WriteLine(JsonConvert.SerializeObject(o));
             s.Flush();
         }
     }
