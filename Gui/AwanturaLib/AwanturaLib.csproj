@@ -46,6 +46,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BlackBox.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Licitation.cs" />
     <Compile Include="MainService.cs" />
