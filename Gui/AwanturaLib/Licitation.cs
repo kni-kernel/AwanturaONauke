@@ -8,23 +8,39 @@ namespace AwanturaLib
 {
     public class Licitation
     {
-        public int []Bid { get; set; }
-        public int Pool { get; set; }
+        public int[] Bid { get; set; } = new int[5];
         public int WhoWin { get; set; }
+        public int Pool { get; set; }
 
-        public Licitation(int[]Bid, int Pool)
+        public Licitation(GameState gameState, int startAmount = 200)
         {
-            this.Bid = new int[4];
-            this.Bid[0] = Bid[0];
-            this.Bid[1] = Bid[1];
-            this.Bid[2] = Bid[2];
-            this.Bid[3] = Bid[3];
-            this.Pool = Pool + Bid[0] + Bid[1] + Bid[2] + Bid[3];
+            Pool = gameState.Pool;
+            for (int i = 0; i < 5; i++)
+            {
+                if(gameState.Teams[i].isPlaying == true)
+                {
+                    this.Bid[i] = startAmount;
+                    Pool += startAmount;
+                }
+            }
         }
 
-        public void EndLicitation(int WhoWin)
+        public void bet(GameState gameState, int index, int amount)
         {
-            this.WhoWin = WhoWin;
+           
+                this.Bid[index] = Math.Min(gameState.Teams[index].Points, amount);
+            
+
+            Pool = gameState.Pool;
+            for (int i = 0; i < 5; ++i)
+                if (gameState.Teams[i].isPlaying)
+                    Pool += Bid[i];
+        }
+        public void EndLicitation(GameState gameState)
+        {
+            int max = this.Bid.Max();
+            //nt maxIndex = 
+            
         }
     }
 }

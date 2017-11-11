@@ -6,7 +6,12 @@ using System.Threading.Tasks;
 
 namespace AwanturaLib
 {
-    public class Class1
+    public enum States
     {
-    }
+        Idle,
+        Licitation,
+        OneOnOne,
+        Question,
+        Hint
+    };
 }

@@ -10,5 +10,6 @@ namespace AwanturaLib
     {
         public String Name { get; set; }
         public int Points { get; set; }
+        public bool isPlaying { get; set; }
     }
 }
