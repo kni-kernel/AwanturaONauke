@@ -9,19 +9,18 @@ namespace AwanturaLib
     public class MainService
     {
 
-        
 
         int WinnerOfLicitation(GameState gameState)
         {
             int maxValue = gameState.Licitation.Bid.Max();
             return gameState.Licitation.Bid.ToList().IndexOf(maxValue);
 
-         }
+        }
 
         public void updateTeamPoints(GameState gamestate, int Index, int amount)
         {
             gamestate.Teams[Index].Points += amount;
-            
+
         }
         void UpdateAllPoints(GameState gamestate)
         {
@@ -39,13 +38,11 @@ namespace AwanturaLib
         public GameState RightGuess(GameState gamestate, int Index)
         {
             updateTeamPoints(gamestate, Index, gamestate.Pool);//winner
-            UpdateAllPoints(gamestate); //minus bid
             gamestate.Pool = 0;
             return gamestate;
         }
         public GameState WrongGuess(GameState gamestate)
         {
-            UpdateAllPoints(gamestate);
             gamestate.Licitation = new Licitation(gamestate);
             return gamestate;
         }
@@ -65,5 +62,10 @@ namespace AwanturaLib
             gamestate.Teams[Index].Hints -= 1;
             return gamestate;
         }
-    }   
+        public GameState EndLicitation(GameState gamestate)
+        {
+            UpdateAllPoints(gamestate);
+            return gamestate;
+        }
+    }
 }

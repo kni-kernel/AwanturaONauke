@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BlackBox.cs" />
+    <Compile Include="Category.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Licitation.cs" />
     <Compile Include="MainService.cs" />
