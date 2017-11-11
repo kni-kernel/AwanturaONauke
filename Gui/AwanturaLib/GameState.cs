@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Threading;
+
 namespace AwanturaLib
 {
     public class GameState
@@ -8,7 +10,7 @@ namespace AwanturaLib
         public Licitation Licictation { get; set; }
         public int Pull { get; set; }
         public int State { get; set; }
-        enum States: int {Idle,Licitation,1on1,Question,Hint};
+        enum States: int {Idle,Licitation,OneOnOne,Question,Hint};
 
     }
 }
