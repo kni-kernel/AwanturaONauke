@@ -1,13 +1,16 @@
 ﻿using System;
+using System.Threading;
+
 namespace AwanturaLib
 {
     public class GameState
     {
-        public Team[] Teams { get; set; }
+        public Team[] Team { get; set; }
         public Question Question { get; set; }
         public Licitation Licictation { get; set; }
-        public int Pool { get; set; }
-        public States State { get; set; } = States.Idle;
+        public int Pull { get; set; }
+        public int State { get; set; }
+        enum States: int {Idle,Licitation,OneOnOne,Question,Hint};
 
     }
 }
