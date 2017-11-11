@@ -25,9 +25,6 @@ namespace Gui
             set { pepper = value; OnPropertyChanged(); }
         }
 
-        //propfull
-        //ctrl + . - podpowiedz - generowanie using
-
         // kategoria pytań z Service
         public List<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
 
@@ -76,6 +73,9 @@ namespace Gui
             get { return urlImage; }
             set { urlImage = value; }
         }
+
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
