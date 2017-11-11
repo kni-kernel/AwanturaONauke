@@ -6,12 +6,8 @@ using System.Threading.Tasks;
 
 namespace AwanturaLib
 {
-    public class Team
+    public class Category
     {
         public String Name { get; set; }
-        public int Points { get; set; }
-        public bool isPlaying { get; set; }
-        public BlackBox BlackBox { get; set; }
-        public int Hints { get; set; }
     }
 }

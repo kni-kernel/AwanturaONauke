@@ -8,6 +8,7 @@ namespace AwanturaLib
 {
     public class Question
     {
+        public Category Category { get; set; }
         public String Content { get; set; }
         public String FileName { get; set; }
         public String Tip1 { get; set; }
