@@ -65,5 +65,11 @@ namespace AwanturaLib
             gamestate.Teams[Index].Hints -= 1;
             return gamestate;
         }
+        public GameState RemoveCategory(GameState gamestate, Category category)
+        {
+            gamestate.Categories.Remove(category.Name);
+            return gamestate;
+        }
+
     }   
 }
