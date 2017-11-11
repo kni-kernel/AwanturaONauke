@@ -15,11 +15,27 @@ namespace AwanturaLib
             return gamestate;
         }
 
-        public void EndLicitation(GameState gameState)
+        public int WinnerOfLicitation(GameState gameState)
         {
-            int maxValue = this.Bid.Max();
-            int maxIndex = anArray.ToList().IndexOf(maxValue);
+            int maxValue = gameState.Licictation.Bid.Max();
+            return gameState.Licictation.Bid.ToList().IndexOf(maxValue);
 
+
+        }
+        public void updateTeamPoints(GameState gamestate, int Index, int amount)
+        {
+            gamestate.Teams[Index].Points += amount;
+        }
+        
+
+        public GameState RightGuess(GameState gamestate, int Index)
+        { 
+          updateTeamPoints(gamestate, Index, gamestate.Pool);
+          return gamestate;
+        }
+        public GameState WrongGuess(GameState gamestate)
+        {
+            return gamestate;
         }
     }
 }

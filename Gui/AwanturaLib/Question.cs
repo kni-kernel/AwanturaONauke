@@ -14,5 +14,6 @@ namespace AwanturaLib
         public String Tip2 { get; set; }
         public String Tip3 { get; set; }
         public String Tip4 { get; set; }
+        public String Answear { get; set; }
     }
 }

@@ -43,10 +43,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-<<<<<<< HEAD
-=======
-    <Compile Include="Class1.cs" />
->>>>>>> e7ff48c2e9e32e7bbddff35661da3fdfe231c69e
     <Compile Include="GameState.cs" />
     <Compile Include="Licitation.cs" />
     <Compile Include="MainService.cs" />
