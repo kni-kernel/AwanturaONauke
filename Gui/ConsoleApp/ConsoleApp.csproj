@@ -48,5 +48,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AwanturaLib\AwanturaLib.csproj">
+      <Project>{7edb88f3-b5d2-4b87-aee8-a368e905bd18}</Project>
+      <Name>AwanturaLib</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
