@@ -8,20 +8,18 @@ namespace AwanturaLib
 {
     public class Licitation
     {
-        public int Team1Bid { get; set; }
-        public int Team2Bid { get; set; }
-        public int Team3Bid { get; set; }
-        public int Team4Bid { get; set; }
+        public int []Bid { get; set; }
         public int Pool { get; set; }
         public int WhoWin { get; set; }
 
-        public Licitation(int Team1Bid, int Team2Bid, int Team3Bid, int Team4Bid)
+        public Licitation(int[]Bid, int Pool)
         {
-            this.Team1Bid = Team1Bid;
-            this.Team2Bid = Team2Bid;
-            this.Team3Bid = Team3Bid;
-            this.Team4Bid = Team4Bid;
-            this.Pool = Team1Bid + Team2Bid + Team3Bid + Team4Bid;
+            this.Bid = new int[4];
+            this.Bid[0] = Bid[0];
+            this.Bid[1] = Bid[1];
+            this.Bid[2] = Bid[2];
+            this.Bid[3] = Bid[3];
+            this.Pool = Pool + Bid[0] + Bid[1] + Bid[2] + Bid[3];
         }
 
         public void EndLicitation(int WhoWin)
