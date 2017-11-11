@@ -31,27 +31,11 @@
                 </Button.Content>
                 <Button.ContextMenu>
                     <ContextMenu Name="CategoriesMenu" >
-                        <MenuItem Name="cat1" Header="Mity i dzieje starożytne"/>
-                        <MenuItem Name="cat2" Header="Literatura polska"/>
-                        <MenuItem Name="cat3" Header="Piłka nożna"/>
-                        <MenuItem Name="cat4" Header="Świat polityki"/>
-                        <MenuItem Name="cat5" Header="Film polski"/>
-                        <MenuItem Name="cat6" Header="Biologia"/>
-                        <MenuItem Name="cat7" Header="Geografia"/>
-                        <MenuItem Name="cat8" Header="Motoryzacja"/>
-                        <MenuItem Name="cat9" Header="Historia sztuki"/>
-                        <MenuItem Name="cat10" Header="Gramatyka i ortografia"/>
-                        <MenuItem Name="cat11" Header="Ciekawostki"/>
-                        <MenuItem Name="cat12" Header="Film światowy"/>
-                        <MenuItem Name="cat13" Header="Sport"/>
-                        <MenuItem Name="cat14" Header="Muzyka klasyczna"/>
-                        <MenuItem Name="cat15" Header="Historia powszechna"/>
-                        <MenuItem Name="cat16" Header="Sztuka kulinarna"/>
-                        <MenuItem Name="cat17" Header="Przysłowia"/>
-                        <MenuItem Name="cat18" Header="Filozofia i religie"/>
-                        <MenuItem Name="cat19" Header="Literatura światowa"/>
-                        <MenuItem Name="cat20" Header="Historia Polski"/>
-                        <MenuItem Name="cat21" Header="Seriale"/>
+                        <MenuItem Name="cat1" Header="Mity i dzieje starożytne" Click="category_Click"/>
+                        <MenuItem Name="cat2" Header="Literatura polska" Click="category_Click"/>
+                        <MenuItem Name="cat3" Header="Piłka nożna" Click="category_Click"/>
+                        <MenuItem Name="cat4" Header="Świat polityki" Click="category_Click"/>
+                        <MenuItem Name="cat5" Header="Film polski" Click="category_Click"/>
                     </ContextMenu>
                 </Button.ContextMenu>
             </Button>
