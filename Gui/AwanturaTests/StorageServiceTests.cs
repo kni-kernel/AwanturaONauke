@@ -13,9 +13,17 @@ namespace AwanturaTests {
     public class StorageServiceTests {
 
         [TestMethod]
-        public void ReadAndParseTest() {
+        public void ParseTextFileTest() {
 
-            
+            StorageService ss = new StorageService();
+            QuestionsSet qs = null;
+            ss.ParseTextFile(ref qs,
+                @"C:\Users\Krzysztof\Desktop\tmp\awantura o kase\AwanturaSterownik\data\pytania.tsv",
+                QuestionsSet.TextFormatParser);
+
+            Console.WriteLine(qs.Questions);
+
+            Assert.AreEqual(qs.Questions.ContainsKey("Gramatyka i ortografia"), true);
         }
     }
 }

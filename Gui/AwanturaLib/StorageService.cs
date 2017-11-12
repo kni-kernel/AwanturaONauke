@@ -24,7 +24,7 @@ namespace AwanturaLib {
             }
         }
 
-        public String  SerializeToXML<T>(T o, String path) {
+        public String SerializeToXML<T>(T o, String path) {
 
             XmlSerializer xsSubmit = new XmlSerializer(typeof(T));
             var xml = "";
@@ -38,7 +38,6 @@ namespace AwanturaLib {
             }
 
             if(path != null) {
-
                 try {
                     File.WriteAllText(path, xml);
                 }
@@ -54,7 +53,7 @@ namespace AwanturaLib {
 
         public T DeserializeFromXML<T>(String path) where T : class {
 
-            using(var stream = System.IO.File.OpenRead(path)) {
+            using(var stream = File.OpenRead(path)) {
 
                 var serializer = new XmlSerializer(typeof(T));
                 return serializer.Deserialize(stream) as T;

@@ -13,14 +13,14 @@ namespace AwanturaLib {
             Questions = questions;
         }
 
-        public static QuestionsSet ParseTextFormat(String text) {
+        public static QuestionsSet TextFormatParser(String text) {
 
             Dictionary<String, List<Question>> questions = new Dictionary<String, List<Question>>();
             String[] lines = text.Split(new String[]{"\n"}, StringSplitOptions.RemoveEmptyEntries);
 
             foreach(String line in lines) {
 
-                String[] fields = line.Split(new String[]{"  "}, StringSplitOptions.RemoveEmptyEntries);
+                String[] fields = line.Split(new String[]{"\t"}, StringSplitOptions.RemoveEmptyEntries);
                 if(fields.Length < 6) continue;
 
                 Question question = new Question();
