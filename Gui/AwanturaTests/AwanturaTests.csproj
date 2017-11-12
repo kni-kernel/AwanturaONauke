@@ -53,6 +53,7 @@
   <ItemGroup>
     <Compile Include="MainServiceTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="StorageServiceTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

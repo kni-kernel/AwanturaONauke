@@ -11,6 +11,7 @@ namespace AwanturaLib
         public int Pool { get; set; }
         public States State { get; set; } = States.Idle;
         public Dictionary<string, bool> OneOnOneCategories { get; set; }
+
     }
 }
 
