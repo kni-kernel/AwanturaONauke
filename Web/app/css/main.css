@@ -24,7 +24,10 @@ score {
     color: #A1B4A1; }
   score .auction .teamAuction.yellow {
     background-color: #654D08;
-    color: #654D08; }
+    color: #B7A582; }
+  score .auction .teamAuction.red {
+    background-color: #630808;
+    color: #b68181; }
   score .auction .teamAuction.black {
     background-color: #5B5454;
     color: #BDB7B5; }
@@ -55,6 +58,11 @@ score {
   score .teamScore.green .bottom {
     background-color: #1B3B1D;
     color: #A1B4A1; }
+  score .teamScore.red .top {
+    color: #613838; }
+  score .teamScore.red .bottom {
+    background-color: #630808;
+    color: #b68181; }
   score .teamScore.black .top {
     color: #7C7170; }
   score .teamScore.black .bottom {
@@ -112,6 +120,11 @@ question .inner, win-score .inner {
     color: #A1B4A1; }
     question .inner .bottom.green .hint, win-score .inner .bottom.green .hint {
       color: #ccd6cc; }
+  question .inner .bottom.red, win-score .inner .bottom.red {
+    background-color: #630808;
+    color: #b68181; }
+    question .inner .bottom.red .hint, win-score .inner .bottom.red .hint {
+      color: #d2b1b1; }
   question .inner .bottom.black, win-score .inner .bottom.black {
     background-color: #5B5454;
     color: #BDB7B5; }

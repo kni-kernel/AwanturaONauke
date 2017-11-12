@@ -60,93 +60,150 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 0);
+/******/ 	return __webpack_require__(__webpack_require__.s = 632);
 /******/ })
 /************************************************************************/
-/******/ ([
-/* 0 */
-/***/ (function(module, exports, __webpack_require__) {
+/******/ ({
 
-__webpack_require__(1);
-__webpack_require__(2);
-__webpack_require__(4);
-__webpack_require__(6);
-__webpack_require__(14);
-__webpack_require__(8);
-__webpack_require__(10);
-__webpack_require__(12);
-__webpack_require__(16);
-
-
-
-/***/ }),
-/* 1 */
+/***/ 1372:
 /***/ (function(module, exports) {
 
 // Define the `phonecatApp` module
-angular.module('AoN', [
-    "idleState",
-    "questionState",
-    "winState",
-    "oneState",
-    "ngRoute"
+
+
+var app = angular.module('AoN', [
+  "idleState",
+  "questionState",
+  "winState",
+  "oneState",
+  "initState",
+  "ngRoute",
+  "ngStorage"
 ]);
 
 angular.
 module('AoN').
-config(['$locationProvider', '$routeProvider',
-  function config($locationProvider, $routeProvider) {
+config(['$locationProvider', '$routeProvider', '$httpProvider',
+  function config($locationProvider, $routeProvider, $httpProvider) {
+
     $locationProvider.hashPrefix('!');
 
     $routeProvider.
-      when('/idle', {
-        template: '<idle-State></idle-State>'
-      }).
-      when('/OneOnOne', {
-        template: '<one-State></one-State>'
-      }).
-      when('/Question', {
-        template: '<question-State></question-State>'
-      }).
-      when('/Win', {
-        template: '<win-State></win-State>'
-      }).
-      otherwise('/idle');
+    when('/Init', {
+      template: '<init-State></init-State>'
+    }).
+    when('/Idle', {
+      template: '<idle-State></idle-State>'
+    }).
+    when('/OneOnOne', {
+      template: '<one-State></one-State>'
+    }).
+    when('/Question', {
+      template: '<question-State></question-State>'
+    }).
+    when('/Win', {
+      template: '<win-State></win-State>'
+    });
   }
 ]);
 
+app.run(function ($rootScope, $interval, $sessionStorage) {
+  $rootScope.AoNListen = function ($http, onReceive) {
+    $interval(function () {
+
+      function setURL(url) {
+        console.log(url);
+        if (window.location.hash === url) {
+          if (onReceive)
+            onReceive();
+        } else
+          window.location.href = url;
+
+      }
+
+      var ip = window.location.hostname;
+      var address = "http://" + ip + ":8001";
+      console.log("Moving to " + address);
+
+      function parseResponse(data) {
+        console.log(data);
+        if (data == null || data.Pool == null) {
+          console.log("null!");
+          return;
+        }
+        console.log("received!");
+        $sessionStorage.GameState = data;
+
+
+        if (data == null || data.State == 0)
+          setURL("#!/Idle");
+        if (data.State == 1)
+          setURL("#!/Idle");
+        if (data.State == 2)
+          setURL("#!/OneOnOne");
+        if (data.State == 3)
+          setURL("#!/Question");
+        if (data.State == 4)
+          setURL("#!/Question");
+        if (data.State == 5)
+          setURL("#!/Hint");
+        else
+          setURL("#!/Idle");
+      }
+
+      $http({
+        method: "POST",
+        url: address,
+      }).then(data => {
+        
+        parseResponse(data.data);
+      }, data => {
+        console.log('error');
+        //console.log(data);
+        //parseResponse(data.data);
+      });
+    }, 1000); //$rootScope.GameState == null ? 500 : 1000);
+  }
+});
+
 /***/ }),
-/* 2 */
+
+/***/ 1373:
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('idleState', ["score"]);
 
-__webpack_require__(3);
+__webpack_require__(1374);
 
 /***/ }),
-/* 3 */
+
+/***/ 1374:
 /***/ (function(module, exports) {
+
+var app = 
 
 angular.
 module('idleState').
 component('idleState', {
   templateUrl: "states/idle.template.html",
 
-  controller: function IdleStateController($http) {
+  controller: function IdleStateController($http, $rootScope, $scope) {
     
   }
 });
 
 /***/ }),
-/* 4 */
+
+/***/ 1375:
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('questionState', ["question"]);
 
-__webpack_require__(5);
+__webpack_require__(1376);
 
 /***/ }),
-/* 5 */
+
+/***/ 1376:
 /***/ (function(module, exports) {
 
 angular.
@@ -154,21 +211,23 @@ module('questionState').
 component('questionState', {
   templateUrl: "states/question.template.html",
 
-  controller: function IdleStateController($http) {
-    
+  controller: function IdleStateController($http, $rootScope) {
+    $rootScope.AoNListen($http);
   }
 });
 
 /***/ }),
-/* 6 */
+
+/***/ 1377:
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('winState', ["winScore"]);
 
-__webpack_require__(7);
+__webpack_require__(1378);
 
 /***/ }),
-/* 7 */
+
+/***/ 1378:
 /***/ (function(module, exports) {
 
 angular.
@@ -176,118 +235,63 @@ module('winState').
 component('winState', {
   templateUrl: "states/win.template.html",
 
-  controller: function WinStateController($http) {
-
-    $http.get("127.0.0.1:8001", {
-        
-    });
-    
+  controller: function WinStateController($http, $rootScope) {
+    $rootScope.AoNListen($http);
   }
 });
 
 /***/ }),
-/* 8 */
+
+/***/ 1379:
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('oneState', ["oneOnOne"]);
+
+__webpack_require__(1380);
+
+/***/ }),
+
+/***/ 1380:
+/***/ (function(module, exports) {
+
+angular.
+module('oneState').
+component('oneState', {
+  templateUrl: "states/one.template.html",
+
+  controller: function OneStateController($http, $rootScope) {
+    $rootScope.AoNListen($http);
+  }
+});
+
+/***/ }),
+
+/***/ 1381:
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('score', []);
 
-__webpack_require__(9);
+__webpack_require__(1382);
 
 /***/ }),
-/* 9 */
+
+/***/ 1382:
 /***/ (function(module, exports) {
 
-angular.
-module('score').
-component('score', {
-  templateUrl: "score/score.template.html",
-
-  controller: function ScoreController() {
-
-    this.Teams = [];
-
-    this.Pool = 5000;
-
-    this.Auctions = [];
-
-    this.Auctions.push({
-        Class: "blue teamAuction centerVerticalFlex centerHorizontalFlex",
-        Score:5000
-    });
-
-    this.Auctions.push({
-      Class: "green teamAuction centerVerticalFlex centerHorizontalFlex",
-      Score:5000
-  });
-
-  this.Auctions.push({
-    Class: "yellow teamAuction centerVerticalFlex centerHorizontalFlex",
-    Score:5000
-});
-
-    this.Teams.push({
-      Score: 5000,
-      Enabled: true,
-      Name: "Niebiescy",
-      Class: "blue teamScore"
-    });
-
-    this.Teams.push({
-      Score: 5000,
-      Enabled: true,
-      Name: "Zieloni",
-      Class: "green teamScore"
-    });
-
-    this.Teams.push({
-      Score: 5000,
-      Enabled: true,
-      Name: "Żółci",
-      Class: "yellow teamScore"
-    });
-
-    this.Teams.push({
-      Score: 5000,
-      Enabled: true,
-      Name: "Pula",
-      Class: "pool teamScore"
-    });
-
-    /*this.Teams.push({
-      Score: 5000,
-      Enabled: true,
-      Name: "Mistrzowie",
-      Class: "black teamScore"
-    });*/
-
-    this.teamScoreStyle = {
-      width: 1.0 / this.Teams.length * 100.0 + "%",
-      display:"inline-block"
-    }
-
-    this.teamAuctionStyle = {
-      width: 1.0 / this.Teams.length * 100.0 + "%",
-      display:"inline-flex"
-    }
-
-    this.auctionStyle = {
-      width: ((1.0 / this.Teams.length * 100.0) * (this.Teams.length - 1)) + "%",
-    };
-    this.isAuction = true;
-    console.log(this.teamWidth);
-  }
-});
+throw new Error("Module parse failed: Unexpected token (41:54)\nYou may need an appropriate loader to handle this file type.\n|         if(team != null && team.isPlaying)\r\n|         self.Teams.push({\r\n|           Score: (team.Points > 0 ? team.Points : \"-\");// + \" \" + team.Hints,\r\n|           Enabled: team.isPlaying,\r\n|           Name: team.Name,\r");
 
 /***/ }),
-/* 10 */
+
+/***/ 1383:
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('question', []);
 
-__webpack_require__(11);
+__webpack_require__(1384);
 
 /***/ }),
-/* 11 */
+
+/***/ 1384:
 /***/ (function(module, exports) {
 
 angular.
@@ -313,15 +317,17 @@ component('question', {
 });
 
 /***/ }),
-/* 12 */
+
+/***/ 1385:
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('winScore', []);
 
-__webpack_require__(13);
+__webpack_require__(1386);
 
 /***/ }),
-/* 13 */
+
+/***/ 1386:
 /***/ (function(module, exports) {
 
 angular.
@@ -336,38 +342,17 @@ component('winScore', {
 });
 
 /***/ }),
-/* 14 */
-/***/ (function(module, exports, __webpack_require__) {
 
-angular.module('oneState', ["oneOnOne"]);
-
-__webpack_require__(15);
-
-/***/ }),
-/* 15 */
-/***/ (function(module, exports) {
-
-angular.
-module('oneState').
-component('oneState', {
-  templateUrl: "states/one.template.html",
-
-  controller: function OneStateController($http) {
-    
-  }
-});
-
-/***/ }),
-/* 16 */
+/***/ 1387:
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('oneOnOne', []);
 
-__webpack_require__(18);
+__webpack_require__(1388);
 
 /***/ }),
-/* 17 */,
-/* 18 */
+
+/***/ 1388:
 /***/ (function(module, exports) {
 
 angular.
@@ -429,5 +414,51 @@ component('oneOnOne', {
   }
 });
 
+/***/ }),
+
+/***/ 1412:
+/***/ (function(module, exports) {
+
+angular.module('initState', []);
+
+var app = 
+
+angular.
+module('initState').
+component('initState', {
+  templateUrl: "states/init.template.html",
+
+  controller: function initStateController($http, $rootScope, $scope) {
+    console.log('init');
+
+  }
+});
+
+/***/ }),
+
+/***/ 632:
+/***/ (function(module, exports, __webpack_require__) {
+
+//libs
+//require("express");
+// require("./bower_components/fs/lib/fs.js")
+// require("../node_modules/steal-tools/index.js")
+// require("./bower_components/express/index.js")
+
+
+
+__webpack_require__(1372);
+__webpack_require__(1412);
+__webpack_require__(1373);
+__webpack_require__(1375);
+__webpack_require__(1377);
+__webpack_require__(1379);
+__webpack_require__(1381);
+__webpack_require__(1383);
+__webpack_require__(1385);
+__webpack_require__(1387);
+
+
 /***/ })
-/******/ ]);
+
+/******/ });

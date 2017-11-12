@@ -14,26 +14,37 @@ namespace AwanturaLib
             gamestate.Teams[Index].Points += amount;
         }
 
+        private const int TeamCount = 5;
+
 
         void updateAllPoints(GameState gamestate)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < TeamCount; i++)
             {
                 updateTeamPoints(gamestate, i, -gamestate.Licitation.Bid[i]);
             }
         }
-
+        public GameState SetPlayingPoints(GameState gs, int amount)
+        {
+            for(int i=0; i<TeamCount;i++)
+            {
+                if (gs.Teams[i].isPlaying == true)
+                    updateTeamPoints(gs, i,amount);
+            }
+            return gs;
+        }
 
         //LICITATION
-        public GameState ToLicitation(GameState gamestate)
+        public GameState StartLicitation(GameState gamestate)
         {
+            gamestate.Licitation = new Licitation(gamestate);
             gamestate.State = States.Licitation;
             return gamestate;
         }
 
         public GameState Bet(GameState gamestate, int index, int amount)
         {
-            if(amount > 0)
+            if(amount > 0 && gamestate.Licitation.Bid.Max() < amount)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
@@ -43,38 +54,65 @@ namespace AwanturaLib
         public GameState EndLicitationToBlackBox(GameState gamestate)
         {
             updateAllPoints(gamestate);
-            gamestate.State = States.BlackBox;
+            gamestate = AssignBlackBoxToTeam(gamestate, WinnerIndex(gamestate));
+            gamestate.State = States.Idle;
             return gamestate;
         }
 
 
-        public GameState EndLicitationToQuestion(GameState gamestate)
+        public GameState EndLicitationToQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
         {
             updateAllPoints(gamestate);
             gamestate.State = States.Question;
+            gamestate = RandomQuestion(gamestate, CategoryName,qs);
             return gamestate;
         }
+        public int MaxValue(GameState gs)
+        {
+            int maxValue= gs.Licitation.Bid.Max();
 
-
+            return maxValue;
+        }
+        public int WinnerIndex(GameState gs)
+        {
+            int index = 0;
+            for (int i = 0; i < TeamCount; i++)
+            {
+                if (gs.Licitation.Bid[i] == MaxValue(gs))
+                {
+                    index = i;
+                }
+            }
+            return index;
+        }
         public GameState EndLicitationToHint(GameState gamestate)
         {
             updateAllPoints(gamestate);
-            gamestate.State = States.GetHint;
+            gamestate = AssignHint(gamestate, WinnerIndex(gamestate));
+            gamestate.State = States.Idle;
+            return gamestate;
+        }
+        
+
+        //QUESTION
+        public GameState RandomQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
+        {
+            gamestate.Question = qs.Questions[CategoryName].Where(q => q.Used == false)
+                .TakeRandom(Random);
             return gamestate;
         }
 
 
-        //QUESTION
-        public GameState RightGuess(GameState gamestate, int Index)
+        public GameState RightGuess(GameState gamestate)
         {
-            updateTeamPoints(gamestate, Index, gamestate.Pool);//winner
+            updateTeamPoints(gamestate, WinnerIndex(gamestate), gamestate.Licitation.Pool);//winner
             gamestate.Pool = 0;
             gamestate.State = States.Win;
             return gamestate;
         }
 
 
-        public GameState Win(GameState gamestate)
+        public GameState ToIdle(GameState gamestate)
         {
             gamestate.State = States.Idle;
             return gamestate;
@@ -108,15 +146,15 @@ namespace AwanturaLib
         }
 
         //GETTING BLACKBOX OR HINT
-        public GameState AssignBlackBoxToTeam(GameState gamestate, int Index, BlackBox blackbox)
+        public GameState AssignBlackBoxToTeam(GameState gamestate, int Index)
         {
-            gamestate.Teams[Index].BlackBox = blackbox;
+            gamestate.Teams[Index].BlackBox = true;
             gamestate.State = States.Idle;
             return gamestate;
         }
 
 
-        public GameState AssignHint(GameState gamestate, int Index, BlackBox blackbox)
+        public GameState AssignHint(GameState gamestate, int Index)
         {
             gamestate.Teams[Index].Hints += 1;
             gamestate.State = States.Idle;
@@ -128,7 +166,8 @@ namespace AwanturaLib
         public GameState StartGame()
         {
             GameState gamestate = new GameState();
-            for(int i=0; i<5; i++)
+            gamestate.Teams = new Team[TeamCount];
+            for(int i=0; i< TeamCount; i++)
             {
                 gamestate.Teams[i] = new Team();
             }
@@ -185,15 +224,8 @@ namespace AwanturaLib
             return gamestate;
         }
 
+
         //1 ON 1
-        public GameState RandomQuestion(GameState gamestate, List<Question> questions)
-        {
-            gamestate.Question = questions.Where(q => q.Used == false)
-                .TakeRandom(Random);
-            return gamestate;
-        }
-
-
         public GameState ToOneOnOne(GameState gamestate)
         {
             gamestate.State = States.OneOnOne;
@@ -210,15 +242,14 @@ namespace AwanturaLib
 
         public GameState OneOnOneCategories(GameState gamestate, int numberOfCategories, QuestionsSet questionset)
         {
-            
+            gamestate.OneOnOneCategories = new Dictionary<string, bool>();
             for (int i = 0; i < numberOfCategories; i++)
             {
                 gamestate.OneOnOneCategories.Add(questionset.Questions.Keys.ToArray().TakeRandom(Random), true);
             }
-            gamestate.State = States.Reject;
             return gamestate;
         }
-
+       
     }   
 }
 
