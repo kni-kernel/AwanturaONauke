@@ -18,12 +18,13 @@ namespace AwanturaTests
 
             var gs = CreateSampleGamestate();
             gs = mainService.StartGame();
-            gs.Licitation = new Licitation(gs);
+            gs = mainService.StartSecondRound(gs, 0, 1000, 1000);
+            Assert.AreEqual(1000, gs.Teams[0].Points);
+            Assert.AreEqual(1000, gs.Teams[4].Points);
 
-            
+           
 
-            //Assert.AreEqual(00, gs.Licitation.Pool);
-            Assert.AreEqual(0, gs.Pool);
+
         }
 
         private GameState CreateSampleGamestate()

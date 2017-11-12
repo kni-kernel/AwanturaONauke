@@ -7,6 +7,7 @@
 
 
 require("./app.module");
+require("./states/init.module.js");
 require("./states/idle.module.js");
 require("./states/question.module.js");
 require("./states/win.module.js");

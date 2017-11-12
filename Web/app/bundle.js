@@ -76,7 +76,9 @@ var app = angular.module('AoN', [
   "questionState",
   "winState",
   "oneState",
-  "ngRoute"
+  "initState",
+  "ngRoute",
+  "ngStorage"
 ]);
 
 angular.
@@ -87,7 +89,10 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
     $locationProvider.hashPrefix('!');
 
     $routeProvider.
-    when('/idle', {
+    when('/Init', {
+      template: '<init-State></init-State>'
+    }).
+    when('/Idle', {
       template: '<idle-State></idle-State>'
     }).
     when('/OneOnOne', {
@@ -98,41 +103,66 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
     }).
     when('/Win', {
       template: '<win-State></win-State>'
-    }).
-    otherwise('/idle');
+    });
   }
 ]);
 
-app.run(function ($rootScope) {
-  $rootScope.AoNListen = function ($http) {
-    setTimeout(function() {
+app.run(function ($rootScope, $interval, $sessionStorage) {
+  $rootScope.AoNListen = function ($http, onReceive) {
+    $interval(function () {
+
+      function setURL(url) {
+        console.log(url);
+        if (window.location.hash === url) {
+          if (onReceive)
+            onReceive();
+        } else
+          window.location.href = url;
+
+      }
+
+      var ip = window.location.hostname;
+      var address = "http://" + ip + ":8001";
+      console.log("Moving to " + address);
+
+      function parseResponse(data) {
+        console.log(data);
+        if (data == null || data.Pool == null) {
+          console.log("null!");
+          return;
+        }
+        console.log("received!");
+        $sessionStorage.GameState = data;
 
 
-    var ip = window.location.hostname;
-    var address = "http://" + ip + ":8001";
-    console.log(address);
-    $http({
-      method: "POST",
-      url: address,
+        if (data == null || data.State == 0)
+          setURL("#!/Idle");
+        if (data.State == 1)
+          setURL("#!/Idle");
+        if (data.State == 2)
+          setURL("#!/OneOnOne");
+        if (data.State == 3)
+          setURL("#!/Question");
+        if (data.State == 4)
+          setURL("#!/Question");
+        if (data.State == 5)
+          setURL("#!/Hint");
+        else
+          setURL("#!/Idle");
+      }
 
-    }).success(function (data) {
-      $rootScope.GameState = data;
-      //console.log(data);
-      
-      if (data.State == 0)
-        window.location.href = "/#!/Idle";
-      if (data.State == 1)
-        window.location.href = "/#!/Idle";
-      if (data.State == 2)
-        window.location.href = "/#!/OneOnOne";
-      if (data.State == 3)
-        window.location.href = "/#!/Question";
-      if (data.State == 4)
-        window.location.href = "/#!/Question";
-      if (data.State == 5)
-       window.location.href= "/#!/Hint";
-    });
-  }, 1000);
+      $http({
+        method: "POST",
+        url: address,
+      }).then(data => {
+        
+        parseResponse(data.data);
+      }, data => {
+        console.log('error');
+        //console.log(data);
+        //parseResponse(data.data);
+      });
+    }, 1000); //$rootScope.GameState == null ? 500 : 1000);
   }
 });
 
@@ -157,9 +187,8 @@ module('idleState').
 component('idleState', {
   templateUrl: "states/idle.template.html",
 
-  controller: function IdleStateController($http, $rootScope) {
-    $rootScope.AoNListen($http);
-   
+  controller: function IdleStateController($http, $rootScope, $scope) {
+    
   }
 });
 
@@ -254,81 +283,96 @@ module('score').
 component('score', {
   templateUrl: "score/score.template.html",
 
-  controller: function ScoreController($rootScope) {
-    var gs = $rootScope.GameState;
-    console.log(gs);
-    this.Teams = [];
+  controller: function ScoreController($rootScope, $sessionStorage, $scope, $http) {
+    
+    var gs = $sessionStorage.GameState;
+    var self = this;
+    self.Teams = [];
+    self.Auctions = [];
+    self.isAuction = false;
 
-    for(let i = 0;i < gs.Teams.length; ++i)
-    {
-
-      var team = gs.Teams[i];
-      if(team != null)
-      this.Teams.push({
-        Score: team.Points,
-        Enabled: team.isPlaying,
-        Name: team.Name,
-        Class: "teamScore " + team.ClassName
-      });
-    }
-
-    this.Teams.push({
-      Score: gs.Pool,
-      Enabled: true,
-      Name: "Pula",
-      Class: "pool teamScore"
+    console.log($scope);
+    $rootScope.AoNListen($http, () =>  {
+      if(!this.init)
+        window.location.reload();
+        initFromGS($sessionStorage.GameState);
+        //$rootScope.$$phase || $rootScope.$apply();
     });
 
-    if(gs.State == 1)
+    if(gs == null)
     {
-      this.isAuction = true;
-      this.Auctions = [];
+      return;
+    }
+    initFromGS(gs);
+    function initFromGS(gs)
+    {
+      self.init = true;
+      self.Teams = [];
+      self.Auctions = [];
+      self.isAuction = false;
       
-          this.Auctions.push({
-              Class: "blue teamAuction centerVerticalFlex centerHorizontalFlex",
-              Score:5000
-          });
-      
-          this.Auctions.push({
-            Class: "green teamAuction centerVerticalFlex centerHorizontalFlex",
-            Score:5000
+  
+      for(let i = 0;i < gs.Teams.length; ++i)
+      {
+  
+        var team = gs.Teams[i];
+        if(team != null && team.isPlaying)
+        self.Teams.push({
+          Score: team.Points > 0 ? team.Points : "-",
+          Enabled: team.isPlaying,
+          Name: team.Name,
+          Class: "teamScore " + team.ClassName
         });
-      
-        this.Auctions.push({
-          Class: "yellow teamAuction centerVerticalFlex centerHorizontalFlex",
-          Score:5000
+      }
+  
+      self.Teams.push({
+        Score: gs.Pool,
+        Enabled: true,
+        Name: "Pula",
+        Class: "pool teamScore"
       });
+  
+      if(gs.State == 1)
+      {
+        self.isAuction = true;
+
+        for(let i = 0;i < gs.Teams.length; ++i)
+        {
+          var team = gs.Teams[i];
+          if(team != null && team.isPlaying)
+          self.Auctions.push({
+            Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
+            Score:gs.Licitation.Bid[i]
+        });
+        }
+      }
+      else
+      self.isAuction = false;
+  
       
-      this.Auctions.push({
-        Class: "red teamAuction centerVerticalFlex centerHorizontalFlex",
-        Score:5000
-      });
-    }
-    else
-    this.isAuction = false;
-
-    
-
-
- 
-    
-
-
-    this.teamScoreStyle = {
-      width: 1.0 / this.Teams.length * 100.0 + "%",
-      display:"inline-block"
-    }
-
-    this.teamAuctionStyle = {
-      width: 1.0 / this.Teams.length * 100.0 + "%",
-      display:"inline-flex"
+  
+  
+   
+      
+  
+  
+      self.teamScoreStyle = {
+        width: 1.0 / self.Teams.length * 100.0 + "%",
+        display:"inline-block"
+      }
+  
+      self.teamAuctionStyle = {
+        width: 1.0 / self.Teams.length * 100.0 + "%",
+        display:"inline-flex"
+      }
+  
+      self.auctionStyle = {
+        width: ((1.0 / self.Teams.length * 100.0) * (self.Teams.length - 1)) + "%",
+      };
     }
 
-    this.auctionStyle = {
-      width: ((1.0 / this.Teams.length * 100.0) * (this.Teams.length - 1)) + "%",
-    };
     
-    console.log(this.teamWidth);
+    
   }
 });
 
@@ -468,6 +512,26 @@ component('oneOnOne', {
 
 /***/ }),
 
+/***/ 1412:
+/***/ (function(module, exports) {
+
+angular.module('initState', []);
+
+var app = 
+
+angular.
+module('initState').
+component('initState', {
+  templateUrl: "states/init.template.html",
+
+  controller: function initStateController($http, $rootScope, $scope) {
+    console.log('init');
+
+  }
+});
+
+/***/ }),
+
 /***/ 632:
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -480,6 +544,7 @@ component('oneOnOne', {
 
 
 __webpack_require__(1372);
+__webpack_require__(1412);
 __webpack_require__(1373);
 __webpack_require__(1375);
 __webpack_require__(1377);

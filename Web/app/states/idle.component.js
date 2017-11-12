@@ -5,8 +5,7 @@ module('idleState').
 component('idleState', {
   templateUrl: "states/idle.template.html",
 
-  controller: function IdleStateController($http, $rootScope) {
-    $rootScope.AoNListen($http);
-   
+  controller: function IdleStateController($http, $rootScope, $scope) {
+    
   }
 });

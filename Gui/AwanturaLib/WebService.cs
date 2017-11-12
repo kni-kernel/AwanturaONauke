@@ -38,7 +38,9 @@ namespace AwanturaLib {
 
             while(true) {
 
+
                 TcpClient client = m_server.AcceptTcpClient();
+                Thread.Sleep(10);
 
                 NetworkStream stream = client.GetStream();
                 Byte[] bytes = new Byte[client.Available];
@@ -47,7 +49,7 @@ namespace AwanturaLib {
                 String request = Encoding.UTF8.GetString(bytes);
                 Console.WriteLine(request);
 
-               // if(new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request)) {
+                if(new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request)) {
 
                     StreamWriter writer = new StreamWriter(client.GetStream());
 
@@ -55,14 +57,14 @@ namespace AwanturaLib {
 
 
                     Console.WriteLine("Data has been sent.");
-               /* }
+                }
                 else {
 
                     Console.WriteLine("Nope. Only GETs!!");
                     Console.WriteLine(request);
                     Console.WriteLine("-----");
-                }*/
-
+                }
+               
                 client.Close();
             }
         }
@@ -72,7 +74,7 @@ namespace AwanturaLib {
 
             string httpHeaders = "HTTP/1.1 200 OK" + "\r\n";
             httpHeaders += "Cache-Control: no-cache" + "\r\n";
-            httpHeaders += $"Content-Length: {json.Length + 2}" + "\r\n";
+        //    httpHeaders += $"Content-Length: {json.Length + 20}" + "\r\n";
             httpHeaders += "Content-Type: application/json" + "\r\n";
             httpHeaders += "Access-Control-Allow-Origin: *";
 
@@ -80,6 +82,7 @@ namespace AwanturaLib {
 
             s.WriteLine(httpHeaders);
             s.WriteLine(json);
+           // s.Write("                                ");
             s.Flush();
         }
     }
