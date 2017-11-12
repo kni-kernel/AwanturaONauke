@@ -52,7 +52,6 @@ namespace AwanturaLib {
                 if(new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request)) {
 
                     StreamWriter writer = new StreamWriter(client.GetStream());
-                m_state.Pool++;
 
                     SendObject(writer, m_state);
 
