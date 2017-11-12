@@ -4,9 +4,12 @@ using System.Collections.Generic;
 
 namespace AwanturaLib {
 
+    [Serializable]
     public class QuestionsSet {
 
         public Dictionary<String, List<Question>> Questions { get; set; }
+
+        public QuestionsSet() { }
 
         public QuestionsSet(Dictionary<String, List<Question>> questions) {
 

@@ -2,19 +2,22 @@
 using System.IO;
 using System.Xml;
 using System.Xml.Serialization;
+using ExtendedXmlSerialization;
 
 
 namespace AwanturaLib {
 
     public class StorageService {
 
-        public void ParseTextFile<T>(ref T o, String path, Func<String, T> Parser) {
+        public T ParseTextFile<T>(String path, Func<String, T> Parser) where T : class {
+
+            T parsedObject = null;
 
             try {
                 using(StreamReader reader = new StreamReader(path)) {
                     
                     String text = reader.ReadToEnd();
-                    o = Parser(text);
+                    parsedObject = Parser(text);
                 }
             }
             catch(IOException e) {
@@ -22,18 +25,20 @@ namespace AwanturaLib {
                 Console.WriteLine("The file could not be read:");
                 Console.WriteLine(e.Message);
             }
+
+            return parsedObject;
         }
 
-        public String SerializeToXML<T>(T o, String path) {
+        public String SerializeToXMLFile<T>(T o, String path) where T : class {
 
-            XmlSerializer xsSubmit = new XmlSerializer(typeof(T));
+            var xsSubmit = new ExtendedXmlSerializer();
             var xml = "";
-            
+
             using(var sww = new StringWriter()) {
                 using(XmlWriter writer = XmlWriter.Create(sww)) {
 
-                    xsSubmit.Serialize(writer, o);
-                    xml = sww.ToString();
+                    xml = xsSubmit.Serialize(o);
+                    Console.WriteLine(xml);
                 }
             }
 
@@ -48,16 +53,29 @@ namespace AwanturaLib {
                 }
             }
 
+            Console.WriteLine(xml);
             return xml;
         }
 
-        public T DeserializeFromXML<T>(String path) where T : class {
+        public T DeserializeFromXMLFile<T>(String path) where T : class {
 
-            using(var stream = File.OpenRead(path)) {
+            T deserializedObject = null;
 
-                var serializer = new XmlSerializer(typeof(T));
-                return serializer.Deserialize(stream) as T;
+            try {
+                using (StreamReader reader = new StreamReader(path)) {
+
+                    var xml = reader.ReadToEnd();
+                    var deserializer = new ExtendedXmlSerializer();
+                    deserializedObject = deserializer.Deserialize<T>(xml);
+                }
             }
+            catch (IOException e) {
+
+                Console.WriteLine("The file could not be read:");
+                Console.WriteLine(e.Message);
+            }
+
+            return deserializedObject;
         }
     }
 }

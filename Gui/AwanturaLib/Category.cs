@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 
 namespace AwanturaLib
 {
+    [Serializable]
     public class Category
     {
         public String Name { get; set; }
