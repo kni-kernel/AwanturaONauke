@@ -24,7 +24,15 @@ namespace AwanturaLib
                 updateTeamPoints(gamestate, i, -gamestate.Licitation.Bid[i]);
             }
         }
-
+        public GameState SetPlayingPoints(GameState gs, int amount)
+        {
+            for(int i=0; i<TeamCount;i++)
+            {
+                if (gs.Teams[i].isPlaying == true)
+                    updateTeamPoints(gs, i,amount);
+            }
+            return gs;
+        }
 
         //LICITATION
         public GameState StartLicitation(GameState gamestate)
@@ -43,10 +51,10 @@ namespace AwanturaLib
         }
 
 
-        public GameState EndLicitationToBlackBox(GameState gamestate, BlackBox blackbox)
+        public GameState EndLicitationToBlackBox(GameState gamestate)
         {
             updateAllPoints(gamestate);
-            gamestate = AssignBlackBoxToTeam(gamestate, WinnerIndex(gamestate), blackbox);
+            gamestate = AssignBlackBoxToTeam(gamestate, WinnerIndex(gamestate));
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -138,9 +146,9 @@ namespace AwanturaLib
         }
 
         //GETTING BLACKBOX OR HINT
-        public GameState AssignBlackBoxToTeam(GameState gamestate, int Index, BlackBox blackbox)
+        public GameState AssignBlackBoxToTeam(GameState gamestate, int Index)
         {
-            gamestate.Teams[Index].BlackBox = blackbox;
+            gamestate.Teams[Index].BlackBox = true;
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -216,12 +224,7 @@ namespace AwanturaLib
             return gamestate;
         }
 
-       public GameState CreateBlackBox(GameState gs, String bbContent)
-        {
-            gs.BlackBox = new BlackBox();
-            gs.BlackBox.Content = bbContent;
-            return gs;
-        }
+
         //1 ON 1
         public GameState ToOneOnOne(GameState gamestate)
         {
