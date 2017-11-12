@@ -33,12 +33,9 @@
     <StartupObject />
   </PropertyGroup>
   <ItemGroup>
-<<<<<<< HEAD
-=======
     <Reference Include="Newtonsoft.Json, Version=10.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.10.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
->>>>>>> 9b0ceb606e29ca7d226936b30392a4839cf9f3fd
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -51,11 +48,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="BlackBox.cs" />
-<<<<<<< HEAD
-    <Compile Include="Category.cs" />
     <Compile Include="Extensions.cs" />
-=======
->>>>>>> ed7b141799822349db7fd60b7f1d49898773cb23
     <Compile Include="GameState.cs" />
     <Compile Include="Licitation.cs" />
     <Compile Include="MainService.cs" />
