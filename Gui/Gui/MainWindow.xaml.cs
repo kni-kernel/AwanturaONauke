@@ -28,10 +28,36 @@ namespace Gui
         public MainWindow()
         {
             InitializeComponent();
-            VM.Name = "Kunegunda";
-            VM.Pepper = "5000";
+            VM.Question = "U brzegu jakiego kontynentu leży największy rów?";
+            VM.UrlImage = "";
+            VM.Hint1 = "do wyrobu instrumentów";
+            VM.Hint2 = "do konserwacji fortepianu";
+            VM.Hint3 = "do nacierania włosia smyczków";
+            VM.Hint4 = "do przechowywania instrumentów";
+
+            VM.Team1 = "Niebiescy";
+            VM.Team2 = "Czerwoni";
+            VM.Team3 = "Zieloni";
+            VM.Team4 = "Mistrzowie";
+
+            VM.Saldo1 = 5000;
+            VM.Saldo2 = 5000;
+            VM.Saldo3 = 5000;
+            VM.Saldo4 = 5000;
+
+            VM.Bid1 = 0;
+            VM.Bid2 = 0;
+            VM.Bid3 = 0;
+            VM.Bid4 = 0;
+
+            VM.SumBids = 0;
+            VM.Answer = "";
+            VM.HintPayment = 0;
+            VM.Timer = 0;
+
             MainGrid.DataContext = VM;
 
+            /// do stworzenia menu z kategoriami na starcie
             VM.Categories.Add(new CategoryViewModel()
             {
                 ID = "COS",
@@ -44,7 +70,7 @@ namespace Gui
                 Name = "Kategoria 2"
             });
 
-            // dodanie kategorii z listy z Service
+            /// dodanie kategorii z listy z Service
             foreach(var category in VM.Categories)
             {
                 var item = new MenuItem();
@@ -63,25 +89,20 @@ namespace Gui
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            VM.Name = "Baltazar";
-            VM.Pepper = "Mana Mana";
-        }
-
-        // na key click reaguje tylko TA funkcja
-        // dane zmieniaja sie tylko po enter click
+        /// na key click reaguje tylko TA funkcja
+        /// dane zmieniaja sie tylko po enter click 
+        /*
         private void TextBox_KeyDown(object sender, RoutedEventArgs e)
         {
             if (Keyboard.IsKeyDown(Key.Enter))
             {
-                VM.Name = "Bach";
-                VM.Pepper = "Mozart";
+                
             }
         }
+        */
 
-        // button do wyświetlania wszystkich kategorii jako Menu
-        // user wybiera z menu kategorie i przesyła do Server
+        /// button do wyświetlania wszystkich kategorii jako Menu
+        /// user wybiera z menu kategorie i przesyła do Server
         private void categoriesMenu_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).ContextMenu.IsEnabled = true;
@@ -92,50 +113,57 @@ namespace Gui
 
         private void category_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Menu";
-            VM.Pepper = "Pepper";
+            /// sprawdzić czy forma gry 1:1
+            /// jesli tak to wyślij nazwe kategorii i disable wybrany button
+            /// jeśli nie to tylko wyślij nazwę kategorii
         }
 
         // button do wyswietlania obrazka podpiętego pod pytanie
         private void imgButton_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Korelacja";
-            VM.Pepper = "Yoda";
+            /// zastosować ścieżkę do wyświetlenia gdzies obok zdj
+            /// jesli istnieje
+            /// obrazek wywoływany dopiero po kliknięciu
+            /// VM.UrlImage
         }
 
+        // kup podpowiedź
         private void buyHintButton_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Korelacja";
-            VM.Pepper = "Yoda";
+            (sender as Button).IsEnabled = false;
+            /// nie wiem czy potrzebne
+            /// czy nie uzyć odpowiedzi jako skrótu że H/P to podpowiedz 
+            /// i zatwierdzić ENTER
         }
 
+        // wykorzystaj podpowiedź
         private void useHintButton_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Korelacja";
-            VM.Pepper = "kola";
+            /// button WEŹ PODPOWIEDŹ
+            /// z tym że musi sprawdzić czy drużyna może użyć za darmo podpowiedzi
+            /// albo poprosić o kwote do zapłaty
         }
 
+        // kup czarne pudełko
         private void buyBlackBoxButton_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Tymek";
-            VM.Pepper = "Ulek";
+            /// zakup czarnego pudełka 
+            /// użyć skrótu np. BB/B/CP czy button?
         }
         private void startTimeButton_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Korelacja";
-            VM.Pepper = "kola";
+            /// licznik czasu odpowiedzi : 60s
+            
         }
 
         private void stopTimeButton_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Tymek";
-            VM.Pepper = "Ulek";
+            /// zatrzymaj czas albo czas skończy się po 60s
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
-            VM.Name = "Tymek";
-            VM.Pepper = "Ulek";
+            /// tutaj nie wiem - powrót do IDLE
         }
     }
 }
