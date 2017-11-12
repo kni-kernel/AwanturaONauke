@@ -11,12 +11,14 @@ namespace Gui
 {
     public class ViewModel : INotifyPropertyChanged
     {
-
+        // public Category Categories { get; set; } = new Category();
         public GameState GS { get; set; } = new GameState();
 
         // kategoria pytań z Service
-        public List<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
+        // public Dictionary<string, bool> Categories { get; set; }
+        public Dictionary<string, bool> Categories { get; set; } = new Dictionary<string, bool>();
 
+        public Team[] Teams { get; set; } = new Team[4];
 
         // pytania pobierane z Service
         private string question; public string Question
@@ -149,6 +151,15 @@ namespace Gui
             get { return timer; }
             set { timer = value; OnPropertyChanged(); }
         }
+
+        private string chosenCategory;
+
+        public string ChosenCategory
+        {
+            get { return chosenCategory; }
+            set { chosenCategory = value; OnPropertyChanged(); }
+        }
+
 
 
         public event PropertyChangedEventHandler PropertyChanged;

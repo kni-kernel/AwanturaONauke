@@ -30,6 +30,8 @@ namespace Gui
         public MainWindow()
         {
             InitializeComponent();
+
+            /*
             VM.Question = "U brzegu jakiego kontynentu leży największy rów?";
             VM.UrlImage = "";
             VM.Hint1 = "do wyrobu instrumentów";
@@ -57,43 +59,56 @@ namespace Gui
             VM.HintPayment = 0;
             VM.Timer = 0;
 
+            
+            */
+
             MainGrid.DataContext = VM;
 
             /// do stworzenia menu z kategoriami na starcie
-            VM.Categories.Add(new CategoryViewModel()
-            {
-                ID = "COS",
-                Name = "Kategoria 1"
-            });
-
-            VM.Categories.Add(new CategoryViewModel()
-            {
-                ID = "COasdasdsaS",
-                Name = "Kategoria 2"
-            });
+            VM.Categories.Add("Muzyka", true);
+            VM.Categories.Add("Fizyka", true);
+            VM.Categories.Add("Seriale", false);
 
             /// dodanie kategorii z listy z Service
-            foreach(var category in VM.Categories)
+            foreach (var category in VM.Categories)
             {
                 var item = new MenuItem();
-                item.Header = category.Name;
-                item.Name = category.ID;
-
+                item.Header = category.Key;
+                item.Name = category.Key;
+                item.IsEnabled = category.Value;
+                item.Click += new RoutedEventHandler(this.onCategoryClick);
+                 
                 CategoriesMenu.Items.Add(item);
             }
+            /*
+            VM.Teams[0].Name = "WFIS";
+            VM.Teams[1].Name = "WEIP";
+            VM.Teams[2].Name = "WMS";
+            VM.Teams[3].Name = "WIMIC";
 
+            foreach (var team in VM.Teams)
+            {
+                team.Points = 5000;
+                team.isPlaying = true;
+                team.BlackBox = null;
+                team.Hints = 0;
+                team.ClassName = "";
+            }
+            */
         }
 
         public void ImportGameState(GameState gameState)
         {
-            gameState = new GameState()
-            {
-                Categories = new Dictionary<string, bool>()
-                {
-                    
-                }
-            };
+            VM.GS = new GameState();
+
+            // VM.GS.Teams = VM.Teams;
+            // VM.GS.Categories = VM.Categories;
+
+            // Question q = new Question();
+          
+
         }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -123,6 +138,17 @@ namespace Gui
             (sender as Button).ContextMenu.PlacementTarget = (sender as Button);
             (sender as Button).ContextMenu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             (sender as Button).ContextMenu.IsOpen = true;
+            VM.Answer = (sender as Button).ContextMenu.Name;
+        }
+
+        private void onCategoryClick(object sender, RoutedEventArgs args)
+        {
+            var menuItem = (sender as MenuItem);
+            var categoryName = (string)menuItem.Header;
+
+            VM.ChosenCategory = categoryName;
+
+
         }
 
         private void category_Click(object sender, RoutedEventArgs e)

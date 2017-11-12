@@ -18,21 +18,21 @@ namespace AwanturaTests
             var gs = CreateSampleGamestate();
             gs.Licitation = new Licitation(gs);
 
-            gs = mainService.Bet(gs, 0, -500);
-            gs = mainService.Bet(gs, 1, 1000);
+            gs = mainService.StartGame(gs);
 
-            Assert.AreEqual(500, gs.Pool);
+            //Assert.AreEqual(00, gs.Licitation.Pool);
+            Assert.AreEqual(0, gs.Pool);
         }
 
         private GameState CreateSampleGamestate()
         {
             return new GameState()
             {
-                Pool = 500,
+                Pool = 0,
                 Teams = new Team[5]
                 {
-                    new Team() {Points = 1000},
-                    new Team() {Points = 5000},
+                    new Team() {Points = 1000, isPlaying = true},
+                    new Team() {Points = 5000, isPlaying = true},
                     new Team() {isPlaying = false},
                     new Team() {isPlaying = false},
                     new Team() {isPlaying = false},
