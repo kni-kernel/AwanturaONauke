@@ -158,6 +158,7 @@ namespace AwanturaLib
         {
             gamestate.Question = questions.Where(q => q.Used == false)
                 .TakeRandom(Random);
+            gamestate.Question.Used = true;
             return gamestate;
         }
     }   
