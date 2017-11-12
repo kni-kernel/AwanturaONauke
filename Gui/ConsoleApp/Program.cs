@@ -41,6 +41,7 @@ namespace ConsoleApp
             gs = ms.EndLicitationToBlackBox(gs, gs.BlackBox);
 
             ws.UpdateGameState(gs);
+
         }
     }
 }
