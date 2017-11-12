@@ -15,10 +15,12 @@ namespace AwanturaTests
         [TestMethod]
         public void SetAboveMaxTest()
         {
+
             var gs = CreateSampleGamestate();
+            gs = mainService.StartGame();
             gs.Licitation = new Licitation(gs);
 
-            gs = mainService.StartGame(gs);
+            
 
             //Assert.AreEqual(00, gs.Licitation.Pool);
             Assert.AreEqual(0, gs.Pool);

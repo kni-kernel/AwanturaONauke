@@ -125,8 +125,13 @@ namespace AwanturaLib
 
  
         //BEGGINNIG
-        public GameState StartGame(GameState gamestate)
+        public GameState StartGame()
         {
+            GameState gamestate = new GameState();
+            for(int i=0; i<5; i++)
+            {
+                gamestate.Teams[i] = new Team();
+            }
 
             gamestate.Teams[0].Name = "Niebiescy";
             gamestate.Teams[1].Name = "Zieloni";
