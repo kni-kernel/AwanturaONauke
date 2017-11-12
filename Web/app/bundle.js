@@ -316,9 +316,9 @@ component('score', {
       {
   
         var team = gs.Teams[i];
-        if(team != null)
+        if(team != null && team.isPlaying)
         self.Teams.push({
-          Score: team.isPlaying ? team.Points : "-",
+          Score: team.Points > 0 ? team.Points : "-",
           Enabled: team.isPlaying,
           Name: team.Name,
           Class: "teamScore " + team.ClassName
