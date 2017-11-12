@@ -24,7 +24,8 @@ namespace Gui
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-
+        private static MainService mainService = new MainService();
+        private static WebService webService = new WebService(8001);
         public ViewModel VM { get; set; } = new ViewModel();
         public object Keys { get; private set; }
 
@@ -34,7 +35,10 @@ namespace Gui
 
             MainGrid.DataContext = VM;
             ImportCategories();
-            ImportGameState(null);
+            var gs = mainService.StartGame();
+            ImportGameState(gs);
+            webService.UpdateGameState(gs);
+
 
             VM.TimerEnabled = true;
             VM.Timer = 60;
@@ -75,7 +79,7 @@ namespace Gui
         }
         public void ImportGameState(GameState gameState)
         {
-            VM.gameState = new GameState();
+            VM.gameState = gameState;
 
             Team[] Teams = new Team[5];
             for (int i = 0; i < 5; i++)
