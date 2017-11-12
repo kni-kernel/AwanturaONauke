@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AwanturaLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -22,6 +23,7 @@ namespace Gui
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
+        
         public ViewModel VM { get; set; } = new ViewModel();
         public object Keys { get; private set; }
 
@@ -38,7 +40,7 @@ namespace Gui
             VM.Team1 = "Niebiescy";
             VM.Team2 = "Czerwoni";
             VM.Team3 = "Zieloni";
-            VM.Team4 = "Mistrzowie";
+            VM.Team4 = "Żółci";
 
             VM.Saldo1 = 5000;
             VM.Saldo2 = 5000;
@@ -82,12 +84,24 @@ namespace Gui
 
         }
 
+        public void ImportGameState(GameState gameState)
+        {
+            gameState = new GameState()
+            {
+                Categories = new Dictionary<string, bool>()
+                {
+                    
+                }
+            };
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string propertyName = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+
 
         /// na key click reaguje tylko TA funkcja
         /// dane zmieniaja sie tylko po enter click 

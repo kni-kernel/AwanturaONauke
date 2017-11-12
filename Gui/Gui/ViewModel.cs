@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AwanturaLib;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -10,7 +11,10 @@ namespace Gui
 {
     public class ViewModel : INotifyPropertyChanged
     {
-         // kategoria pytań z Service
+
+        public GameState GS { get; set; } = new GameState();
+
+        // kategoria pytań z Service
         public List<CategoryViewModel> Categories { get; set; } = new List<CategoryViewModel>();
 
 
