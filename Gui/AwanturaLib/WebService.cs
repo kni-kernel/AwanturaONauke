@@ -47,7 +47,7 @@ namespace AwanturaLib {
                 String request = Encoding.UTF8.GetString(bytes);
                 Console.WriteLine(request);
 
-                if(new Regex("^GET").IsMatch(request)) {
+               // if(new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request)) {
 
                     StreamWriter writer = new StreamWriter(client.GetStream());
 
@@ -55,18 +55,31 @@ namespace AwanturaLib {
 
 
                     Console.WriteLine("Data has been sent.");
-                }
+               /* }
                 else {
 
                     Console.WriteLine("Nope. Only GETs!!");
-                }
+                    Console.WriteLine(request);
+                    Console.WriteLine("-----");
+                }*/
 
                 client.Close();
             }
         }
 
         private void SendObject<T>(StreamWriter s, T o) {
-            //s.WriteLine(JsonConvert.SerializeObject(o));
+            var json = JsonConvert.SerializeObject(o);
+
+            string httpHeaders = "HTTP/1.1 200 OK" + "\r\n";
+            httpHeaders += "Cache-Control: no-cache" + "\r\n";
+            httpHeaders += $"Content-Length: {json.Length + 2}" + "\r\n";
+            httpHeaders += "Content-Type: application/json" + "\r\n";
+            httpHeaders += "Access-Control-Allow-Origin: *";
+
+            httpHeaders += "\r\n\r\n";
+
+            s.WriteLine(httpHeaders);
+            s.WriteLine(json);
             s.Flush();
         }
     }

@@ -8,13 +8,11 @@ namespace AwanturaLib
 {
     public enum States
     {
-        Idle,
-        Licitation,
-        OneOnOne,
-        Question,
-        Hint,
-        GetHint,
-        Win,
-        BlackBox,
+        Idle = 0,
+        Licitation = 1,
+        OneOnOne = 2,
+        Question = 3,
+        Hint = 4,
+        Win = 5
     };
 }

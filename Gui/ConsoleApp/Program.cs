@@ -13,7 +13,13 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var ws = new WebService(8001); 
+            var ws = new WebService(8001);
+            var ms = new MainService();
+
+            var gs = ms.StartGame();
+
+            ws.UpdateGameState(gs);
+
         }
     }
 }

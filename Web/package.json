@@ -17,24 +17,22 @@
   },
   "scripts": {
     "postinstall": "bower install",
-
     "prestart": "npm install",
-    "start": "http-server ./app -a localhost -p 8000 -c-1",
-
-    "webpack" : "webpack --watch app/main.js app/bundle.js",
-    "sass" : "node-sass --include-path scss app/scss/main.scss   app/css/main.css",
-    "sass-watch" : "nodemon -e scss -x \"npm run sass\"",
-
+    "start": "http-server ./app -a 0.0.0.0 -p 8000 -c-1",
+    "startRemote": "ng server --port 8000 --host 0.0.0.0 --disableHostCheck true",
+    "webpack": "webpack --watch app/main.js app/bundle.js",
+    "sass": "node-sass --include-path scss app/scss/main.scss   app/css/main.css",
+    "sass-watch": "nodemon -e scss -x \"npm run sass\"",
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
-
     "preupdate-webdriver": "npm install",
     "update-webdriver": "webdriver-manager update",
-
     "preprotractor": "npm run update-webdriver",
     "protractor": "protractor e2e-tests/protractor.conf.js",
-
     "update-index-async": "node -e \"var fs=require('fs'),indexFile='app/index-async.html',loaderFile='app/bower_components/angular-loader/angular-loader.min.js',loaderText=fs.readFileSync(loaderFile,'utf-8').split(/sourceMappingURL=angular-loader.min.js.map/).join('sourceMappingURL=bower_components/angular-loader/angular-loader.min.js.map'),indexText=fs.readFileSync(indexFile,'utf-8').split(/\\/\\/@@NG_LOADER_START@@[\\s\\S]*\\/\\/@@NG_LOADER_END@@/).join('//@@NG_LOADER_START@@\\n'+loaderText+'    //@@NG_LOADER_END@@');fs.writeFileSync(indexFile,indexText);\""
+  },
+  "dependencies": {
+    "steal-tools": "^1.9.1"
   }
 }

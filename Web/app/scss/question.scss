@@ -57,6 +57,14 @@ question {
                 color: lighten($greenBottomColor, 15%);
             }
         }
+
+        .bottom.red {
+            background-color: $redBackground;
+            color: $redBottomColor;
+            .hint {
+                color: lighten($redBottomColor, 15%);
+            }
+        }
         .bottom.black {
             background-color: $blackBackground;
             color: $blackBottomColor;

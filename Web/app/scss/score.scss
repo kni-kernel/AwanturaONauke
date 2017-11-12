@@ -41,7 +41,13 @@ score
         .teamAuction.yellow
         {
             background-color: $yellowBackground;
-            color:$yellowBackground;
+            color:$yellowBottomColor;
+        }
+
+        .teamAuction.red
+        {
+            background-color: $redBackground;
+            color:$redBottomColor;
         }
 
         .teamAuction.black
@@ -108,6 +114,20 @@ score
         {
             background-color: $greenBackground;
             color:$greenBottomColor
+
+        }
+    }
+
+    .teamScore.red
+    {
+        .top
+        {
+            color:$redTopColor;
+        }
+        .bottom
+        {
+            background-color: $redBackground;
+            color:$redBottomColor
 
         }
     }
