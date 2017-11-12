@@ -18,12 +18,19 @@ namespace AwanturaTests
 
             var gs = CreateSampleGamestate();
             gs = mainService.StartGame();
+            gs = mainService.StartFirtRound(gs);
+            Assert.AreEqual(5000, gs.Teams[0].Points);
             gs.Licitation = new Licitation(gs);
+            gs = mainService.Bet(gs, 0, 400);
+            Assert.AreEqual(1000, gs.Licitation.Pool);
+            gs = mainService.EndLicitationToQuestion(gs);
+            Assert.AreEqual(4600, gs.Teams[0].Points);
+            Assert.AreEqual(4800, gs.Teams[1].Points);
+            gs = mainService.RightGuess(gs,0);
+            Assert.AreEqual(5600, gs.Teams[0].Points);
+            Assert.AreEqual(4800, gs.Teams[1].Points);
 
-            
 
-            //Assert.AreEqual(00, gs.Licitation.Pool);
-            Assert.AreEqual(0, gs.Pool);
         }
 
         private GameState CreateSampleGamestate()

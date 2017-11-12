@@ -69,7 +69,7 @@ namespace AwanturaLib
         //QUESTION
         public GameState RightGuess(GameState gamestate, int Index)
         {
-            updateTeamPoints(gamestate, Index, gamestate.Pool);//winner
+            updateTeamPoints(gamestate, Index, gamestate.Licitation.Pool);//winner
             gamestate.Pool = 0;
             gamestate.State = States.Win;
             return gamestate;
