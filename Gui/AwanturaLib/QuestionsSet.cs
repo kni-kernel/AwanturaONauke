@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 namespace AwanturaLib {
 
-    class QuestionsSet {
+    public class QuestionsSet {
 
-        private Dictionary<String, List<Question>> m_questions;
+        public Dictionary<String, List<Question>> Questions { get; set; }
 
         public QuestionsSet(Dictionary<String, List<Question>> questions) {
 
