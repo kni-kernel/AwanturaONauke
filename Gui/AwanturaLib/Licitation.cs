@@ -8,14 +8,14 @@ namespace AwanturaLib
 {
     public class Licitation
     {
-        public int[] Bid { get; set; } = new int[4];
+        public int[] Bid { get; set; } = new int[5];
         public int WhoWin { get; set; }
         public int Pool { get; set; }
         public int winner { get; set; }
         public Licitation(GameState gameState, int startAmount = 200)
         {
             Pool = gameState.Pool;
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < 5; i++)
             {
                 if(gameState.Teams[i].isPlaying == true)
                 {
