@@ -16,22 +16,23 @@ namespace AwanturaTests
         public void SetAboveMaxTest()
         {
             var gs = CreateSampleGamestate();
-            gs.Licictation = new Licitation(gs);
+            gs.Licitation = new Licitation(gs);
 
-            gs = mainService.Bet(gs, 0, 1200);
+            gs = mainService.StartGame(gs);
 
-            Assert.AreEqual(1000, gs.Licictation.Bid[0]);
+            //Assert.AreEqual(00, gs.Licitation.Pool);
+            Assert.AreEqual(0, gs.Pool);
         }
 
         private GameState CreateSampleGamestate()
         {
             return new GameState()
             {
-                Pool = 500,
+                Pool = 0,
                 Teams = new Team[5]
                 {
-                    new Team() {Points = 1000},
-                    new Team() {Points = 5000},
+                    new Team() {Points = 1000, isPlaying = true},
+                    new Team() {Points = 5000, isPlaying = true},
                     new Team() {isPlaying = false},
                     new Team() {isPlaying = false},
                     new Team() {isPlaying = false},

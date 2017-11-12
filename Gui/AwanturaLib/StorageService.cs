@@ -1,9 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.IO;
+using System.Xml;
+using System.Xml.Serialization;
 
 
 namespace AwanturaLib {
@@ -42,11 +40,7 @@ namespace AwanturaLib {
             if(path != null) {
 
                 try {
-                    PrintWriter output = new PrintWriter(
-                        new BufferedWriter(
-                            new FileWriter(path, true)));
-                    output.println(xml);
-                    output.close();
+                    File.WriteAllText(path, xml);
                 }
                 catch (IOException e) {
 
@@ -58,7 +52,7 @@ namespace AwanturaLib {
             return xml;
         }
 
-        public T DeserializeFromXML<T>(String path) {
+        public T DeserializeFromXML<T>(String path) where T : class {
 
             using(var stream = System.IO.File.OpenRead(path)) {
 

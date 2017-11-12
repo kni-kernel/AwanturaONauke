@@ -48,7 +48,7 @@
   <ItemGroup>
     <Compile Include="Category.cs" />
     <Compile Include="BlackBox.cs" />
-    <Compile Include="Category.cs" />
+    <Compile Include="Extensions.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="Licitation.cs" />
     <Compile Include="MainService.cs" />
@@ -59,9 +59,6 @@
     <Compile Include="StorageService.cs" />
     <Compile Include="Team.cs" />
     <Compile Include="WebService.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

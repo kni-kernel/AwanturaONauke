@@ -10,7 +10,7 @@ namespace AwanturaLib {
 
         public QuestionsSet(Dictionary<String, List<Question>> questions) {
 
-            m_questions = questions;
+            Questions = questions;
         }
 
         public static QuestionsSet ParseTextFormat(String text) {
