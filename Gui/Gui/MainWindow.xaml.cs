@@ -95,10 +95,7 @@ namespace Gui
             {
                 team.Points = 5000;
                 team.isPlaying = true;
-<<<<<<< HEAD
-                team.BlackBox = null;
-=======
->>>>>>> 3d47c2a08573a2506103bccf37cb9050fbf292f2
+
                 team.Hints = 0;
                 team.ClassName = "";
             }

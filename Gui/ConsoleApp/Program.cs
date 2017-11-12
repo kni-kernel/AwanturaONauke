@@ -36,9 +36,9 @@ namespace ConsoleApp
             gs = ms.Bet(gs, 3, 400);
             gs = ms.Bet(gs, 2, 500);
 
-            gs = ms.CreateBlackBox(gs, "whatever");
+            //gs = ms.CreateBlackBox(gs, "whatever");
 
-            gs = ms.EndLicitationToBlackBox(gs, gs.BlackBox);
+            //gs = ms.EndLicitationToBlackBox(gs, gs.BlackBox);
 
             ws.UpdateGameState(gs);
 
