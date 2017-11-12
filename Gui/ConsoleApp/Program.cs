@@ -17,6 +17,10 @@ namespace ConsoleApp
             var ms = new MainService();
 
             var gs = ms.StartGame();
+            gs = ms.StartFirtRound(gs);
+            
+            
+            
 
             ws.UpdateGameState(gs);
 
