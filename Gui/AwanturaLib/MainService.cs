@@ -23,6 +23,8 @@ namespace AwanturaLib
             }
         }
 
+
+        //LICITATION
         public GameState ToLicitation(GameState gamestate)
         {
             gamestate.State = States.Licitation;
@@ -38,6 +40,31 @@ namespace AwanturaLib
         }
 
 
+        public GameState EndLicitationToBlackBox(GameState gamestate)
+        {
+            updateAllPoints(gamestate);
+            gamestate.State = States.BlackBox;
+            return gamestate;
+        }
+
+
+        public GameState EndLicitationToQuestion(GameState gamestate)
+        {
+            updateAllPoints(gamestate);
+            gamestate.State = States.Question;
+            return gamestate;
+        }
+
+
+        public GameState EndLicitationToHint(GameState gamestate)
+        {
+            updateAllPoints(gamestate);
+            gamestate.State = States.GetHint;
+            return gamestate;
+        }
+
+
+        //QUESTION
         public GameState RightGuess(GameState gamestate, int Index)
         {
             updateTeamPoints(gamestate, Index, gamestate.Pool);//winner
@@ -46,11 +73,13 @@ namespace AwanturaLib
             return gamestate;
         }
 
+
         public GameState Win(GameState gamestate)
         {
             gamestate.State = States.Idle;
             return gamestate;
         }
+
 
         public GameState WrongGuessFirstRound(GameState gamestate)
         {
@@ -58,6 +87,8 @@ namespace AwanturaLib
             gamestate.State = States.Idle;
             return gamestate;
         }
+
+
         public GameState WrongGuessSecondRound(GameState gamestate)
         {
             gamestate.Pool = 0;
@@ -65,6 +96,18 @@ namespace AwanturaLib
             return gamestate;   
         }
 
+
+        public GameState UseHint(GameState gamestate, int Index)
+        {
+            if (gamestate.Teams[Index].Hints > 0)
+            {
+                gamestate.Teams[Index].Hints -= 1;
+                gamestate.State = States.Hint;
+            }
+            return gamestate;
+        }
+
+        //GETTING BLACKBOX OR HINT
         public GameState AssignBlackBoxToTeam(GameState gamestate, int Index, BlackBox blackbox)
         {
             gamestate.Teams[Index].BlackBox = blackbox;
@@ -81,43 +124,7 @@ namespace AwanturaLib
         }
 
  
-        public GameState UseHint(GameState gamestate, int Index)
-        {
-            if (gamestate.Teams[Index].Hints > 0)
-            {
-                gamestate.Teams[Index].Hints -= 1;
-                gamestate.State = States.Hint;
-            }
-                return gamestate;
-        }
-
-
-        public GameState EndLicitationToBlackBox (GameState gamestate)
-        {
-            updateAllPoints(gamestate);
-            gamestate.State = States.BlackBox;
-            return gamestate;
-        }
-        public GameState EndLicitationToQuestion(GameState gamestate)
-        {
-            updateAllPoints(gamestate);
-            gamestate.State = States.Question;
-            return gamestate;
-        }
-        public GameState EndLicitationToHint(GameState gamestate)
-        {
-            updateAllPoints(gamestate);
-            gamestate.State = States.GetHint;
-            return gamestate;
-        }
-
-        public GameState RemoveCategory(GameState gamestate, Category category)
-        {
-            gamestate.OneOnOneCategories[category.Name] = false;
-            return gamestate;
-        }
-
-
+        //BEGGINNIG
         public GameState StartGame(GameState gamestate)
         {
 
@@ -150,7 +157,6 @@ namespace AwanturaLib
                     team.isPlaying = false;
                     continue;
                 }
-
                 team.Points = 5000;
                 team.Hints = 0;
                 team.isPlaying = true;
@@ -174,17 +180,29 @@ namespace AwanturaLib
             return gamestate;
         }
 
+        //1 ON 1
         public GameState RandomQuestion(GameState gamestate, List<Question> questions)
         {
             gamestate.Question = questions.Where(q => q.Used == false)
                 .TakeRandom(Random);
             return gamestate;
         }
+
+
         public GameState ToOneOnOne(GameState gamestate)
         {
             gamestate.State = States.OneOnOne;
             return gamestate;
         }
+
+
+        public GameState RemoveCategory(GameState gamestate, Category category)
+        {
+            gamestate.OneOnOneCategories[category.Name] = false;
+            return gamestate;
+        }
+
+
         public GameState OneOnOneCategories(GameState gamestate, int numberOfCategories, QuestionsSet questionset)
         {
             
