@@ -64,6 +64,7 @@ namespace AwanturaLib {
         }
 
         private void SendObject<T>(StreamWriter s, T o) {
+
             s.WriteLine(JsonConvert.SerializeObject(o));
             s.Flush();
         }
