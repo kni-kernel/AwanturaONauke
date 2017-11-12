@@ -27,8 +27,9 @@ namespace AwanturaLib
 
 
         //LICITATION
-        public GameState ToLicitation(GameState gamestate)
+        public GameState StartLicitation(GameState gamestate)
         {
+            gamestate.Licitation = new Licitation(gamestate);
             gamestate.State = States.Licitation;
             return gamestate;
         }
@@ -67,6 +68,14 @@ namespace AwanturaLib
 
 
         //QUESTION
+        public GameState RandomQuestion(GameState gamestate, List<Question> questions)
+        {
+            gamestate.Question = questions.Where(q => q.Used == false)
+                .TakeRandom(Random);
+            return gamestate;
+        }
+
+
         public GameState RightGuess(GameState gamestate, int Index)
         {
             updateTeamPoints(gamestate, Index, gamestate.Licitation.Pool);//winner
@@ -188,15 +197,8 @@ namespace AwanturaLib
             return gamestate;
         }
 
+       
         //1 ON 1
-        public GameState RandomQuestion(GameState gamestate, List<Question> questions)
-        {
-            gamestate.Question = questions.Where(q => q.Used == false)
-                .TakeRandom(Random);
-            return gamestate;
-        }
-
-
         public GameState ToOneOnOne(GameState gamestate)
         {
             gamestate.State = States.OneOnOne;
@@ -213,14 +215,14 @@ namespace AwanturaLib
 
         public GameState OneOnOneCategories(GameState gamestate, int numberOfCategories, QuestionsSet questionset)
         {
-            
+            gamestate.OneOnOneCategories = new Dictionary<string, bool>();
             for (int i = 0; i < numberOfCategories; i++)
             {
                 gamestate.OneOnOneCategories.Add(questionset.Questions.Keys.ToArray().TakeRandom(Random), true);
             }
             return gamestate;
         }
-
+       
     }   
 }
 
