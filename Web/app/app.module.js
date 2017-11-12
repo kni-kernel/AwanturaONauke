@@ -1,6 +1,7 @@
 // Define the `phonecatApp` module
-angular.module('phonecatApp', [
-    "phoneList"
-
+angular.module('AoN', [
+    "idleState",
+    "questionState",
+    "winState",
 ]);
 

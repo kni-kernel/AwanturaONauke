@@ -1,0 +1,34 @@
+<div class="timer">
+    {{$ctrl.Time}}
+</div>
+<div class="inner">
+    <div class="top">
+        <span class="questionNumber">Pytanie {{$ctrl.QuestionNumber}}</span>
+        <span class="toWinAmount">{{$ctrl.ToWin}}</span>
+        <span class="toWin">Do wygrania</span>
+
+    </div>
+    <div ng-class="$ctrl.Class" class="bottom">
+        <div class="centerHorizontalFlex centerVerticalFlex">
+            {{$ctrl.Question}}
+        </div>
+        <div class="hints" ng-if="$ctrl.hintEnabled">
+            <div class="row">
+                <div class="hint">
+                    {{$ctrl.HintA}}
+                </div>
+                <div class="hint">
+                    {{$ctrl.HintB}}
+                </div>
+            </div>
+            <div class="row">
+                <div class="hint">
+                    {{$ctrl.HintC}}
+                </div>
+                <div class="hint">
+                    {{$ctrl.HintD}}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

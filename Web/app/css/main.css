@@ -1,0 +1,137 @@
+score {
+  position: absolute;
+  width: 100vw;
+  bottom: 0;
+  left: 0;
+  right: 0; }
+  score .auction .description {
+    background-color: black;
+    color: #AEAEAE;
+    text-align: center;
+    font-size: 4vh;
+    padding-top: 1rem;
+    padding-bottom: 1rem; }
+  score .auction .teamAuction {
+    width: 100%;
+    text-align: center;
+    padding: 1rem 0;
+    font-size: 7vh; }
+  score .auction .teamAuction.blue {
+    background-color: #000F57;
+    color: #9EAADD; }
+  score .auction .teamAuction.green {
+    background-color: #1B3B1D;
+    color: #A1B4A1; }
+  score .auction .teamAuction.yellow {
+    background-color: #654D08;
+    color: #654D08; }
+  score .auction .teamAuction.black {
+    background-color: #5B5454;
+    color: #BDB7B5; }
+  score .teamScore .top {
+    background-color: black;
+    width: 100%;
+    text-align: center;
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+    font-size: 4vh; }
+  score .teamScore .bottom {
+    width: 100%;
+    text-align: center;
+    font-size: 7vh;
+    padding: 1rem 0; }
+  score .teamScore.blue .top {
+    color: #313268; }
+  score .teamScore.blue .bottom {
+    background-color: #000F57;
+    color: #9EAADD; }
+  score .teamScore.yellow .top {
+    color: #605C37; }
+  score .teamScore.yellow .bottom {
+    background-color: #654D08;
+    color: #B7A582; }
+  score .teamScore.green .top {
+    color: #506D4E; }
+  score .teamScore.green .bottom {
+    background-color: #1B3B1D;
+    color: #A1B4A1; }
+  score .teamScore.black .top {
+    color: #7C7170; }
+  score .teamScore.black .bottom {
+    background-color: #5B5454;
+    color: #BDB7B5; }
+  score .teamScore.pool .top {
+    color: #868A89; }
+  score .teamScore.pool .bottom {
+    background-color: #1F1F1F;
+    color: #AEAEAE; }
+
+question .timer, win-Score .timer {
+  position: absolute;
+  right: 0;
+  top: 0;
+  margin: 3rem;
+  margin-right: 5vw;
+  font-size: 5vh;
+  color: black; }
+
+question .inner, win-Score .inner {
+  margin-left: 5vw;
+  margin-right: 5vw;
+  width: 90vw;
+  position: absolute;
+  bottom: 10vh;
+  display: inline-block; }
+  question .inner .top, win-Score .inner .top {
+    color: #868A89;
+    font-size: 3.5vh;
+    background-color: black;
+    padding: 0.5rem 1rem; }
+    question .inner .top .toWin, win-Score .inner .top .toWin {
+      float: right; }
+    question .inner .top .toWinAmount, win-Score .inner .top .toWinAmount {
+      float: right;
+      margin-left: 2rem; }
+  question .inner .bottom, win-Score .inner .bottom {
+    padding: 1rem 2rem;
+    min-height: 30vh;
+    font-size: 4rem;
+    text-align: center; }
+  question .inner .bottom.blue, win-Score .inner .bottom.blue {
+    background-color: #000F57;
+    color: #9EAADD; }
+    question .inner .bottom.blue .hint, win-Score .inner .bottom.blue .hint {
+      color: #d7dcf1; }
+  question .inner .bottom.yellow, win-Score .inner .bottom.yellow {
+    background-color: #654D08;
+    color: #B7A582; }
+    question .inner .bottom.yellow .hint, win-Score .inner .bottom.yellow .hint {
+      color: #d3c8b3; }
+  question .inner .bottom.green, win-Score .inner .bottom.green {
+    background-color: #1B3B1D;
+    color: #A1B4A1; }
+    question .inner .bottom.green .hint, win-Score .inner .bottom.green .hint {
+      color: #ccd6cc; }
+  question .inner .bottom.black, win-Score .inner .bottom.black {
+    background-color: #5B5454;
+    color: #BDB7B5; }
+    question .inner .bottom.black .hint, win-Score .inner .bottom.black .hint {
+      color: #e1dedd; }
+  question .inner .hints .hint, win-Score .inner .hints .hint {
+    display: inline-block;
+    width: 40vw; }
+
+win-Score .top {
+  text-align: center; }
+
+win-Score .bottom {
+  min-height: auto;
+  padding: 3rem 1rem; }
+
+.centerVerticalFlex {
+  display: flex;
+  align-items: center; }
+
+.centerHorizontalFlex {
+  display: flex;
+  justify-content: center; }

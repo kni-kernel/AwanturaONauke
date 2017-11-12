@@ -21,6 +21,10 @@
     "prestart": "npm install",
     "start": "http-server ./app -a localhost -p 8000 -c-1",
 
+    "webpack" : "webpack --watch app/main.js app/bundle.js",
+    "sass" : "node-sass --include-path scss app/scss/main.scss   app/css/main.css",
+    "sass-watch" : "nodemon -e scss -x \"npm run sass\"",
+
     "pretest": "npm install",
     "test": "karma start karma.conf.js",
     "test-single-run": "karma start karma.conf.js --single-run",
