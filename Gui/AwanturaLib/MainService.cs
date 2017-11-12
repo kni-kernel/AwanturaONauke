@@ -113,7 +113,7 @@ namespace AwanturaLib
 
         public GameState RemoveCategory(GameState gamestate, Category category)
         {
-            gamestate.Categories.Remove(category.Name);
+            gamestate.OneOnOneCategories.Remove(category.Name);
             return gamestate;
         }
 
@@ -180,6 +180,17 @@ namespace AwanturaLib
                 .TakeRandom(Random);
             return gamestate;
         }
+        public GameState ToOneOnOne(GameState gamestate)
+        {
+            gamestate.State = States.OneOnOne;
+            return gamestate;
+        }
+        public GameState OneOnOneCategories(GameState gamestate)
+        {
+            //gamestate.OneOnOneCategories.Add(Questionset.TakeRandom(Random),true);
+            return gamestate;
+        }
+
     }   
 }
 
