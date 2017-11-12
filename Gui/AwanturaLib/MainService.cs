@@ -75,7 +75,33 @@ namespace AwanturaLib
             gamestate.Categories.Remove(category.Name);
             return gamestate;
         }
+        public GameState StartFirtRound(GameState gamestate)
+        {
+            gamestate.Teams[0].Name = "Niebiescy";
+            gamestate.Teams[0].Name = "Zieloni";
+            gamestate.Teams[0].Name = "Żółci";
+            gamestate.Teams[0].Name = "Czarni";
 
+            gamestate.Teams[0].ClassName = "blue";
+            gamestate.Teams[0].ClassName = "green";
+            gamestate.Teams[0].ClassName = "yellow";
+            gamestate.Teams[0].ClassName = "black";
+
+            //without deans
+            foreach (var team in gamestate.Teams)
+            {
+                if (team.ClassName == "black")
+                    continue;
+
+                team.Points = 5000;
+                team.Hints = 0;
+                team.isPlaying = true;
+
+                
+            }
+            
+            return gamestate;
+        }
     }   
 }
 
