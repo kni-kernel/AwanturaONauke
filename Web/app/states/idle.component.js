@@ -1,9 +1,12 @@
+var app = 
+
 angular.
 module('idleState').
 component('idleState', {
   templateUrl: "states/idle.template.html",
 
-  controller: function IdleStateController($http) {
-    
+  controller: function IdleStateController($http, $rootScope) {
+    $rootScope.AoNListen($http);
+   
   }
 });

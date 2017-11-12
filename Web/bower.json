@@ -9,6 +9,9 @@
     "angular": "1.5.x",
     "angular-mocks": "1.5.x",
     "angular-route": "1.5.x",
-    "bootstrap": "3.3.x"
+    "bootstrap": "3.3.x",
+    "express": "^4.16.2",
+    "fs": "^1.0.1",
+    "steal": "^3.3.0"
   }
 }
