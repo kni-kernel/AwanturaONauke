@@ -49,7 +49,12 @@ namespace AwanturaLib
 
             return gamestate;
         }
-
+        public GameState SetTimer(GameState gs, int Time)
+        {
+            if (gs.State == States.Hint || gs.State == States.Question)
+                gs.Timer = Time;
+            return gs;
+        }
 
         public GameState EndLicitationToBlackBox(GameState gamestate)
         {
