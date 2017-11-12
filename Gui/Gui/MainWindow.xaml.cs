@@ -23,7 +23,7 @@ namespace Gui
     /// </summary>
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
-        
+
         public ViewModel VM { get; set; } = new ViewModel();
         public object Keys { get; private set; }
 
@@ -31,39 +31,13 @@ namespace Gui
         {
             InitializeComponent();
 
-            /*
-            VM.Question = "U brzegu jakiego kontynentu leży największy rów?";
-            VM.UrlImage = "";
-            VM.Hint1 = "do wyrobu instrumentów";
-            VM.Hint2 = "do konserwacji fortepianu";
-            VM.Hint3 = "do nacierania włosia smyczków";
-            VM.Hint4 = "do przechowywania instrumentów";
-
-            VM.Team1 = "Niebiescy";
-            VM.Team2 = "Czerwoni";
-            VM.Team3 = "Zieloni";
-            VM.Team4 = "Żółci";
-
-            VM.Saldo1 = 5000;
-            VM.Saldo2 = 5000;
-            VM.Saldo3 = 5000;
-            VM.Saldo4 = 5000;
-
-            VM.Bid1 = 0;
-            VM.Bid2 = 0;
-            VM.Bid3 = 0;
-            VM.Bid4 = 0;
-
-            VM.SumBids = 0;
-            VM.Answer = "";
-            VM.HintPayment = 0;
-            VM.Timer = 0;
-
-            
-            */
-
             MainGrid.DataContext = VM;
+            ImportCategories();
+            ImportGameState(null);
+        }
 
+        public void ImportCategories()
+        {
             /// do stworzenia menu z kategoriami na starcie
             VM.Categories.Add("Muzyka", true);
             VM.Categories.Add("Fizyka", true);
@@ -77,16 +51,26 @@ namespace Gui
                 item.Name = category.Key;
                 item.IsEnabled = category.Value;
                 item.Click += new RoutedEventHandler(this.onCategoryClick);
-                 
+
                 CategoriesMenu.Items.Add(item);
             }
-            /*
-            VM.Teams[0].Name = "WFIS";
-            VM.Teams[1].Name = "WEIP";
-            VM.Teams[2].Name = "WMS";
-            VM.Teams[3].Name = "WIMIC";
 
-            foreach (var team in VM.Teams)
+        }
+        public void ImportGameState(GameState gameState)
+        {
+            VM.gameState = new GameState();
+
+            Team[] Teams = new Team[5];
+            for (int i = 0; i < 5; i++)
+                Teams[i] = new Team();
+
+            Teams[0].Name = "WFIS";
+            Teams[1].Name = "WIMIC";
+            Teams[2].Name = "WEIP";
+            Teams[3].Name = "WMS";
+            Teams[4].Name = "Marsjanie";
+
+            foreach (var team in Teams)
             {
                 team.Points = 5000;
                 team.isPlaying = true;
@@ -94,19 +78,25 @@ namespace Gui
                 team.Hints = 0;
                 team.ClassName = "";
             }
-            */
-        }
 
-        public void ImportGameState(GameState gameState)
-        {
-            VM.GS = new GameState();
+            VM.gameState.Teams = Teams;
+            VM.Team1 = VM.gameState.Teams[0].Name;
+            VM.Team2 = VM.gameState.Teams[1].Name;
+            VM.Team3 = VM.gameState.Teams[2].Name;
+            VM.Team4 = VM.gameState.Teams[3].Name;
+            VM.Team5 = VM.gameState.Teams[4].Name;
 
-            // VM.GS.Teams = VM.Teams;
-            // VM.GS.Categories = VM.Categories;
+            VM.inGame1 = VM.gameState.Teams[0].isPlaying;
+            VM.inGame2 = VM.gameState.Teams[1].isPlaying;
+            VM.inGame3 = VM.gameState.Teams[2].isPlaying;
+            VM.inGame4 = VM.gameState.Teams[3].isPlaying;
+            VM.inGame5 = VM.gameState.Teams[4].isPlaying;
 
-            // Question q = new Question();
-          
-
+            VM.Saldo1 = VM.gameState.Teams[0].Points;
+            VM.Saldo2 = VM.gameState.Teams[1].Points;
+            VM.Saldo3 = VM.gameState.Teams[2].Points;
+            VM.Saldo4 = VM.gameState.Teams[3].Points;
+            VM.Saldo5 = VM.gameState.Teams[4].Points;
         }
 
 
@@ -118,8 +108,7 @@ namespace Gui
         }
 
 
-        /// na key click reaguje tylko TA funkcja
-        /// dane zmieniaja sie tylko po enter click 
+
         /*
         private void TextBox_KeyDown(object sender, RoutedEventArgs e)
         {
@@ -130,8 +119,6 @@ namespace Gui
         }
         */
 
-        /// button do wyświetlania wszystkich kategorii jako Menu
-        /// user wybiera z menu kategorie i przesyła do Server
         private void categoriesMenu_Click(object sender, RoutedEventArgs e)
         {
             (sender as Button).ContextMenu.IsEnabled = true;
@@ -147,15 +134,11 @@ namespace Gui
             var categoryName = (string)menuItem.Header;
 
             VM.ChosenCategory = categoryName;
+            //Dictionary<String, List<Question>> questions = new Dictionary<String, List<Question>>();
+            //podać nazwe kategorii i pobrać do listy List<Questions>
 
-
-        }
-
-        private void category_Click(object sender, RoutedEventArgs e)
-        {
-            /// sprawdzić czy forma gry 1:1
-            /// jesli tak to wyślij nazwe kategorii i disable wybrany button
-            /// jeśli nie to tylko wyślij nazwę kategorii
+            //wyslac wybrana kategorie do servera
+            //pobrać wylosowane pytanie
         }
 
         // button do wyswietlania obrazka podpiętego pod pytanie
@@ -167,42 +150,59 @@ namespace Gui
             /// VM.UrlImage
         }
 
-        // kup podpowiedź
-        private void buyHintButton_Click(object sender, RoutedEventArgs e)
-        {
-            /// nie wiem czy potrzebne
-            /// czy nie uzyć odpowiedzi jako skrótu że H/P to podpowiedz 
-            /// i zatwierdzić ENTER
-        }
-
         // wykorzystaj podpowiedź
         private void useHintButton_Click(object sender, RoutedEventArgs e)
         {
+
             /// button WEŹ PODPOWIEDŹ
             /// z tym że musi sprawdzić czy drużyna może użyć za darmo podpowiedzi
             /// albo poprosić o kwote do zapłaty
         }
 
-        // kup czarne pudełko
-        private void buyBlackBoxButton_Click(object sender, RoutedEventArgs e)
-        {
-            /// zakup czarnego pudełka 
-            /// użyć skrótu np. BB/B/CP czy button?
-        }
         private void startTimeButton_Click(object sender, RoutedEventArgs e)
         {
-            /// licznik czasu odpowiedzi : 60s
-            
         }
 
         private void stopTimeButton_Click(object sender, RoutedEventArgs e)
         {
-            /// zatrzymaj czas albo czas skończy się po 60s
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
             /// tutaj nie wiem - powrót do IDLE
         }
+
+        private void OnWindowKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.F1)
+                SetLicitationForUse(Bid1);
+            if (e.Key == Key.F2)
+                SetLicitationForUse(Bid2);
+            if (e.Key == Key.F3)
+                SetLicitationForUse(Bid3);
+            if (e.Key == Key.F4)
+                SetLicitationForUse(Bid4);
+            if (e.Key == Key.F5)
+                SetLicitationForUse(Bid5);
+            if (e.Key == Key.F12)
+                SetAnswerToSend(Answer);
+        }
+
+        private void SetLicitationForUse(TextBox tb)
+        {
+            string text = (string)tb.Text;
+            int bid;
+            if (int.TryParse(text, out bid))
+            {
+                tb.Text = (bid * 100).ToString();
+                tb.Focus();
+            }
+        }
+        
+        private void SetAnswerToSend(TextBox tb)
+        {
+
+        }
+        
     }
 }

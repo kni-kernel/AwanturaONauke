@@ -12,13 +12,18 @@ namespace Gui
     public class ViewModel : INotifyPropertyChanged
     {
         // public Category Categories { get; set; } = new Category();
-        public GameState GS { get; set; } = new GameState();
+        public GameState gameState { get; set; } = new GameState();
 
         // kategoria pytań z Service
-        // public Dictionary<string, bool> Categories { get; set; }
         public Dictionary<string, bool> Categories { get; set; } = new Dictionary<string, bool>();
 
         public Team[] Teams { get; set; } = new Team[4];
+
+        private string chosenCategory; public string ChosenCategory
+        {
+            get { return chosenCategory; }
+            set { chosenCategory = value; OnPropertyChanged(); }
+        }
 
         // pytania pobierane z Service
         private string question; public string Question
@@ -78,6 +83,38 @@ namespace Gui
             get { return team4; }
             set { team4 = value; OnPropertyChanged(); }
         }
+        private string team5; public string Team5
+        {
+            get { return team5; }
+            set { team5 = value; OnPropertyChanged(); }
+        }
+
+        // druzyny w grze CHECKBOX
+        private bool ingame1; public bool inGame1
+        {
+            get { return ingame1; }
+            set { ingame1 = value; OnPropertyChanged(); }
+        }
+        private bool ingame2; public bool inGame2
+        {
+            get { return ingame2; }
+            set { ingame2 = value; OnPropertyChanged(); }
+        }
+        private bool ingame3; public bool inGame3
+        {
+            get { return ingame3; }
+            set { ingame3 = value; OnPropertyChanged(); }
+        }
+        private bool ingame4; public bool inGame4
+        {
+            get { return ingame4; }
+            set { ingame4 = value; OnPropertyChanged(); }
+        }
+        private bool ingame5; public bool inGame5
+        {
+            get { return ingame5; }
+            set { ingame5 = value; OnPropertyChanged(); }
+        }
 
         // stan kont druzyn
         private int saldo1; public int Saldo1
@@ -100,6 +137,11 @@ namespace Gui
             get { return saldo4; }
             set { saldo4 = value; OnPropertyChanged(); }
         }
+        private int saldo5; public int Saldo5
+        {
+            get { return saldo5; }
+            set { saldo5 = value; OnPropertyChanged(); }
+        }
 
         // oferty w licytacji
         private int bid1; public int Bid1
@@ -121,6 +163,11 @@ namespace Gui
         {
             get { return bid4; }
             set { bid4 = value; OnPropertyChanged(); }
+        }
+        private int bid5; public int Bid5
+        {
+            get { return bid5; }
+            set { bid5 = value; OnPropertyChanged(); }
         }
 
         //pula do wygrania
@@ -146,21 +193,11 @@ namespace Gui
 
         // czas gry
         // zwracany typ ? 
-        private int timer; public int Timer
+        private string timer; public string Timer
         {
             get { return timer; }
             set { timer = value; OnPropertyChanged(); }
         }
-
-        private string chosenCategory;
-
-        public string ChosenCategory
-        {
-            get { return chosenCategory; }
-            set { chosenCategory = value; OnPropertyChanged(); }
-        }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 

@@ -16,3 +16,4 @@ namespace AwanturaLib
         public String ClassName { get; set; }
     }
 }
+    
