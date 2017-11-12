@@ -72,7 +72,7 @@ namespace AwanturaLib {
 
             string httpHeaders = "HTTP/1.1 200 OK" + "\r\n";
             httpHeaders += "Cache-Control: no-cache" + "\r\n";
-            httpHeaders += $"Content-Length: {json.Length + 2}" + "\r\n";
+            //httpHeaders += $"Content-Length: {json.Length + 2}" + "\r\n";
             httpHeaders += "Content-Type: application/json" + "\r\n";
             httpHeaders += "Access-Control-Allow-Origin: *";
 

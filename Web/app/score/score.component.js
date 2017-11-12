@@ -14,7 +14,7 @@ component('score', {
       var team = gs.Teams[i];
       if(team != null)
       this.Teams.push({
-        Score: team.Points,
+        Score: "a",
         Enabled: team.isPlaying,
         Name: team.Name,
         Class: "teamScore " + team.ClassName

@@ -14,10 +14,12 @@ namespace AwanturaLib
             gamestate.Teams[Index].Points += amount;
         }
 
+        private const int TeamCount = 5;
+
 
         void updateAllPoints(GameState gamestate)
         {
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < TeamCount; i++)
             {
                 updateTeamPoints(gamestate, i, -gamestate.Licitation.Bid[i]);
             }
@@ -128,7 +130,8 @@ namespace AwanturaLib
         public GameState StartGame()
         {
             GameState gamestate = new GameState();
-            for(int i=0; i<5; i++)
+            gamestate.Teams = new Team[TeamCount];
+            for(int i=0; i< TeamCount; i++)
             {
                 gamestate.Teams[i] = new Team();
             }
