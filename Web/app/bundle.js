@@ -71,10 +71,11 @@ __webpack_require__(1);
 __webpack_require__(2);
 __webpack_require__(4);
 __webpack_require__(6);
+__webpack_require__(14);
 __webpack_require__(8);
 __webpack_require__(10);
 __webpack_require__(12);
-
+__webpack_require__(16);
 
 
 
@@ -87,9 +88,32 @@ angular.module('AoN', [
     "idleState",
     "questionState",
     "winState",
+    "oneState",
+    "ngRoute"
 ]);
 
+angular.
+module('AoN').
+config(['$locationProvider', '$routeProvider',
+  function config($locationProvider, $routeProvider) {
+    $locationProvider.hashPrefix('!');
 
+    $routeProvider.
+      when('/idle', {
+        template: '<idle-State></idle-State>'
+      }).
+      when('/OneOnOne', {
+        template: '<one-State></one-State>'
+      }).
+      when('/Question', {
+        template: '<question-State></question-State>'
+      }).
+      when('/Win', {
+        template: '<win-State></win-State>'
+      }).
+      otherwise('/idle');
+  }
+]);
 
 /***/ }),
 /* 2 */
@@ -304,6 +328,100 @@ component('winScore', {
   controller: function WinStateController($http) {
     this.Class = "blue";
     this.Score = 666;
+  }
+});
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('oneState', ["oneOnOne"]);
+
+__webpack_require__(15);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+angular.
+module('oneState').
+component('oneState', {
+  templateUrl: "states/one.template.html",
+
+  controller: function OneStateController($http) {
+    
+  }
+});
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('oneOnOne', []);
+
+__webpack_require__(18);
+
+/***/ }),
+/* 17 */,
+/* 18 */
+/***/ (function(module, exports) {
+
+angular.
+module('oneOnOne').
+component('oneOnOne', {
+  templateUrl: "OneOnOne/OneOnOne.template.html",
+
+  controller: function OneOnOneController() {
+        
+
+    this.Categories = [];
+
+    this.Categories.push({
+        Name: "Mleko",
+        Class: "enabled"
+    });
+
+    this.Categories.push({
+        Name: "Pomarańcze",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Gruszki",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Groszek",
+        Class: "disabled",
+    });
+
+    this.Categories.push({
+        Name: "Banany",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Herbata",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Piwo",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Kawa",
+        Class: "disabled",
+    });
+
+   
+
+    this.Categories.push({
+        Name: "Wege",
+        Class: "disabled",
+    });
   }
 });
 
