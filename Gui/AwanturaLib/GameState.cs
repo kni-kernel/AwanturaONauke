@@ -10,7 +10,8 @@ namespace AwanturaLib
         public Licitation Licitation { get; set; }
         public int Pool { get; set; }
         public States State { get; set; } = States.Idle;
-        public Dictionary<String, bool> Categories { get; set; }
+        public Dictionary<string, bool> OneOnOneCategories { get; set; }
+
     }
 }
 

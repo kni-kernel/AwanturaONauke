@@ -16,5 +16,7 @@ namespace AwanturaLib
         GetHint,
         Win,
         BlackBox,
+        Reject,
+
     };
 }
