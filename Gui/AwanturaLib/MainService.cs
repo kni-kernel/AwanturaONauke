@@ -43,7 +43,7 @@ namespace AwanturaLib
         public GameState EndLicitationToBlackBox(GameState gamestate)
         {
             updateAllPoints(gamestate);
-            gamestate.State = States.BlackBox;
+            gamestate.State = States.Idle;
             return gamestate;
         }
 
@@ -59,7 +59,7 @@ namespace AwanturaLib
         public GameState EndLicitationToHint(GameState gamestate)
         {
             updateAllPoints(gamestate);
-            gamestate.State = States.GetHint;
+            gamestate.State = States.Idle;
             return gamestate;
         }
 
@@ -215,7 +215,6 @@ namespace AwanturaLib
             {
                 gamestate.OneOnOneCategories.Add(questionset.Questions.Keys.ToArray().TakeRandom(Random), true);
             }
-            gamestate.State = States.Reject;
             return gamestate;
         }
 

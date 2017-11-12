@@ -16,7 +16,7 @@ namespace ConsoleApp
             var ws = new WebService(8001);
             var ms = new MainService();
 
-            var gs = ms.StartGame(new GameState());
+            var gs = ms.StartGame();
 
             ws.UpdateGameState(gs);
 
