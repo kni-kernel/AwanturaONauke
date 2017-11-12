@@ -26,7 +26,9 @@ namespace AwanturaLib
 
         public GameState Bet(GameState gamestate, int index, int amount)
         {
-            gamestate.Licitation.bet(gamestate, index, amount);
+            if(amount > 0)
+                gamestate.Licitation.bet(gamestate, index, amount);
+
             return gamestate;
         }
 

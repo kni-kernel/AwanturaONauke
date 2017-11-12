@@ -18,9 +18,10 @@ namespace AwanturaTests
             var gs = CreateSampleGamestate();
             gs.Licitation = new Licitation(gs);
 
-            gs = mainService.Bet(gs, 0, 1200);
+            gs = mainService.Bet(gs, 0, -500);
+            gs = mainService.Bet(gs, 1, 1000);
 
-            Assert.AreEqual(1000, gs.Licitation.Bid[0]);
+            Assert.AreEqual(500, gs.Pool);
         }
 
         private GameState CreateSampleGamestate()
