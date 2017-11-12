@@ -36,41 +36,44 @@ namespace AwanturaLib
 
         public GameState Bet(GameState gamestate, int index, int amount)
         {
-            if(amount > 0)
+            if(amount > 0 && gamestate.Licitation.Bid.Max() < amount)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
         }
 
 
-        public GameState EndLicitationToBlackBox(GameState gamestate)
+        public GameState EndLicitationToBlackBox(GameState gamestate, int winnerIndex, BlackBox blackbox)
         {
             updateAllPoints(gamestate);
+            gamestate = AssignBlackBoxToTeam(gamestate, winnerIndex, blackbox);
             gamestate.State = States.Idle;
             return gamestate;
         }
 
 
-        public GameState EndLicitationToQuestion(GameState gamestate)
+        public GameState EndLicitationToQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
         {
             updateAllPoints(gamestate);
             gamestate.State = States.Question;
+            gamestate = RandomQuestion(gamestate, CategoryName,qs);
             return gamestate;
         }
 
 
-        public GameState EndLicitationToHint(GameState gamestate)
+        public GameState EndLicitationToHint(GameState gamestate, int winnerIndex)
         {
             updateAllPoints(gamestate);
+            gamestate = AssignHint(gamestate, winnerIndex);
             gamestate.State = States.Idle;
             return gamestate;
         }
-
+        
 
         //QUESTION
-        public GameState RandomQuestion(GameState gamestate, List<Question> questions)
+        public GameState RandomQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
         {
-            gamestate.Question = questions.Where(q => q.Used == false)
+            gamestate.Question = qs.Questions[CategoryName].Where(q => q.Used == false)
                 .TakeRandom(Random);
             return gamestate;
         }
@@ -127,7 +130,7 @@ namespace AwanturaLib
         }
 
 
-        public GameState AssignHint(GameState gamestate, int Index, BlackBox blackbox)
+        public GameState AssignHint(GameState gamestate, int Index)
         {
             gamestate.Teams[Index].Hints += 1;
             gamestate.State = States.Idle;
@@ -197,7 +200,12 @@ namespace AwanturaLib
             return gamestate;
         }
 
-       
+       public GameState CreateBlackBox(GameState gs, String bbContent)
+        {
+            gs.BlackBox = new BlackBox();
+            gs.BlackBox.Content = bbContent;
+            return gs;
+        }
         //1 ON 1
         public GameState ToOneOnOne(GameState gamestate)
         {
