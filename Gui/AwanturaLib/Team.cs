@@ -11,7 +11,7 @@ namespace AwanturaLib
         public String Name { get; set; }
         public int Points { get; set; }
         public bool isPlaying { get; set; }
-        public BlackBox BlackBox { get; set; }
+        public bool BlackBox { get; set; }
         public int Hints { get; set; }
         public String ClassName { get; set; }
     }
