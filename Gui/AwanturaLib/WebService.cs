@@ -50,7 +50,11 @@ namespace AwanturaLib {
                 if(new Regex("^GET").IsMatch(request)) {
 
                     StreamWriter writer = new StreamWriter(client.GetStream());
+<<<<<<< HEAD
                     //SendObject(writer, JsonConvert.SerializeObject(m_state));
+=======
+                    SendObject(writer, m_state);
+>>>>>>> 9b0ceb606e29ca7d226936b30392a4839cf9f3fd
 
                     Console.WriteLine("Data has been sent.");
                 }

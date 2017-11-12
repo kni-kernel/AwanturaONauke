@@ -1,0 +1,14 @@
+@import "score.scss";
+@import "question.scss";
+@import "winState.scss";
+@import "OneOnOne.scss";
+
+.centerVerticalFlex  {
+    display: flex;
+    align-items:center;
+}
+
+.centerHorizontalFlex  {
+    display: flex;
+    justify-content:center;
+}

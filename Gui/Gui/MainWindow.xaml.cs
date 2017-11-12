@@ -130,7 +130,6 @@ namespace Gui
         // kup podpowiedź
         private void buyHintButton_Click(object sender, RoutedEventArgs e)
         {
-            (sender as Button).IsEnabled = false;
             /// nie wiem czy potrzebne
             /// czy nie uzyć odpowiedzi jako skrótu że H/P to podpowiedz 
             /// i zatwierdzić ENTER

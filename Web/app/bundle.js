@@ -69,6 +69,13 @@
 
 __webpack_require__(1);
 __webpack_require__(2);
+__webpack_require__(4);
+__webpack_require__(6);
+__webpack_require__(14);
+__webpack_require__(8);
+__webpack_require__(10);
+__webpack_require__(12);
+__webpack_require__(16);
 
 
 
@@ -77,38 +84,347 @@ __webpack_require__(2);
 /***/ (function(module, exports) {
 
 // Define the `phonecatApp` module
-angular.module('phonecatApp', [
-    "phoneList"
-
+angular.module('AoN', [
+    "idleState",
+    "questionState",
+    "winState",
+    "oneState",
+    "ngRoute"
 ]);
 
+angular.
+module('AoN').
+config(['$locationProvider', '$routeProvider',
+  function config($locationProvider, $routeProvider) {
+    $locationProvider.hashPrefix('!');
 
+    $routeProvider.
+      when('/idle', {
+        template: '<idle-State></idle-State>'
+      }).
+      when('/OneOnOne', {
+        template: '<one-State></one-State>'
+      }).
+      when('/Question', {
+        template: '<question-State></question-State>'
+      }).
+      when('/Win', {
+        template: '<win-State></win-State>'
+      }).
+      otherwise('/idle');
+  }
+]);
 
 /***/ }),
 /* 2 */
 /***/ (function(module, exports, __webpack_require__) {
 
-angular.module('phoneList', []);
+angular.module('idleState', ["score"]);
 
 __webpack_require__(3);
-
-
 
 /***/ }),
 /* 3 */
 /***/ (function(module, exports) {
 
 angular.
-module('phoneList').
-component('phoneList', {
-  templateUrl: "phone-list/phone-list.template.html",
+module('idleState').
+component('idleState', {
+  templateUrl: "states/idle.template.html",
 
-  controller: function PhoneListController($http) {
-    var self = this;
-    self.orderProp = "age";
+  controller: function IdleStateController($http) {
+    
+  }
+});
 
-    $http.get('phones/phones.json').then(function(response) {
-      self.phones = response.data;
+/***/ }),
+/* 4 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('questionState', ["question"]);
+
+__webpack_require__(5);
+
+/***/ }),
+/* 5 */
+/***/ (function(module, exports) {
+
+angular.
+module('questionState').
+component('questionState', {
+  templateUrl: "states/question.template.html",
+
+  controller: function IdleStateController($http) {
+    
+  }
+});
+
+/***/ }),
+/* 6 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('winState', ["winScore"]);
+
+__webpack_require__(7);
+
+/***/ }),
+/* 7 */
+/***/ (function(module, exports) {
+
+angular.
+module('winState').
+component('winState', {
+  templateUrl: "states/win.template.html",
+
+  controller: function WinStateController($http) {
+
+    $http.get("127.0.0.1:8001", {
+        
+    });
+    
+  }
+});
+
+/***/ }),
+/* 8 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('score', []);
+
+__webpack_require__(9);
+
+/***/ }),
+/* 9 */
+/***/ (function(module, exports) {
+
+angular.
+module('score').
+component('score', {
+  templateUrl: "score/score.template.html",
+
+  controller: function ScoreController() {
+
+    this.Teams = [];
+
+    this.Pool = 5000;
+
+    this.Auctions = [];
+
+    this.Auctions.push({
+        Class: "blue teamAuction centerVerticalFlex centerHorizontalFlex",
+        Score:5000
+    });
+
+    this.Auctions.push({
+      Class: "green teamAuction centerVerticalFlex centerHorizontalFlex",
+      Score:5000
+  });
+
+  this.Auctions.push({
+    Class: "yellow teamAuction centerVerticalFlex centerHorizontalFlex",
+    Score:5000
+});
+
+    this.Teams.push({
+      Score: 5000,
+      Enabled: true,
+      Name: "Niebiescy",
+      Class: "blue teamScore"
+    });
+
+    this.Teams.push({
+      Score: 5000,
+      Enabled: true,
+      Name: "Zieloni",
+      Class: "green teamScore"
+    });
+
+    this.Teams.push({
+      Score: 5000,
+      Enabled: true,
+      Name: "Żółci",
+      Class: "yellow teamScore"
+    });
+
+    this.Teams.push({
+      Score: 5000,
+      Enabled: true,
+      Name: "Pula",
+      Class: "pool teamScore"
+    });
+
+    /*this.Teams.push({
+      Score: 5000,
+      Enabled: true,
+      Name: "Mistrzowie",
+      Class: "black teamScore"
+    });*/
+
+    this.teamScoreStyle = {
+      width: 1.0 / this.Teams.length * 100.0 + "%",
+      display:"inline-block"
+    }
+
+    this.teamAuctionStyle = {
+      width: 1.0 / this.Teams.length * 100.0 + "%",
+      display:"inline-flex"
+    }
+
+    this.auctionStyle = {
+      width: ((1.0 / this.Teams.length * 100.0) * (this.Teams.length - 1)) + "%",
+    };
+    this.isAuction = true;
+    console.log(this.teamWidth);
+  }
+});
+
+/***/ }),
+/* 10 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('question', []);
+
+__webpack_require__(11);
+
+/***/ }),
+/* 11 */
+/***/ (function(module, exports) {
+
+angular.
+module('question').
+component('question', {
+  templateUrl: "questions/question.template.html",
+
+  controller: function QuestionController() {
+        this.QuestionNumber = 6;
+        this.ToWin = 69666;
+        this.Question = "Jaka wiadomość smuci Stańczyka na znanym obrazie Jana Matejki z 1862 roku?	o śmierci Władysława Warneńczyka pod Warną	o utracie Smoleńska na rzecz Rosji	o przegranej z Tatarami bitwie pod Sokalem 	o przegranej husarii pod Żółtymi Wodami?aka wiadomość smuci Stańczyka na znanym obrazie Jana Matejki z 1862 roku?	o śmierci Władysława Warneńczyka pod Warną	o utracie Smoleńska na rzecz Rosji	o przegranej z Tatarami bitwie pod Sokalem 	o przegranej husarii pod Żółtymi Wodami?";
+        this.Class = "black";
+
+        this.Time = 60;
+        var self = this;
+
+        this.hintEnabled = true;
+        this.HintA = "Jan Matejko";
+        this.HintB = "Sołtys ze wsi";
+        this.HintC = "Czy można powtórzyć pytanie?";
+        this.HintD = "Zaraz wracam";
+  }
+});
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('winScore', []);
+
+__webpack_require__(13);
+
+/***/ }),
+/* 13 */
+/***/ (function(module, exports) {
+
+angular.
+module('winScore').
+component('winScore', {
+  templateUrl: "winScore/winscore.template.html",
+
+  controller: function WinStateController($http) {
+    this.Class = "blue";
+    this.Score = 666;
+  }
+});
+
+/***/ }),
+/* 14 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('oneState', ["oneOnOne"]);
+
+__webpack_require__(15);
+
+/***/ }),
+/* 15 */
+/***/ (function(module, exports) {
+
+angular.
+module('oneState').
+component('oneState', {
+  templateUrl: "states/one.template.html",
+
+  controller: function OneStateController($http) {
+    
+  }
+});
+
+/***/ }),
+/* 16 */
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('oneOnOne', []);
+
+__webpack_require__(18);
+
+/***/ }),
+/* 17 */,
+/* 18 */
+/***/ (function(module, exports) {
+
+angular.
+module('oneOnOne').
+component('oneOnOne', {
+  templateUrl: "OneOnOne/OneOnOne.template.html",
+
+  controller: function OneOnOneController() {
+        
+
+    this.Categories = [];
+
+    this.Categories.push({
+        Name: "Mleko",
+        Class: "enabled"
+    });
+
+    this.Categories.push({
+        Name: "Pomarańcze",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Gruszki",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Groszek",
+        Class: "disabled",
+    });
+
+    this.Categories.push({
+        Name: "Banany",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Herbata",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Piwo",
+        Class: "enabled",
+    });
+
+    this.Categories.push({
+        Name: "Kawa",
+        Class: "disabled",
+    });
+
+   
+
+    this.Categories.push({
+        Name: "Wege",
+        Class: "disabled",
     });
   }
 });

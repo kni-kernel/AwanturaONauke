@@ -13,7 +13,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var ws = new WebService();
+            var ws = new WebService(8001); 
         }
     }
 }

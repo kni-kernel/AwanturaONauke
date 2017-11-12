@@ -1,0 +1,74 @@
+@import "definitions.scss";
+question {
+    
+    .timer {
+        position: absolute;
+        right: 0;
+        top: 0;
+        margin: 3rem;
+        margin-right: 5vw;
+        font-size: 5vh;
+        color: black;
+    }
+    .inner {
+        margin-left: 5vw;
+        margin-right: 5vw;
+        width: 90vw;
+        position: absolute;
+        bottom: 10vh;
+        display: inline-block;
+        .top {
+            color: $poolTopColor;
+            font-size: 3.5vh;
+            background-color: black;
+            padding: 0.5rem 1rem;
+            .toWin {
+                float: right;
+            }
+            .toWinAmount {
+                float: right;
+                margin-left: 2rem;
+            }
+        }
+        .bottom {
+            padding: 1rem 2rem;
+            min-height: 30vh;
+            font-size: 4rem;
+            text-align: center;
+        }
+        .bottom.blue {
+            background-color: $blueBackground;
+            color: $blueBottomColor;
+            .hint {
+                color: lighten($blueBottomColor, 15%);
+            }
+        }
+        .bottom.yellow {
+            background-color: $yellowBackground;
+            color: $yellowBottomColor;
+            .hint {
+                color: lighten($yellowBottomColor, 15%);
+            }
+        }
+        .bottom.green {
+            background-color: $greenBackground;
+            color: $greenBottomColor;
+            .hint {
+                color: lighten($greenBottomColor, 15%);
+            }
+        }
+        .bottom.black {
+            background-color: $blackBackground;
+            color: $blackBottomColor;
+            .hint {
+                color: lighten($blackBottomColor, 15%);
+            }
+        }
+        .hints {
+            .hint {
+                display: inline-block;
+                width: 40vw;
+            }
+        }
+    }
+}

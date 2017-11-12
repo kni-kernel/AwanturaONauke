@@ -1,0 +1,13 @@
+win-score
+{
+    @extend question;
+    .top
+    {
+        text-align:center;
+    }
+    .bottom
+    {
+        min-height:auto;
+        padding:3rem 1rem;
+    }
+}
