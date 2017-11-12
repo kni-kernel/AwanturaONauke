@@ -8,20 +8,13 @@ namespace AwanturaLib
 {
     public class MainService
     {
-
-
-        int WinnerOfLicitation(GameState gameState)
-        {
-            int maxValue = gameState.Licitation.Bid.Max();
-            return gameState.Licitation.Bid.ToList().IndexOf(maxValue);
-
-        }
-
         public void updateTeamPoints(GameState gamestate, int Index, int amount)
         {
             gamestate.Teams[Index].Points += amount;
 
         }
+
+
         void UpdateAllPoints(GameState gamestate)
         {
             for (int i = 0; i < 4; i++)
@@ -30,38 +23,50 @@ namespace AwanturaLib
             }
         }
 
+
         public GameState Bet(GameState gamestate, int index, int amount)
         {
             gamestate.Licitation.bet(gamestate, index, amount);
             return gamestate;
         }
+
+
         public GameState RightGuess(GameState gamestate, int Index)
         {
             updateTeamPoints(gamestate, Index, gamestate.Pool);//winner
             gamestate.Pool = 0;
             return gamestate;
         }
+
+
         public GameState WrongGuess(GameState gamestate)
         {
             gamestate.Licitation = new Licitation(gamestate);
             return gamestate;
         }
 
-        public GameState AssignBlackBox(GameState gamestate, int Index, BlackBox blackbox)
+
+
+        public GameState AssignBlackBoxToTeam(GameState gamestate, int Index, BlackBox blackbox)
         {
             gamestate.Teams[Index].BlackBox = blackbox;
             return gamestate;
         }
+
+
         public GameState AssignHint(GameState gamestate, int Index, BlackBox blackbox)
         {
             gamestate.Teams[Index].Hints += 1;
             return gamestate;
         }
+
+        //idk
         public GameState UseHint(GameState gamestate, int Index)
         {
             gamestate.Teams[Index].Hints -= 1;
             return gamestate;
         }
+
 
         public GameState EndLicitation(GameState gamestate)
         {
@@ -75,8 +80,11 @@ namespace AwanturaLib
             gamestate.Categories.Remove(category.Name);
             return gamestate;
         }
-        public GameState StartFirtRound(GameState gamestate)
+
+
+        public GameState StartGame(GameState gamestate)
         {
+
             gamestate.Teams[0].Name = "Niebiescy";
             gamestate.Teams[0].Name = "Zieloni";
             gamestate.Teams[0].Name = "Żółci";
@@ -87,19 +95,38 @@ namespace AwanturaLib
             gamestate.Teams[0].ClassName = "yellow";
             gamestate.Teams[0].ClassName = "black";
 
+            return gamestate;
+        }
+
+
+        public GameState StartFirtRound(GameState gamestate)
+        { 
             //without deans
             foreach (var team in gamestate.Teams)
             {
                 if (team.ClassName == "black")
+                {
+                    //deans are not playin
+                    team.isPlaying = false;
                     continue;
+                }
 
                 team.Points = 5000;
                 team.Hints = 0;
-                team.isPlaying = true;
-
-                
+                team.isPlaying = true;              
             }
-            
+                return gamestate;
+        }
+
+
+        public GameState StartSecondRound(GameState gamestate, int index, int mastersPoints, int noobsPoints)
+        {
+            //deans
+            gamestate.Teams[4].Points = mastersPoints;
+            gamestate.Teams[4].isPlaying = true;
+            //second team
+            gamestate.Teams[index].Points = noobsPoints;
+            gamestate.Teams[index].isPlaying = true;
             return gamestate;
         }
     }   
