@@ -90,6 +90,12 @@ namespace Gui
             (sender as Button).ContextMenu.IsOpen = true;
         }
 
+        private void category_Click(object sender, RoutedEventArgs e)
+        {
+            VM.Name = "Menu";
+            VM.Pepper = "Pepper";
+        }
+
         // button do wyswietlania obrazka podpiętego pod pytanie
         private void imgButton_Click(object sender, RoutedEventArgs e)
         {

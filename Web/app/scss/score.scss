@@ -1,0 +1,143 @@
+@import "definitions.scss";
+score
+{
+    position:absolute;
+    width:100vw;
+    bottom:0;
+    left:0;
+    right:0;
+    .auction
+    {
+        .description
+        {
+            background-color: black;
+            color:$poolBottomColor;
+            text-align:center;
+            font-size:4vh;
+            padding-top:1rem;
+            padding-bottom:1rem;
+        }
+
+        .teamAuction
+        {
+            width:100%;
+            text-align:center;
+            padding:1rem 0;
+            font-size:7vh;
+        }
+
+        .teamAuction.blue
+        {
+            background-color: $blueBackground;
+            color:$blueBottomColor;
+        }
+
+        .teamAuction.green
+        {
+            background-color: $greenBackground;
+            color:$greenBottomColor;
+        }
+
+        .teamAuction.yellow
+        {
+            background-color: $yellowBackground;
+            color:$yellowBackground;
+        }
+
+        .teamAuction.black
+        {
+            background-color: $blackBackground;
+            color:$blackBottomColor;
+        }
+    }
+    .teamScore 
+    {
+        .top
+        {
+            background-color: black;
+            width:100%;
+            text-align:center;
+            padding-top:1rem;
+            padding-bottom:1rem;
+            font-size:4vh;
+        }
+        .bottom
+        {
+            width:100%;
+            text-align:center;
+            font-size:7vh;
+            padding:1rem 0;
+        }
+    }
+
+    .teamScore.blue
+    {
+        .top
+        {
+            color:$blueTopColor;
+        }
+        .bottom
+        {
+            background-color: $blueBackground;
+            color:$blueBottomColor
+
+        }
+    }
+
+    .teamScore.yellow
+    {
+        .top
+        {
+            color:$yellowTopColor;
+        }
+        .bottom
+        {
+            background-color: $yellowBackground;
+            color:$yellowBottomColor
+
+        }
+    }
+
+    .teamScore.green
+    {
+        .top
+        {
+            color:$greenTopColor;
+        }
+        .bottom
+        {
+            background-color: $greenBackground;
+            color:$greenBottomColor
+
+        }
+    }
+
+    .teamScore.black
+    {
+        .top
+        {
+            color:$blackTopColor;
+        }
+        .bottom
+        {
+            background-color: $blackBackground;
+            color:$blackBottomColor
+
+        }
+    }
+
+    .teamScore.pool
+    {
+        .top
+        {
+            color:$poolTopColor;
+        }
+        .bottom
+        {
+            background-color: $poolBackground;
+            color:$poolBottomColor
+
+        }
+    }
+
+}

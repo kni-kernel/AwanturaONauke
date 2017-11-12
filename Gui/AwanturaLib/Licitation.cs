@@ -11,7 +11,7 @@ namespace AwanturaLib
         public int[] Bid { get; set; } = new int[4];
         public int WhoWin { get; set; }
         public int Pool { get; set; }
-
+        public int winner { get; set; }
         public Licitation(GameState gameState, int startAmount = 200)
         {
             Pool = gameState.Pool;
