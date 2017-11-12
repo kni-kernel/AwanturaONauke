@@ -23,6 +23,11 @@ namespace AwanturaLib
             }
         }
 
+        public GameState ToLicitation(GameState gamestate)
+        {
+            gamestate.State = States.Licitation;
+            return gamestate;
+        }
 
         public GameState Bet(GameState gamestate, int index, int amount)
         {
@@ -41,9 +46,15 @@ namespace AwanturaLib
             return gamestate;
         }
 
+        public GameState Win(GameState gamestate)
+        {
+            gamestate.State = States.Idle;
+            return gamestate;
+        }
 
         public GameState WrongGuessFirstRound(GameState gamestate)
         {
+            gamestate.Pool = gamestate.Licitation.Pool;
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -111,15 +122,18 @@ namespace AwanturaLib
         {
 
             gamestate.Teams[0].Name = "Niebiescy";
-            gamestate.Teams[0].Name = "Zieloni";
-            gamestate.Teams[0].Name = "Żółci";
-            gamestate.Teams[0].Name = "Czarni";
+            gamestate.Teams[1].Name = "Zieloni";
+            gamestate.Teams[2].Name = "Żółci";
+            gamestate.Teams[3].Name = "Czerwoni";
+            gamestate.Teams[4].Name = "Czarni";
 
             gamestate.Teams[0].ClassName = "blue";
-            gamestate.Teams[0].ClassName = "green";
-            gamestate.Teams[0].ClassName = "yellow";
-            gamestate.Teams[0].ClassName = "black";
+            gamestate.Teams[1].ClassName = "green";
+            gamestate.Teams[2].ClassName = "yellow";
+            gamestate.Teams[3].ClassName = "red";
+            gamestate.Teams[4].ClassName = "black";
 
+            gamestate.Pool = 0;
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -139,7 +153,7 @@ namespace AwanturaLib
 
                 team.Points = 5000;
                 team.Hints = 0;
-                team.isPlaying = true;              
+                team.isPlaying = true;
             }
                 return gamestate;
         }
@@ -150,9 +164,13 @@ namespace AwanturaLib
             //deans
             gamestate.Teams[4].Points = mastersPoints;
             gamestate.Teams[4].isPlaying = true;
+
             //second team
-            gamestate.Teams[index].Points = noobsPoints;
-            gamestate.Teams[index].isPlaying = true;
+            if (index != 4)
+            {
+                gamestate.Teams[index].Points = noobsPoints;
+                gamestate.Teams[index].isPlaying = true;
+            }
             return gamestate;
         }
 
@@ -160,7 +178,6 @@ namespace AwanturaLib
         {
             gamestate.Question = questions.Where(q => q.Used == false)
                 .TakeRandom(Random);
-            gamestate.Question.Used = true;
             return gamestate;
         }
     }   
