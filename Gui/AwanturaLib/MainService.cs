@@ -43,10 +43,10 @@ namespace AwanturaLib
         }
 
 
-        public GameState EndLicitationToBlackBox(GameState gamestate, int winnerIndex, BlackBox blackbox)
+        public GameState EndLicitationToBlackBox(GameState gamestate, BlackBox blackbox)
         {
             updateAllPoints(gamestate);
-            gamestate = AssignBlackBoxToTeam(gamestate, winnerIndex, blackbox);
+            gamestate = AssignBlackBoxToTeam(gamestate, WinnerIndex(gamestate), blackbox);
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -59,12 +59,28 @@ namespace AwanturaLib
             gamestate = RandomQuestion(gamestate, CategoryName,qs);
             return gamestate;
         }
+        public int MaxValue(GameState gs)
+        {
+            int maxValue= gs.Licitation.Bid.Max();
 
-
-        public GameState EndLicitationToHint(GameState gamestate, int winnerIndex)
+            return maxValue;
+        }
+        public int WinnerIndex(GameState gs)
+        {
+            int index = 0;
+            for (int i = 0; i < TeamCount; i++)
+            {
+                if (gs.Licitation.Bid[i] == MaxValue(gs))
+                {
+                    index = i;
+                }
+            }
+            return index;
+        }
+        public GameState EndLicitationToHint(GameState gamestate)
         {
             updateAllPoints(gamestate);
-            gamestate = AssignHint(gamestate, winnerIndex);
+            gamestate = AssignHint(gamestate, WinnerIndex(gamestate));
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -79,16 +95,16 @@ namespace AwanturaLib
         }
 
 
-        public GameState RightGuess(GameState gamestate, int Index)
+        public GameState RightGuess(GameState gamestate)
         {
-            updateTeamPoints(gamestate, Index, gamestate.Licitation.Pool);//winner
+            updateTeamPoints(gamestate, WinnerIndex(gamestate), gamestate.Licitation.Pool);//winner
             gamestate.Pool = 0;
             gamestate.State = States.Win;
             return gamestate;
         }
 
 
-        public GameState Win(GameState gamestate)
+        public GameState ToIdle(GameState gamestate)
         {
             gamestate.State = States.Idle;
             return gamestate;
