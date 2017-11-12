@@ -55,26 +55,16 @@ component('score', {
       if(gs.State == 1)
       {
         self.isAuction = true;
-        
-        self.Auctions.push({
-                Class: "blue teamAuction centerVerticalFlex centerHorizontalFlex",
-                Score:5000
-            });
-        
-            self.Auctions.push({
-              Class: "green teamAuction centerVerticalFlex centerHorizontalFlex",
-              Score:5000
-          });
-        
+
+        for(let i = 0;i < gs.Teams.length; ++i)
+        {
+          var team = gs.Teams[i];
+          if(team != null && team.isPlaying)
           self.Auctions.push({
-            Class: "yellow teamAuction centerVerticalFlex centerHorizontalFlex",
-            Score:5000
+            Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
+            Score:gs.Licitation.Bid[i]
         });
-        
-        self.Auctions.push({
-          Class: "red teamAuction centerVerticalFlex centerHorizontalFlex",
-          Score:5000
-        });
+        }
       }
       else
       self.isAuction = false;
