@@ -16,11 +16,11 @@ namespace AwanturaTests
         public void SetAboveMaxTest()
         {
             var gs = CreateSampleGamestate();
-            gs.Licictation = new Licitation(gs);
+            gs.Licitation = new Licitation(gs);
 
             gs = mainService.Bet(gs, 0, 1200);
 
-            Assert.AreEqual(1000, gs.Licictation.Bid[0]);
+            Assert.AreEqual(1000, gs.Licitation.Bid[0]);
         }
 
         private GameState CreateSampleGamestate()

@@ -12,6 +12,9 @@ namespace AwanturaLib
         Licitation,
         OneOnOne,
         Question,
-        Hint
+        Hint,
+        GetHint,
+        Win,
+        BlackBox,
     };
 }

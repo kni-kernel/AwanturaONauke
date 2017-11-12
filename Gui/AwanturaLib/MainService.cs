@@ -8,14 +8,14 @@ namespace AwanturaLib
 {
     public class MainService
     {
+        public static Random Random { get; set; } = new Random();
         public void updateTeamPoints(GameState gamestate, int Index, int amount)
         {
             gamestate.Teams[Index].Points += amount;
-
         }
 
 
-        void UpdateAllPoints(GameState gamestate)
+        void updateAllPoints(GameState gamestate)
         {
             for (int i = 0; i < 4; i++)
             {
@@ -35,21 +35,27 @@ namespace AwanturaLib
         {
             updateTeamPoints(gamestate, Index, gamestate.Pool);//winner
             gamestate.Pool = 0;
+            gamestate.State = States.Win;
             return gamestate;
         }
 
 
-        public GameState WrongGuess(GameState gamestate)
+        public GameState WrongGuessFirstRound(GameState gamestate)
         {
-            gamestate.Licitation = new Licitation(gamestate);
+            gamestate.State = States.Idle;
             return gamestate;
         }
-
-
+        public GameState WrongGuessSecondRound(GameState gamestate)
+        {
+            gamestate.Pool = 0;
+            gamestate.State = States.Idle;
+            return gamestate;   
+        }
 
         public GameState AssignBlackBoxToTeam(GameState gamestate, int Index, BlackBox blackbox)
         {
             gamestate.Teams[Index].BlackBox = blackbox;
+            gamestate.State = States.Idle;
             return gamestate;
         }
 
@@ -57,23 +63,40 @@ namespace AwanturaLib
         public GameState AssignHint(GameState gamestate, int Index, BlackBox blackbox)
         {
             gamestate.Teams[Index].Hints += 1;
+            gamestate.State = States.Idle;
             return gamestate;
         }
 
-        //idk
+ 
         public GameState UseHint(GameState gamestate, int Index)
         {
-            gamestate.Teams[Index].Hints -= 1;
-            return gamestate;
+            if (gamestate.Teams[Index].Hints > 0)
+            {
+                gamestate.Teams[Index].Hints -= 1;
+                gamestate.State = States.Hint;
+            }
+                return gamestate;
         }
 
 
-        public GameState EndLicitation(GameState gamestate)
+        public GameState EndLicitationToBlackBox (GameState gamestate)
         {
-            UpdateAllPoints(gamestate);
+            updateAllPoints(gamestate);
+            gamestate.State = States.BlackBox;
             return gamestate;
         }
-
+        public GameState EndLicitationToQuestion(GameState gamestate)
+        {
+            updateAllPoints(gamestate);
+            gamestate.State = States.Question;
+            return gamestate;
+        }
+        public GameState EndLicitationToHint(GameState gamestate)
+        {
+            updateAllPoints(gamestate);
+            gamestate.State = States.GetHint;
+            return gamestate;
+        }
 
         public GameState RemoveCategory(GameState gamestate, Category category)
         {
@@ -95,6 +118,7 @@ namespace AwanturaLib
             gamestate.Teams[0].ClassName = "yellow";
             gamestate.Teams[0].ClassName = "black";
 
+            gamestate.State = States.Idle;
             return gamestate;
         }
 
@@ -127,6 +151,13 @@ namespace AwanturaLib
             //second team
             gamestate.Teams[index].Points = noobsPoints;
             gamestate.Teams[index].isPlaying = true;
+            return gamestate;
+        }
+
+        public GameState RandomQuestion(GameState gamestate, List<Question> questions)
+        {
+            gamestate.Question = questions.Where(q => q.Used == false)
+                .TakeRandom(Random);
             return gamestate;
         }
     }   
