@@ -193,11 +193,13 @@ namespace Gui
 
         // czas gry
         // zwracany typ ? 
-        private string timer; public string Timer
+        private int timer; public int Timer
         {
             get { return timer; }
             set { timer = value; OnPropertyChanged(); }
         }
+
+        public bool TimerEnabled { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

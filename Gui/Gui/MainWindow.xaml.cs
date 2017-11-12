@@ -6,6 +6,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -34,6 +35,22 @@ namespace Gui
             MainGrid.DataContext = VM;
             ImportCategories();
             ImportGameState(null);
+
+            VM.TimerEnabled = true;
+            VM.Timer = 60;
+
+            System.Timers.Timer aTimer = new Timer();
+            aTimer.Elapsed += new ElapsedEventHandler(OnTimedEvent);
+            aTimer.Interval = 1000;
+            aTimer.Enabled = true;
+        }
+
+
+        private void OnTimedEvent(object source, ElapsedEventArgs e)
+        {
+            if (VM.TimerEnabled)
+                lock (VM)
+                    VM.Timer--;
         }
 
         public void ImportCategories()
@@ -97,6 +114,8 @@ namespace Gui
             VM.Saldo3 = VM.gameState.Teams[2].Points;
             VM.Saldo4 = VM.gameState.Teams[3].Points;
             VM.Saldo5 = VM.gameState.Teams[4].Points;
+
+          //  VM.Timer = VM.gameState.time
         }
 
 
@@ -161,15 +180,24 @@ namespace Gui
 
         private void startTimeButton_Click(object sender, RoutedEventArgs e)
         {
+            VM.TimerEnabled = true;
         }
 
         private void stopTimeButton_Click(object sender, RoutedEventArgs e)
         {
+            VM.TimerEnabled = false;
+            lock(VM)
+                VM.Timer = -1;
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)
         {
-            /// tutaj nie wiem - powrót do IDLE
+            string str = ResetAmount.Text?.ToString();
+            int amount;
+            if (int.TryParse(str, out amount))
+            {
+
+            }
         }
 
         private void OnWindowKeyUp(object sender, KeyEventArgs e)
