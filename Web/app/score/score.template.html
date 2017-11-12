@@ -1,0 +1,18 @@
+<div id="score">
+    <div class="auction" ng-if="$ctrl.isAuction">
+        <div ng-style="$ctrl.auctionStyle" class="description">
+            Licytacja
+        </div>
+        <div class ng-style="$ctrl.teamAuctionStyle" ng-class="team.Class" ng-repeat="team in $ctrl.Auctions">
+            {{team.Score}}
+        </div>
+    </div>
+    <div ng-style="$ctrl.teamScoreStyle" ng-class="team.Class" ng-repeat="team in $ctrl.Teams">
+        <div class="top">
+            {{team.Name}}
+        </div>
+        <div class="bottom centerVerticalFlex centerHorizontalFlex">
+            {{team.Score}}
+        </div>
+    </div>
+</div>

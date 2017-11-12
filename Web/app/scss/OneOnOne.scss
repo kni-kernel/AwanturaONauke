@@ -1,0 +1,41 @@
+@import "definitions.scss";
+
+one-state
+{
+    
+    one-on-one
+    {
+        .category
+        {
+            width:100%;
+            min-height: #{100vh / 9 };
+            font-size: 5vh;
+            padding: 0.5vh 4vw;
+            font-weight:bold;
+            &:first-child
+            {
+                padding-top:2vh;
+            }
+            
+            &:last-child
+            {
+                padding-bottom:2vh
+            }
+            background-color:black;
+
+            
+        }
+
+        .category.enabled
+        {
+            color:white;
+        }
+
+        .category.disabled
+        {
+            color:#333;
+        }
+
+
+    }
+}

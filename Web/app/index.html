@@ -1,18 +1,24 @@
 <!doctype html>
-<html lang="en" ng-app="phonecatApp">
-  <head>
-    <meta charset="utf-8">
-    <title>My HTML File</title>
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
-    <script src="bower_components/angular/angular.js"></script>
-  </head>
-  <body>
+<html lang="en" ng-app="AoN">
 
+<head>
+  <meta charset="utf-8">
+  <title>My HTML File</title>
+  <link rel="stylesheet" href="css/main.css" />
+  <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.css" />
+  <script src="bower_components/angular/angular.js"></script>
+  <script src="bower_components/angular-route/angular-route.js"></script>
+</head>
 
-      <!-- Use a custom component to render a list of phones -->
-  <phone-list></phone-list>
+<body>
 
+  <div ng-view></div>
+  <!-- <idle-State></idle-State> -->
+  <!-- <question-State></question-State> -->
+  <!-- <win-State></win-State> -->
+  <!-- <one-State></one-State> -->
 
   <script src="bundle.js"></script>
-  </body>
+</body>
+
 </html>
