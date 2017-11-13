@@ -298,7 +298,7 @@ namespace AwanturaLib
         }
 
 
-        public GameState OneOnOneCategories(GameState gamestate, int numberOfCategories, QuestionsSet questionset)
+        public GameState OneOnOneCategories(GameState gamestate, QuestionsSet questionset)
         {
             gamestate.OneOnOneCategories = new Dictionary<string, bool>();
             var rand = new Random();
