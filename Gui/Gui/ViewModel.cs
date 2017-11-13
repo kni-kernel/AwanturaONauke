@@ -33,6 +33,11 @@ namespace Gui
             set { question = value; OnPropertyChanged(); }
         }
 
+        public ObservableCollection<int> HintCount { get; set; } = new ObservableCollection<int>()
+        {
+            1,2,3,4,5
+        };
+
         // podpowiedzi pobrane z pytaniem z Service
         private string hint1; public string Hint1
         {
@@ -80,7 +85,14 @@ namespace Gui
             0,0,0,0,0
         };
 
-        public string State { get; set; }
+        private string state;
+
+        public string State
+        {
+            get { return state; }
+            set { state = value; OnPropertyChanged(); }
+        }
+
 
 
         public ObservableCollection<int> Bids { get; set; } = new ObservableCollection<int>()

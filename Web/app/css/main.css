@@ -92,7 +92,7 @@ question .inner, win-score .inner {
   display: inline-block; }
   question .inner .top, win-score .inner .top {
     color: #868A89;
-    font-size: 3.5vh;
+    font-size: 3.2vh;
     background-color: black;
     padding: 0.5rem 1rem; }
     question .inner .top .toWin, win-score .inner .top .toWin {
@@ -103,7 +103,7 @@ question .inner, win-score .inner {
   question .inner .bottom, win-score .inner .bottom {
     padding: 1rem 2rem;
     min-height: 30vh;
-    font-size: 4rem;
+    font-size: 3.8rem;
     text-align: center; }
   question .inner .bottom.blue, win-score .inner .bottom.blue {
     background-color: #000F57;

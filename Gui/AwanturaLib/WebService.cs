@@ -38,34 +38,41 @@ namespace AwanturaLib {
 
             while(true) {
 
+                try
+                {
+                    using (TcpClient client = m_server.AcceptTcpClient())
+                    {
 
-                TcpClient client = m_server.AcceptTcpClient();
-                Thread.Sleep(10);
+                        Thread.Sleep(10);
 
-                NetworkStream stream = client.GetStream();
-                Byte[] bytes = new Byte[client.Available];
+                        NetworkStream stream = client.GetStream();
+                        Byte[] bytes = new Byte[client.Available];
 
-                stream.Read(bytes, 0, bytes.Length);
-                String request = Encoding.UTF8.GetString(bytes);
-                Console.WriteLine(request);
+                        stream.Read(bytes, 0, bytes.Length);
+                        String request = Encoding.UTF8.GetString(bytes);
+                        Console.WriteLine(request);
 
-                if(new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request)) {
+                        if (new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request))
+                        {
 
-                    StreamWriter writer = new StreamWriter(client.GetStream());
+                            StreamWriter writer = new StreamWriter(client.GetStream());
 
-                    SendObject(writer, m_state);
+                            SendObject(writer, m_state);
 
 
-                    Console.WriteLine("Data has been sent.");
+                            Console.WriteLine("Data has been sent.");
+                        }
+                        else
+                        {
+
+                            Console.WriteLine("Nope. Only GETs!!");
+                            Console.WriteLine(request);
+                            Console.WriteLine("-----");
+                        }
+
+                    }
                 }
-                else {
-
-                    Console.WriteLine("Nope. Only GETs!!");
-                    Console.WriteLine(request);
-                    Console.WriteLine("-----");
-                }
-               
-                client.Close();
+                catch (Exception e) { }
             }
         }
 
