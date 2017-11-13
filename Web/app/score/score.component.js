@@ -12,7 +12,7 @@ component('score', {
     self.isAuction = false;
 
     console.log($scope);
-    $rootScope.AoNListen($http, () => {
+    $rootScope.AoNListen($http, 1000, () => {
       if (!this.init)
         window.location.reload();
       initFromGS($sessionStorage.GameState);
