@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -242,18 +242,35 @@ namespace AwanturaLib
         }
 
 
-        public GameState StartSecondRound(GameState gamestate, int index, int mastersPoints, int noobsPoints)
+        public GameState StartSecondRound(GameState gamestate,  int mastersPoints)
         {
             //deans
             gamestate.Teams[4].Points = mastersPoints;
             gamestate.Teams[4].isPlaying = true;
 
-            //second team
-            if (index != 4)
-            {
-                gamestate.Teams[index].Points = noobsPoints;
-                gamestate.Teams[index].isPlaying = true;
+            //the best team from first round
+            int max = gamestate.Teams[0].Points;
+            int maxindex = 0;
+
+            for (int i = 1; i < 4; i++)
+            {      
+               
+                if (max == gamestate.Teams[i].Points)
+                    return gamestate;
+                else if (max < gamestate.Teams[i].Points)
+                    {
+                        max = gamestate.Teams[i].Points;
+                        maxindex = i;
+                    }
             }
+
+            for (int i = 0; i < 4; i++)
+            {
+                gamestate.Teams[i].isPlaying = false;
+            }
+            
+            gamestate.Teams[maxindex].isPlaying = true;
+            
             return gamestate;
         }
 

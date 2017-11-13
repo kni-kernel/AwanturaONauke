@@ -343,16 +343,16 @@ component('score', {
 
         var team = gs.Teams[i];
         if (team != null && team.isPlaying) {
-          var team = {
-            Score: (team.Points > 0 ? team.Points : "-"), //;// + " " + team.Hints,
+          var vmTeam = {
+            Score: (team.Points > 200 ? team.Points : "-"), //;// + " " + team.Hints,
             Enabled: team.isPlaying,
             Name: team.Name,
             Class: "teamScore " + team.ClassName
           };
 
-          if (gs.State == 1)
-            team.Score -= gs.Licitation.Bid[i];
-          self.Teams.push(team);
+          if (gs.State == 1 && team.Points > 200)
+          vmTeam.Score -= gs.Licitation.Bid[i];
+          self.Teams.push(vmTeam);
         }
       }
 
@@ -371,7 +371,7 @@ component('score', {
           if (team != null && team.isPlaying)
             self.Auctions.push({
               Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
-              Score: gs.Licitation.Bid[i]
+              Score: team.Points > 200 ? gs.Licitation.Bid[i] : "-"
             });
         }
       } else
@@ -439,31 +439,31 @@ component('question', {
     initFromGS(gs);
 
     function initFromGS(gs) {
-        self.init = true;
-        var question = gs.Question;
-        self.ToWin = gs.Licitation.Pool;
-        self.Question = question.Content;
-        var hints = [];
-        hints.push(question.Tip1);
-        hints.push(question.Tip2);
-        hints.push(question.Tip3);
-        hints.push(question.Tip4);
-        
+      self.init = true;
+      var question = gs.Question;
+      self.ToWin = gs.Licitation.Pool;
+      self.Question = question.Content;
+      var hints = [];
+      hints.push(question.Tip1);
+      hints.push(question.Tip2);
+      hints.push(question.Tip3);
+      hints.push(question.Tip4);
 
-        self.hintEnabled = gs.State == 4;
-        self.HintA = hints[0];
-        self.HintB = hints[1];
-        self.HintC = hints[2];
-        self.HintD = hints[3];
 
-        self.Time = gs.Timer;
-        if(self.Time <= 0)
+      self.hintEnabled = gs.State == 4;
+      self.HintA = hints[0];
+      self.HintB = hints[1];
+      self.HintC = hints[2];
+      self.HintD = hints[3];
+
+      self.Time = gs.Timer;
+      if (self.Time <= 0)
         self.Time = "Koniec czasu!";
-
+      self.Class = gs.Teams[gs.CurrentTeam].ClassName;
 
     };
     this.QuestionNumber = 6;
-    this.Class = "black";
+
 
   }
 });
@@ -504,7 +504,7 @@ component('winScore', {
     
         function initFromGS(gs) {
             self.init = true;
-            self.Class = "red";
+            self.Class = gs.Teams[gs.CurrentTeam].ClassName;
             self.Score = gs.Licitation.Pool;
     
     
