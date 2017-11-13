@@ -71,9 +71,11 @@ namespace Gui
         public void ImportCategories()
         {
             /// do stworzenia menu z kategoriami na starcie
-            VM.Categories.Add("Pilka nozna", true);
-            VM.Categories.Add("Fizyka", true);
-            VM.Categories.Add("Seriale", false);
+
+            String[] categories = mainService.GetCategoriesNames();
+            foreach(var category in categories) {
+                VM.Categories.Add(category, true);
+            }
 
             /// dodanie kategorii z listy z Service
             foreach (var category in VM.Categories)

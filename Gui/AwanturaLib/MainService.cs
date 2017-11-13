@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace AwanturaLib
 {
     public class MainService
@@ -275,7 +276,12 @@ namespace AwanturaLib
             return gamestate;
         }
 
+        public String[] GetCategoriesNames() {
 
+            StorageService ss = new StorageService();
+            QuestionsSet qs = ss.DeserializeFromXMLFile<QuestionsSet>(@"..\..\pytania.xml");
+            return qs.Questions.Keys.ToArray();
+        }
        
     }   
 }
