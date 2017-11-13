@@ -32,7 +32,7 @@ namespace AwanturaLib
                 this.Bid[index] = amount;
                 
             Pool = gameState.Pool;
-            for (int i = 0; i < 4; ++i)
+            for (int i = 0; i <= 4; ++i)
                 if (gameState.Teams[i].isPlaying)
                     Pool += Bid[i];
         }
