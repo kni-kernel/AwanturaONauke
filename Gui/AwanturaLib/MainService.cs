@@ -94,7 +94,8 @@ namespace AwanturaLib
                 return gamestate;
             updateAllPoints(gamestate);
             gamestate.State = States.Question;
-            gamestate = RandomQuestion(gamestate, CategoryName,QuestionsSet.Current);
+            gamestate.CurrentTeam = WinnerIndex(gamestate);
+            gamestate = RandomQuestion(gamestate, CategoryName, QuestionsSet.Current);
             return gamestate;
         }
         public int MaxValue(GameState gs)
