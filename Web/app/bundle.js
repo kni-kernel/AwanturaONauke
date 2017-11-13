@@ -130,9 +130,9 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
   }
 ]);
 
-app.run(function ($rootScope, $interval, $sessionStorage) {
-  $rootScope.AoNListen = function ($http, onReceive) {
-    $interval(function () {
+app.run(function ($rootScope, $timeout, $sessionStorage) {
+  $rootScope.AoNListen = function ($http, timeoutTime, onReceive) {
+    $timeout(function () {
 
       function setURL(url) {
         console.log(url);
@@ -177,11 +177,13 @@ app.run(function ($rootScope, $interval, $sessionStorage) {
       $http({
         method: "POST",
         url: address,
+        timeout: 4000
       }).then(data => {
-        
         parseResponse(data.data);
+        $rootScope.AoNListen($http, 500, onReceive);
       }, data => {
         console.log('error');
+        $rootScope.AoNListen($http, 2500, onReceive);
         //console.log(data);
         //parseResponse(data.data);
       });
@@ -324,7 +326,7 @@ component('score', {
     self.isAuction = false;
 
     console.log($scope);
-    $rootScope.AoNListen($http, () => {
+    $rootScope.AoNListen($http, 1000, () => {
       if (!this.init)
         window.location.reload();
       initFromGS($sessionStorage.GameState);
