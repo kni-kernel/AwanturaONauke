@@ -110,13 +110,19 @@ namespace Gui
                 }
             }
 
-            foreach (var category in GS.OneOnOneCategories)
+            if (GS.OneOnOneCategories != null)
             {
-                if (category.Value)
+                OnOnOneActions.Items.Clear();
+                foreach (var category in GS.OneOnOneCategories)
                 {
-                    var item = new MenuItem();
-                    item.Header = category.Key;
-                    item.Click += new RoutedEventHandler(this.onDeleteCategoryClick);
+                    if (category.Value)
+                    {
+                        var item = new MenuItem();
+                        item.Header = category.Key;
+                        item.Click += new RoutedEventHandler(this.onDeleteCategoryClick);
+
+                        OnOnOneActions.Items.Add(item);
+                    }
                 }
             }
             VM.Timer = VM.gameState.Timer;
@@ -166,7 +172,7 @@ namespace Gui
             var menuItem = (sender as MenuItem);
             var categoryName = (string)menuItem.Header;
 
-           // GS = mainService.RemoveCategory(GS, categoryName);
+            GS = mainService.RemoveCategory(GS, categoryName);
         }
 
         private void RoundWin(object sender, RoutedEventArgs args)

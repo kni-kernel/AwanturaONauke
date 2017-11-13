@@ -291,9 +291,9 @@ namespace AwanturaLib
         }
 
 
-        public GameState RemoveCategory(GameState gamestate, Category category)
+        public GameState RemoveCategory(GameState gamestate, string categoryName)
         {
-            gamestate.OneOnOneCategories[category.Name] = false;
+            gamestate.OneOnOneCategories[categoryName] = false;
             return gamestate;
         }
 
