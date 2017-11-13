@@ -85,9 +85,9 @@
             <TextBlock Text="Nazwa zespołu:" Grid.Column="0" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0"/>
             <TextBlock Text="{Binding State}" Grid.Column="1" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" Margin="0,7,19,7.6"/>
             <TextBox Tag="0" Foreground="Blue" Text="{Binding TeamNames[0]}" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
-            <TextBox Tag="1" Foreground="Red" Text="{Binding TeamNames[1]}" Grid.Column="2" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
-            <TextBox Tag="2" Foreground="Green" Text="{Binding TeamNames[2]}" Grid.Column="3" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
-            <TextBox Tag="3" Foreground="HotPink" Text="{Binding TeamNames[3]}" Grid.Column="4" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
+            <TextBox Tag="1" Foreground="Green" Text="{Binding TeamNames[1]}" Grid.Column="2" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
+            <TextBox Tag="2" Foreground="Yellow" Text="{Binding TeamNames[2]}" Grid.Column="3" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
+            <TextBox Tag="3" Foreground="Red" Text="{Binding TeamNames[3]}" Grid.Column="4" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
             <TextBox Tag="4" Foreground="Black" Text="{Binding TeamNames[4]}" Grid.Column="5" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
 
 
