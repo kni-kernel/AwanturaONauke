@@ -42,7 +42,6 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
     $timeout(function () {
 
       function setURL(url) {
-        console.log(url);
         if (window.location.hash === url) {
           if (onReceive)
             onReceive();
@@ -53,32 +52,28 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
 
       var ip = window.location.hostname;
       var address = "http://" + ip + ":8002";
-      console.log("Moving to " + address);
 
       function parseResponse(data) {
         console.log(data);
         if (data == null || data.Pool == null) {
-          console.log("null!");
           return;
         }
-        console.log("received!");
         $sessionStorage.GameState = data;
 
-
-        if (data == null || data.State == 0)
-          setURL("#!/Idle");
-        if (data.State == 1)
-          setURL("#!/Idle");
-        if (data.State == 2)
-          setURL("#!/OneOnOne");
-        if (data.State == 3)
-          setURL("#!/Question");
-        if (data.State == 4)
-          setURL("#!/Question");
-        if (data.State == 5)
-          setURL("#!/Hint");
-        else
-          setURL("#!/Idle");
+        if (data != null) {
+          if (data.State == 0)
+            setURL("#!/Idle");
+          if (data.State == 1)
+            setURL("#!/Idle");
+          if (data.State == 2)
+            setURL("#!/OneOnOne");
+          if (data.State == 3)
+            setURL("#!/Question");
+          if (data.State == 4)
+            setURL("#!/Question");
+          if (data.State == 5)
+            setURL("#!/Win");
+        }
       }
 
       $http({
@@ -87,7 +82,7 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         timeout: 4000
       }).then(data => {
         parseResponse(data.data);
-        $rootScope.AoNListen($http, 500, onReceive);
+        $rootScope.AoNListen($http, 1500, onReceive);
       }, data => {
         console.log('error');
         $rootScope.AoNListen($http, 2500, onReceive);

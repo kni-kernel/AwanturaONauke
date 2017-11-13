@@ -3,19 +3,49 @@ module('question').
 component('question', {
   templateUrl: "questions/question.template.html",
 
-  controller: function QuestionController() {
-        this.QuestionNumber = 6;
-        this.ToWin = 69666;
-        this.Question = "Jaka wiadomość smuci Stańczyka na znanym obrazie Jana Matejki z 1862 roku?	o śmierci Władysława Warneńczyka pod Warną	o utracie Smoleńska na rzecz Rosji	o przegranej z Tatarami bitwie pod Sokalem 	o przegranej husarii pod Żółtymi Wodami?aka wiadomość smuci Stańczyka na znanym obrazie Jana Matejki z 1862 roku?	o śmierci Władysława Warneńczyka pod Warną	o utracie Smoleńska na rzecz Rosji	o przegranej z Tatarami bitwie pod Sokalem 	o przegranej husarii pod Żółtymi Wodami?";
-        this.Class = "black";
+  controller: function QuestionController($rootScope, $sessionStorage, $scope, $http) {
 
-        this.Time = 60;
-        var self = this;
+    var gs = $sessionStorage.GameState;
+    var self = this;
 
-        this.hintEnabled = true;
-        this.HintA = "Jan Matejko";
-        this.HintB = "Sołtys ze wsi";
-        this.HintC = "Czy można powtórzyć pytanie?";
-        this.HintD = "Zaraz wracam";
+    $rootScope.AoNListen($http, 1000, () => {
+      if (!this.init)
+        window.location.reload();
+      initFromGS($sessionStorage.GameState);
+    });
+
+    if (gs == null) {
+      return;
+    }
+
+    initFromGS(gs);
+
+    function initFromGS(gs) {
+        self.init = true;
+        var question = gs.Question;
+        self.ToWin = gs.Licitation.Pool;
+        self.Question = question.Content;
+        var hints = [];
+        hints.push(question.Tip1);
+        hints.push(question.Tip2);
+        hints.push(question.Tip3);
+        hints.push(question.Tip4);
+        
+
+        self.hintEnabled = gs.State == 4;
+        self.HintA = hints[0];
+        self.HintB = hints[1];
+        self.HintC = hints[2];
+        self.HintD = hints[3];
+
+        self.Time = gs.Timer;
+        if(self.Time <= 0)
+        self.Time = "Koniec czasu!";
+
+
+    };
+    this.QuestionNumber = 6;
+    this.Class = "black";
+
   }
 });

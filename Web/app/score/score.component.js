@@ -11,7 +11,6 @@ component('score', {
     self.Auctions = [];
     self.isAuction = false;
 
-    console.log($scope);
     $rootScope.AoNListen($http, 1000, () => {
       if (!this.init)
         window.location.reload();
