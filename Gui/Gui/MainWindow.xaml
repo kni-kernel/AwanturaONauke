@@ -75,11 +75,11 @@
             </Grid.RowDefinitions>
 
             <TextBlock Text="Nazwa zespołu:" Grid.Column="0" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0"/>
-            <TextBlock Foreground="Blue" Text="{Binding Team1}" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0"/>
-            <TextBlock Foreground="Red" Text="{Binding Team2}" Grid.Column="2" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0"/>
-            <TextBlock Foreground="Green" Text="{Binding Team3}" Grid.Column="3" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0"/>
-            <TextBlock Foreground="HotPink" Text="{Binding Team4}" Grid.Column="4" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0"/>
-            <TextBlock Text="{Binding Team5}" Grid.Column="5" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0"/>
+            <TextBox Tag="0" Foreground="Blue" Text="{Binding Team1}" Grid.Column="1" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
+            <TextBox Tag="1" Foreground="Red" Text="{Binding Team2}" Grid.Column="2" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
+            <TextBox Tag="2" Foreground="Green" Text="{Binding Team3}" Grid.Column="3" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
+            <TextBox Tag="3" Foreground="HotPink" Text="{Binding Team4}" Grid.Column="4" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
+            <TextBox Tag="4" Foreground="Black" Text="{Binding Team5}" Grid.Column="5" HorizontalAlignment="Center" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="0" KeyUp="KeyUpTeam"/>
 
             <TextBlock Text="Zespoły w grze:" Grid.Column="0" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="1"/>
             <CheckBox IsChecked="{Binding inGame1}" Name="inGame1" Content="Zespół 1" Grid.Column="1" HorizontalAlignment="Center" Grid.Row="1" VerticalAlignment="Center"/>

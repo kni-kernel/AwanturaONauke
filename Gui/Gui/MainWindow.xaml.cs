@@ -254,5 +254,22 @@ namespace Gui
                 }
             }
         }
+
+        private void KeyUpTeam(object sender, KeyEventArgs e) 
+        {
+            if (e.Key == Key.Enter)
+            {
+                int teamNumber;
+                string tag = (sender as TextBox)?.Tag as string;
+
+                if (int.TryParse(tag, out teamNumber)) 
+                {
+                    mainService.setTeamName(VM.gameState, (sender as TextBox)?.Text, teamNumber);
+                    //VM.gameState.Teams[teamNumber].Name = (sender as TextBox)?.Text;
+                    ImportGameState(VM.gameState);
+                    webService.UpdateGameState(VM.gameState);
+                }
+            }
+        }
     }
 }
