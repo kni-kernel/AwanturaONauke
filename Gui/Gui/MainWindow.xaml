@@ -102,7 +102,7 @@
             <TextBox Tag="5" Name="Bid5" Text="{Binding Bid5}" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="3" Grid.Column="5" VerticalAlignment="Center" Height="24" Width="119" RenderTransformOrigin="0.144,0.62" Margin="10.4,7.2,9.8,6.4"/>
 
             <TextBlock Text="Pula do wygrania:" Grid.Column="0" HorizontalAlignment="Right" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Width="auto" Grid.Row="4"/>
-            <TextBox Name="SumBids" Text="{Binding SumBids}" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Height="24" Width="119" RenderTransformOrigin="0.144,0.62" Margin="10.2,7.6,10,6"/>
+            <TextBox Name="SumBids" Text="{Binding SumBids}" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" Height="24" Width="119" RenderTransformOrigin="0.144,0.62" Margin="10.2,7.6,10,6" KeyUp="KeyUpPool"/>
 
             <TextBlock Text="Odpowiedź:" Grid.Row="5" Grid.Column="0" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="29,7,0.8,7.6"></TextBlock>
             <TextBox Name="Answer" Text="{Binding Answer}" TextAlignment="Center" Grid.Row="5" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="23" Width="119" RenderTransformOrigin="0.144,0.62" Margin="10.2,8,10,6.6" Grid.Column="1" />

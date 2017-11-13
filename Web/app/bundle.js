@@ -122,7 +122,7 @@ app.run(function ($rootScope, $interval, $sessionStorage) {
       }
 
       var ip = window.location.hostname;
-      var address = "http://" + ip + ":8001";
+      var address = "http://" + ip + ":8002";
       console.log("Moving to " + address);
 
       function parseResponse(data) {

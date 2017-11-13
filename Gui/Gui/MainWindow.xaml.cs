@@ -25,7 +25,7 @@ namespace Gui
     public partial class MainWindow : Window, INotifyPropertyChanged
     {
         private static MainService mainService = new MainService();
-        private static WebService webService = new WebService(8001);
+        private static WebService webService;
         public ViewModel VM { get; set; } = new ViewModel();
         public object Keys { get; private set; }
 
@@ -35,7 +35,9 @@ namespace Gui
 
             MainGrid.DataContext = VM;
             ImportCategories();
+            webService = new WebService(8002);
             var gs = mainService.StartGame();
+            gs = mainService.StartFirtRound(gs);
             ImportGameState(gs);
             webService.UpdateGameState(gs);
 
@@ -234,6 +236,22 @@ namespace Gui
         {
 
         }
-        
+
+
+        private void KeyUpPool(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                int amount;
+                string txt = (sender as TextBox)?.Text;
+
+                if (int.TryParse(txt, out amount))
+                {
+                    VM.gameState.Pool = amount;
+                    ImportGameState(VM.gameState);
+                    webService.UpdateGameState(VM.gameState);
+                }
+            }
+        }
     }
 }

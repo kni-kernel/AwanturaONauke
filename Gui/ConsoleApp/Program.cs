@@ -13,10 +13,10 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            var ws = new WebService(8001);
+            var ws = new WebService(8002);
             var ms = new MainService();
 
-            int interval = 1500;
+            int interval = 2500;
 
             var gs = ms.StartGame();
             gs = ms.StartFirtRound(gs);
