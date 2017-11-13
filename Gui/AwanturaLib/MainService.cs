@@ -251,10 +251,6 @@ namespace AwanturaLib
 
         public GameState StartSecondRound(GameState gamestate,  int mastersPoints)
         {
-            //deans
-            gamestate.Teams[4].Points = mastersPoints;
-            gamestate.Teams[4].isPlaying = true;
-
             //the best team from first round
             int max = gamestate.Teams[0].Points;
             int maxindex = 0;
@@ -278,6 +274,10 @@ namespace AwanturaLib
             
             gamestate.Teams[maxindex].isPlaying = true;
             
+            //deans
+            gamestate.Teams[4].Points = mastersPoints;
+            gamestate.Teams[4].isPlaying = true;
+
             return gamestate;
         }
 
