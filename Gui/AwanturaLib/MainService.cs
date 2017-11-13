@@ -9,12 +9,23 @@ namespace AwanturaLib
     public class MainService
     {
         public static Random Random { get; set; } = new Random();
+
         public void updateTeamPoints(GameState gamestate, int Index, int amount)
         {
             gamestate.Teams[Index].Points += amount;
         }
 
         private const int TeamCount = 5;
+
+        public void setTeamName(GameState gamestate, String n, int Index)
+        {
+            gamestate.Teams[Index].Name = n;
+        }
+
+        public void setTeamClassName(GameState gamestate, String n, int Index)
+        {
+            gamestate.Teams[Index].ClassName = n;
+        }
 
 
         void updateAllPoints(GameState gamestate)
@@ -44,11 +55,20 @@ namespace AwanturaLib
 
         public GameState Bet(GameState gamestate, int index, int amount)
         {
-            if(amount > 0 && gamestate.Licitation.Bid.Max() < amount)
+            if(amount > 0 && gamestate.Licitation.Bid.Max() < amount && gamestate.Teams[index].Points > 300)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
         }
+
+        public GameState BetWithoutRestrictions(GameState gamestate, int index, int amount)
+        {
+            if(amount > 0 && gamestate.Teams[index].Points > 300)
+                gamestate.Licitation.bet(gamestate, index, amount);
+
+            return gamestate;
+        }
+
         public GameState SetTimer(GameState gs, int Time)
         {
             if (gs.State == States.Hint || gs.State == States.Question)
@@ -254,6 +274,8 @@ namespace AwanturaLib
             }
             return gamestate;
         }
+
+
        
     }   
 }
