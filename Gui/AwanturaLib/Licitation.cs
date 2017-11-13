@@ -29,7 +29,7 @@ namespace AwanturaLib
         {
            
             if(amount <= gameState.Teams[index].Points)
-                this.Bid[index] = gameState.Teams[index].Points;
+                this.Bid[index] = amount;
                 
             Pool = gameState.Pool;
             for (int i = 0; i < 4; ++i)
