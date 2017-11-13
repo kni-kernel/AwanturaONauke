@@ -167,7 +167,7 @@ namespace Gui
 
         private void ShowHintIfHave(object sender, RoutedEventArgs args)
         {
-           // GS = mainService.UseHint(GS);
+            GS = mainService.UseHint(GS);
         }
 
         private void StartLicitation(object sender, RoutedEventArgs args)
@@ -194,7 +194,7 @@ namespace Gui
 
         private void StartMasters(object sender, RoutedEventArgs args)
         {
-            UpdateALL(mainService.StartSecondRound(GS, 0, 5000, 5000));
+            UpdateALL(mainService.StartSecondRound(GS, 10000));
             
         }
 
