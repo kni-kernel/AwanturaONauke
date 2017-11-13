@@ -505,7 +505,7 @@ component('winScore', {
         function initFromGS(gs) {
             self.init = true;
             self.Class = "red";
-            self.Score = 666;
+            self.Score = gs.Licitation.Pool;
     
     
         };
