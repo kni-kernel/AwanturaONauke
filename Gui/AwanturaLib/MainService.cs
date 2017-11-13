@@ -56,7 +56,7 @@ namespace AwanturaLib
 
         public GameState Bet(GameState gamestate, int index, int amount)
         {
-            if(amount > 0 && gamestate.Licitation.Bid.Max() < amount && gamestate.Teams[index].Points > 300)
+            if(gamestate.State == States.Licitation && amount > 0 && gamestate.Licitation.Bid.Max() < amount && gamestate.Teams[index].Points > 300)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
@@ -64,7 +64,7 @@ namespace AwanturaLib
 
         public GameState BetWithoutRestrictions(GameState gamestate, int index, int amount)
         {
-            if(amount > 0 && gamestate.Teams[index].Points > 300)
+            if(gamestate.State == States.Licitation && amount > 0 && gamestate.Teams[index].Points > 300)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
