@@ -22,7 +22,7 @@ component('winScore', {
     
         function initFromGS(gs) {
             self.init = true;
-            self.Class = "red";
+            self.Class = gs.Teams[gs.CurrentTeam].ClassName;
             self.Score = gs.Licitation.Pool;
     
     
