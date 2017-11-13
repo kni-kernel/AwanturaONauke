@@ -251,24 +251,20 @@ namespace AwanturaLib
 
         public GameState StartSecondRound(GameState gamestate,  int mastersPoints)
         {
-            //the best team from first round
-            int max = gamestate.Teams[0].Points;
+            //index of best team in first round
             int maxindex = 0;
 
-            for (int i = 1; i < 4; i++)
-            {      
-               
-                if (max < gamestate.Teams[i].Points)
-                    {
-                        max = gamestate.Teams[i].Points;
-                        maxindex = i;
-                    }
-                else if (max == gamestate.Teams[i].Points)
+            for (int i = 1; i < TeamCount-1; i++)
+            {
+                if (gamestate.Teams[maxindex].Points < gamestate.Teams[i].Points)
+                    maxindex = i;
+                else if (gamestate.Teams[maxindex].Points == gamestate.Teams[i].Points)
+                {
                     return gamestate;
-                 
+                }
             }
 
-            for (int i = 0; i < 4; i++)
+            for (int i = 0; i < TeamCount-1; i++)
             {
                 gamestate.Teams[i].isPlaying = false;
             }

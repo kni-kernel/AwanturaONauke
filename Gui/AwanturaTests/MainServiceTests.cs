@@ -17,14 +17,20 @@ namespace AwanturaTests
         {
 
             var gs = CreateSampleGamestate();
-            gs = mainService.StartGame();
-            gs = mainService.StartSecondRound(gs, 0, 1000, 1000);
-            Assert.AreEqual(1000, gs.Teams[0].Points);
-            Assert.AreEqual(1000, gs.Teams[4].Points);
-
+           // gs = mainService.StartGame();
            
 
+            Assert.AreEqual(false, gs.Teams[4].isPlaying);
+            Assert.AreEqual(false,  gs.Teams[3].isPlaying);
 
+            gs = mainService.StartSecondRound(gs, 1000);
+
+          
+            Assert.AreEqual(false, gs.Teams[0].isPlaying);
+            Assert.AreEqual(true, gs.Teams[1].isPlaying);
+            Assert.AreEqual(false, gs.Teams[2].isPlaying);
+            Assert.AreEqual(false, gs.Teams[3].isPlaying);
+            Assert.AreEqual(true, gs.Teams[4].isPlaying);
         }
 
         private GameState CreateSampleGamestate()
@@ -34,8 +40,8 @@ namespace AwanturaTests
                 Pool = 0,
                 Teams = new Team[5]
                 {
+                    new Team() {Points = 500, isPlaying = true},
                     new Team() {Points = 1000, isPlaying = true},
-                    new Team() {Points = 5000, isPlaying = true},
                     new Team() {isPlaying = false},
                     new Team() {isPlaying = false},
                     new Team() {isPlaying = false},
