@@ -258,13 +258,14 @@ namespace AwanturaLib
             for (int i = 1; i < 4; i++)
             {      
                
-                if (max == gamestate.Teams[i].Points)
-                    return gamestate;
-                else if (max < gamestate.Teams[i].Points)
+                if (max < gamestate.Teams[i].Points)
                     {
                         max = gamestate.Teams[i].Points;
                         maxindex = i;
                     }
+                else if (max == gamestate.Teams[i].Points)
+                    return gamestate;
+                 
             }
 
             for (int i = 0; i < 4; i++)
