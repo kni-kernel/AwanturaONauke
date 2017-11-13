@@ -85,11 +85,11 @@ namespace AwanturaLib
         }
 
 
-        public GameState EndLicitationToQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
+        public GameState EndLicitationToQuestion(GameState gamestate, String CategoryName)
         {
             updateAllPoints(gamestate);
             gamestate.State = States.Question;
-            gamestate = RandomQuestion(gamestate, CategoryName,qs);
+            gamestate = RandomQuestion(gamestate, CategoryName,QuestionsSet.Current);
             return gamestate;
         }
         public int MaxValue(GameState gs)

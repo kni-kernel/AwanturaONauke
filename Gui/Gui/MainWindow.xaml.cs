@@ -71,7 +71,7 @@ namespace Gui
         public void ImportCategories()
         {
             /// do stworzenia menu z kategoriami na starcie
-            VM.Categories.Add("Muzyka", true);
+            VM.Categories.Add("Pilka nozna", true);
             VM.Categories.Add("Fizyka", true);
             VM.Categories.Add("Seriale", false);
 
@@ -80,7 +80,6 @@ namespace Gui
             {
                 var item = new MenuItem();
                 item.Header = category.Key;
-                item.Name = category.Key;
                 item.IsEnabled = category.Value;
                 item.Click += new RoutedEventHandler(this.onCategoryClick);
 
@@ -143,7 +142,7 @@ namespace Gui
 
             VM.ChosenCategory = categoryName;
 
-            GS = mainService.RandomQuestion(GS, categoryName, QuestionsSet.Current);
+            GS = mainService.EndLicitationToQuestion(GS, categoryName);
         }
 
         private void StartLicitation(object sender, RoutedEventArgs args)
