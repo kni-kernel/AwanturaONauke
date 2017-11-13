@@ -9,12 +9,23 @@ namespace AwanturaLib
     public class MainService
     {
         public static Random Random { get; set; } = new Random();
+
         public void updateTeamPoints(GameState gamestate, int Index, int amount)
         {
             gamestate.Teams[Index].Points += amount;
         }
 
         private const int TeamCount = 5;
+
+        public void setTeamName(GameState gamestate, String n, int Index)
+        {
+            gamestate.Teams[Index].Name = n;
+        }
+
+        public void setTeamClassName(GameState gamestate, String n, int Index)
+        {
+            gamestate.Teams[Index].ClassName = n;
+        }
 
 
         void updateAllPoints(GameState gamestate)
@@ -254,6 +265,8 @@ namespace AwanturaLib
             }
             return gamestate;
         }
+
+
        
     }   
 }
