@@ -79,6 +79,8 @@ namespace AwanturaLib
 
         public GameState EndLicitationToBlackBox(GameState gamestate)
         {
+            if(gamestate.State != States.Licitation)
+                return gamestate;
             updateAllPoints(gamestate);
             gamestate = AssignBlackBoxToTeam(gamestate, WinnerIndex(gamestate));
             gamestate.State = States.Idle;
@@ -88,6 +90,8 @@ namespace AwanturaLib
 
         public GameState EndLicitationToQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
         {
+            if(gamestate.State != States.Licitation)
+                return gamestate;
             updateAllPoints(gamestate);
             gamestate.State = States.Question;
             gamestate = RandomQuestion(gamestate, CategoryName,qs);
@@ -113,6 +117,8 @@ namespace AwanturaLib
         }
         public GameState EndLicitationToHint(GameState gamestate)
         {
+            if(gamestate.State != States.Licitation)
+                return gamestate;
             updateAllPoints(gamestate);
             gamestate = AssignHint(gamestate, WinnerIndex(gamestate));
             gamestate.State = States.Idle;
