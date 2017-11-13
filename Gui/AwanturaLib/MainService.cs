@@ -70,10 +70,13 @@ namespace AwanturaLib
             return gamestate;
         }
 
-        public GameState SetTimer(GameState gs, int Time)
+        public GameState SetTimer(GameState gs, int Time, bool enabled)
         {
             if (gs.State == States.Hint || gs.State == States.Question)
+            {
                 gs.Timer = Time;
+                gs.TimerEnabled = enabled;
+            }
             return gs;
         }
 
@@ -96,6 +99,8 @@ namespace AwanturaLib
             gamestate.State = States.Question;
             gamestate.CurrentTeam = WinnerIndex(gamestate);
             gamestate = RandomQuestion(gamestate, CategoryName, QuestionsSet.Current);
+            gamestate.Timer = 60;
+            gamestate.TimerEnabled = true;
             return gamestate;
         }
         public int MaxValue(GameState gs)
@@ -121,7 +126,7 @@ namespace AwanturaLib
             if(gamestate.State != States.Licitation)
                 return gamestate;
             updateAllPoints(gamestate);
-            gamestate = AssignHint(gamestate);
+            gamestate = AssignHint(gamestate, WinnerIndex(gamestate));
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -168,8 +173,10 @@ namespace AwanturaLib
         }
 
 
-        public GameState UseHint(GameState gamestate, int Index)
+        public GameState UseHint(GameState gamestate)
         {
+            int Index = WinnerIndex(gamestate);
+
             if (gamestate.Teams[Index].Hints > 0)
             {
                 gamestate.Teams[Index].Hints -= 1;
@@ -187,14 +194,14 @@ namespace AwanturaLib
         }
 
 
-        public GameState AssignHint(GameState gamestate)
+        public GameState AssignHint(GameState gamestate, int Index)
         {
-            gamestate.Teams[gamestate.CurrentTeam].Hints += 1;
+            gamestate.Teams[Index].Hints += 1;
             gamestate.State = States.Idle;
             return gamestate;
         }
 
- 
+
         //BEGGINNIG
         public GameState StartGame()
         {

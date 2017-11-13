@@ -63,7 +63,7 @@ namespace Gui
                 lock (VM)
                 {
                     VM.Timer--;
-                    GS.Timer = VM.Timer;
+                    GS = mainService.SetTimer(GS, VM.Timer, true);
                     webService.UpdateGameState(GS);
                 }
         }
@@ -95,6 +95,8 @@ namespace Gui
 
             VM.State = GS.State.ToString();
             VM.Pool = GS.Pool;
+            VM.Timer = gameState.Timer;
+            VM.TimerEnabled = gameState.TimerEnabled;
 
             for (int i = 0; i < 5; ++i)
             {
@@ -105,6 +107,16 @@ namespace Gui
                 if (GS.Licitation != null)
                 {
                     VM.Bids[i] = GS.Licitation.Bid[i];
+                }
+            }
+
+            foreach (var category in GS.OneOnOneCategories)
+            {
+                if (category.Value)
+                {
+                    var item = new MenuItem();
+                    item.Header = category.Key;
+                    item.Click += new RoutedEventHandler(this.onDeleteCategoryClick);
                 }
             }
             VM.Timer = VM.gameState.Timer;
@@ -147,6 +159,14 @@ namespace Gui
             VM.ChosenCategory = categoryName;
 
             GS = mainService.EndLicitationToQuestion(GS, categoryName);
+        }
+
+        private void onDeleteCategoryClick(object sender, RoutedEventArgs args)
+        {
+            var menuItem = (sender as MenuItem);
+            var categoryName = (string)menuItem.Header;
+
+           // GS = mainService.RemoveCategory(GS, categoryName);
         }
 
         private void RoundWin(object sender, RoutedEventArgs args)
@@ -225,13 +245,17 @@ namespace Gui
         private void startTimeButton_Click(object sender, RoutedEventArgs e)
         {
             VM.TimerEnabled = true;
+            GS = mainService.SetTimer(GS, VM.Timer, false);
         }
 
         private void stopTimeButton_Click(object sender, RoutedEventArgs e)
         {
             VM.TimerEnabled = false;
-            lock(VM)
+            lock (VM)
+            {
                 VM.Timer = -1;
+                GS = mainService.SetTimer(GS, -1, false);
+            }
         }
 
         private void resetButton_Click(object sender, RoutedEventArgs e)

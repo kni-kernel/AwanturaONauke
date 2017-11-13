@@ -14,6 +14,7 @@ namespace AwanturaLib
             set; } = States.Idle;
         public Dictionary<string, bool> OneOnOneCategories { get; set; }
         public int Timer { get; set; }
+        public bool TimerEnabled { get; set; } = false;
     }
 }
 
