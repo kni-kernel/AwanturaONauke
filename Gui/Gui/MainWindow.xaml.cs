@@ -26,6 +26,11 @@ namespace Gui
     {
         private static MainService mainService = new MainService();
         private static WebService webService;
+        public GameState GS
+        {
+            get => VM.gameState;
+            set { UpdateALL(value); }
+        }
         public ViewModel VM { get; set; } = new ViewModel();
         public object Keys { get; private set; }
 
@@ -56,7 +61,11 @@ namespace Gui
         {
             if (VM.TimerEnabled)
                 lock (VM)
+                {
                     VM.Timer--;
+                    GS.Timer = VM.Timer;
+                    webService.UpdateGameState(GS);
+                }
         }
 
         public void ImportCategories()
@@ -83,45 +92,19 @@ namespace Gui
         {
             VM.gameState = gameState;
 
-            Team[] Teams = new Team[5];
-            for (int i = 0; i < 5; i++)
-                Teams[i] = new Team();
+            VM.State = GS.State.ToString();
 
-            Teams[0].Name = "WFIS";
-            Teams[1].Name = "WIMIC";
-            Teams[2].Name = "WEIP";
-            Teams[3].Name = "WMS";
-            Teams[4].Name = "Marsjanie";
-
-            foreach (var team in Teams)
+            for (int i = 0; i < 5; ++i)
             {
-                team.Points = 5000;
-                team.isPlaying = true;
-
-                team.Hints = 0;
-                team.ClassName = "";
+                VM.TeamNames[i] = GS.Teams[i].Name;
+                VM.Points[i] = GS.Teams[i].Points;
+                VM.ArePlaying[i] = GS.Teams[i].isPlaying;
+                if (GS.Licitation != null)
+                {
+                    VM.Bids[i] = GS.Licitation.Bid[i];
+                }
             }
-
-            VM.gameState.Teams = Teams;
-            VM.Team1 = VM.gameState.Teams[0].Name;
-            VM.Team2 = VM.gameState.Teams[1].Name;
-            VM.Team3 = VM.gameState.Teams[2].Name;
-            VM.Team4 = VM.gameState.Teams[3].Name;
-            VM.Team5 = VM.gameState.Teams[4].Name;
-
-            VM.inGame1 = VM.gameState.Teams[0].isPlaying;
-            VM.inGame2 = VM.gameState.Teams[1].isPlaying;
-            VM.inGame3 = VM.gameState.Teams[2].isPlaying;
-            VM.inGame4 = VM.gameState.Teams[3].isPlaying;
-            VM.inGame5 = VM.gameState.Teams[4].isPlaying;
-
-            VM.Saldo1 = VM.gameState.Teams[0].Points;
-            VM.Saldo2 = VM.gameState.Teams[1].Points;
-            VM.Saldo3 = VM.gameState.Teams[2].Points;
-            VM.Saldo4 = VM.gameState.Teams[3].Points;
-            VM.Saldo5 = VM.gameState.Teams[4].Points;
-
-          //  VM.Timer = VM.gameState.time
+            VM.Timer = VM.gameState.Timer;
         }
 
 
@@ -164,6 +147,30 @@ namespace Gui
 
             //wyslac wybrana kategorie do servera
             //pobrać wylosowane pytanie
+        }
+
+        private void StartLicitation(object sender, RoutedEventArgs args)
+        {
+            VM.gameState = mainService.StartLicitation(VM.gameState);
+            ImportGameState(GS);
+            webService.UpdateGameState(VM.gameState);
+        }
+
+        private void StartOneOnOne(object sender, RoutedEventArgs args)
+        {
+            GS = mainService.ToOneOnOne(VM.gameState);
+        }
+
+        private void StartMasters(object sender, RoutedEventArgs args)
+        {
+            UpdateALL(mainService.StartSecondRound(GS, 0, 5000, 5000));
+            
+        }
+
+        private void UpdateALL(GameState GS)
+        {
+            ImportGameState(GS);
+            webService.UpdateGameState(GS);
         }
 
         // button do wyswietlania obrazka podpiętego pod pytanie
@@ -224,13 +231,9 @@ namespace Gui
 
         private void SetLicitationForUse(TextBox tb)
         {
+            tb.Text = "";
+            tb.Focus();
             string text = (string)tb.Text;
-            int bid;
-            if (int.TryParse(text, out bid))
-            {
-                tb.Text = (bid * 100).ToString();
-                tb.Focus();
-            }
         }
         
         private void SetAnswerToSend(TextBox tb)
@@ -251,6 +254,29 @@ namespace Gui
                     VM.gameState.Pool = amount;
                     ImportGameState(VM.gameState);
                     webService.UpdateGameState(VM.gameState);
+                }
+            }
+        }
+
+        private void BidKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                var tb = sender as TextBox;
+                string txt = tb.Tag as string;
+
+                if (tb != null)
+                {
+                    int teamNumber;
+                    int bid;
+                    
+                    if (int.TryParse(txt, out teamNumber) && int.TryParse(tb.Text as string, out bid))
+                    {
+                        bid *= 100;
+                        GS = mainService.Bet(GS, teamNumber, bid);
+                        ImportGameState(GS);
+                        webService.UpdateGameState(GS);
+                    }
                 }
             }
         }
