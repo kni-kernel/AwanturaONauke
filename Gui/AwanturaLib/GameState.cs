@@ -6,6 +6,7 @@ namespace AwanturaLib
 {
     public class GameState {
         public Team[] Teams { get; set; }
+        public int CurrentTeam { get; set; }
         public Question Question { get; set; }
         public Licitation Licitation { get; set; }
         public int Pool { get; set; }
@@ -13,7 +14,6 @@ namespace AwanturaLib
             set; } = States.Idle;
         public Dictionary<string, bool> OneOnOneCategories { get; set; }
         public int Timer { get; set; }
-
     }
 }
 
