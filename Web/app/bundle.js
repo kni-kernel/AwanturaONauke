@@ -258,6 +258,29 @@ angular.
 module('oneState').
 component('oneState', {
   templateUrl: "states/one.template.html",
+<<<<<<< HEAD
+
+  controller: function OneStateController($http, $rootScope) {
+    $rootScope.AoNListen($http);
+  }
+});
+
+/***/ }),
+
+/***/ 1381:
+/***/ (function(module, exports, __webpack_require__) {
+
+angular.module('score', []);
+
+__webpack_require__(1382);
+
+/***/ }),
+
+/***/ 1382:
+/***/ (function(module, exports) {
+
+throw new Error("Module parse failed: Unexpected token (41:54)\nYou may need an appropriate loader to handle this file type.\n|         if(team != null && team.isPlaying)\r\n|         self.Teams.push({\r\n|           Score: (team.Points > 0 ? team.Points : \"-\");// + \" \" + team.Hints,\r\n|           Enabled: team.isPlaying,\r\n|           Name: team.Name,\r");
+=======
 
   controller: function OneStateController($http, $rootScope) {
     $rootScope.AoNListen($http);
@@ -375,6 +398,7 @@ component('score', {
     
   }
 });
+>>>>>>> 3d47c2a08573a2506103bccf37cb9050fbf292f2
 
 /***/ }),
 

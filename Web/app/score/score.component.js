@@ -38,7 +38,11 @@ component('score', {
         var team = gs.Teams[i];
         if(team != null && team.isPlaying)
         self.Teams.push({
+<<<<<<< HEAD
+          Score: (team.Points > 0 ? team.Points : "-");// + " " + team.Hints,
+=======
           Score: (team.Points > 0 ? team.Points : "-"),//;// + " " + team.Hints,
+>>>>>>> 3d47c2a08573a2506103bccf37cb9050fbf292f2
           Enabled: team.isPlaying,
           Name: team.Name,
           Class: "teamScore " + team.ClassName

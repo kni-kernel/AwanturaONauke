@@ -6,8 +6,11 @@ using System.Threading.Tasks;
 
 namespace AwanturaLib
 {
+    [Serializable]
     public class Question
     {
+        public Question() { }
+
         public Category Category { get; set; }
         public String Content { get; set; }
         public String FileName { get; set; }

@@ -33,6 +33,8 @@ Piaskownica/Program.cs
 *.vspscc
 .builds
 *.dotCover
+*.tsv
+*.xml
 
 ## TODO: If you have NuGet Package Restore enabled, uncomment this
 #packages/
