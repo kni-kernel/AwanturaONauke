@@ -150,6 +150,7 @@ namespace AwanturaLib
            
             gamestate.Question = qs.Questions[CategoryName].Where(q => q.Used == false)
                 .TakeRandom(Random);
+            gamestate.QuestionCount += 1;
             return gamestate;
         }
 
@@ -258,6 +259,8 @@ namespace AwanturaLib
                 team.Hints = 0;
                 team.isPlaying = true;
             }
+            //setting question counter to 0
+            gamestate.QuestionCount = 0;
                 return gamestate;
         }
 
@@ -288,6 +291,8 @@ namespace AwanturaLib
             gamestate.Teams[4].Points = mastersPoints;
             gamestate.Teams[4].isPlaying = true;
 
+            //set question counter to 0
+            gamestate.QuestionCount = 0;
             return gamestate;
         }
 
