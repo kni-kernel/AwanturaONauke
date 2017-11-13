@@ -94,12 +94,14 @@ namespace Gui
             VM.gameState = gameState;
 
             VM.State = GS.State.ToString();
+            VM.Pool = GS.Pool;
 
             for (int i = 0; i < 5; ++i)
             {
                 VM.TeamNames[i] = GS.Teams[i].Name;
                 VM.Points[i] = GS.Teams[i].Points;
                 VM.ArePlaying[i] = GS.Teams[i].isPlaying;
+                VM.HintCount[i] = GS.Teams[i].Hints;
                 if (GS.Licitation != null)
                 {
                     VM.Bids[i] = GS.Licitation.Bid[i];
@@ -147,11 +149,42 @@ namespace Gui
             GS = mainService.EndLicitationToQuestion(GS, categoryName);
         }
 
+        private void RoundWin(object sender, RoutedEventArgs args)
+        {
+            GS = mainService.RightGuess(GS);
+        }
+
+        private void RoundWinStop(object sender, RoutedEventArgs args)
+        {
+            GS.State = States.Idle;
+            UpdateALL(GS);
+        }
+
+        private void RoundLose(object sender, RoutedEventArgs args)
+        {
+            GS = mainService.WrongGuessFirstRound(GS);
+        }
+
+        private void ShowHintIfHave(object sender, RoutedEventArgs args)
+        {
+           // GS = mainService.UseHint(GS);
+        }
+
         private void StartLicitation(object sender, RoutedEventArgs args)
         {
             VM.gameState = mainService.StartLicitation(VM.gameState);
             ImportGameState(GS);
             webService.UpdateGameState(VM.gameState);
+        }
+
+        private void EndLicitationHint(object sender, RoutedEventArgs args)
+        {
+            GS = mainService.EndLicitationToHint(GS);
+        }
+
+        private void EndLicitationBlackBox(object sender, RoutedEventArgs args)
+        {
+            GS = mainService.EndLicitationToBlackBox(GS);
         }
 
         private void StartOneOnOne(object sender, RoutedEventArgs args)

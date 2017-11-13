@@ -135,7 +135,6 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
     $timeout(function () {
 
       function setURL(url) {
-        console.log(url);
         if (window.location.hash === url) {
           if (onReceive)
             onReceive();
@@ -146,32 +145,28 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
 
       var ip = window.location.hostname;
       var address = "http://" + ip + ":8002";
-      console.log("Moving to " + address);
 
       function parseResponse(data) {
         console.log(data);
         if (data == null || data.Pool == null) {
-          console.log("null!");
           return;
         }
-        console.log("received!");
         $sessionStorage.GameState = data;
 
-
-        if (data == null || data.State == 0)
-          setURL("#!/Idle");
-        if (data.State == 1)
-          setURL("#!/Idle");
-        if (data.State == 2)
-          setURL("#!/OneOnOne");
-        if (data.State == 3)
-          setURL("#!/Question");
-        if (data.State == 4)
-          setURL("#!/Question");
-        if (data.State == 5)
-          setURL("#!/Hint");
-        else
-          setURL("#!/Idle");
+        if (data != null) {
+          if (data.State == 0)
+            setURL("#!/Idle");
+          if (data.State == 1)
+            setURL("#!/Idle");
+          if (data.State == 2)
+            setURL("#!/OneOnOne");
+          if (data.State == 3)
+            setURL("#!/Question");
+          if (data.State == 4)
+            setURL("#!/Question");
+          if (data.State == 5)
+            setURL("#!/Win");
+        }
       }
 
       $http({
@@ -180,7 +175,7 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         timeout: 4000
       }).then(data => {
         parseResponse(data.data);
-        $rootScope.AoNListen($http, 500, onReceive);
+        $rootScope.AoNListen($http, 1500, onReceive);
       }, data => {
         console.log('error');
         $rootScope.AoNListen($http, 2500, onReceive);
@@ -325,7 +320,6 @@ component('score', {
     self.Auctions = [];
     self.isAuction = false;
 
-    console.log($scope);
     $rootScope.AoNListen($http, 1000, () => {
       if (!this.init)
         window.location.reload();
@@ -427,20 +421,50 @@ module('question').
 component('question', {
   templateUrl: "questions/question.template.html",
 
-  controller: function QuestionController() {
-        this.QuestionNumber = 6;
-        this.ToWin = 69666;
-        this.Question = "Jaka wiadomość smuci Stańczyka na znanym obrazie Jana Matejki z 1862 roku?	o śmierci Władysława Warneńczyka pod Warną	o utracie Smoleńska na rzecz Rosji	o przegranej z Tatarami bitwie pod Sokalem 	o przegranej husarii pod Żółtymi Wodami?aka wiadomość smuci Stańczyka na znanym obrazie Jana Matejki z 1862 roku?	o śmierci Władysława Warneńczyka pod Warną	o utracie Smoleńska na rzecz Rosji	o przegranej z Tatarami bitwie pod Sokalem 	o przegranej husarii pod Żółtymi Wodami?";
-        this.Class = "black";
+  controller: function QuestionController($rootScope, $sessionStorage, $scope, $http) {
 
-        this.Time = 60;
-        var self = this;
+    var gs = $sessionStorage.GameState;
+    var self = this;
 
-        this.hintEnabled = true;
-        this.HintA = "Jan Matejko";
-        this.HintB = "Sołtys ze wsi";
-        this.HintC = "Czy można powtórzyć pytanie?";
-        this.HintD = "Zaraz wracam";
+    $rootScope.AoNListen($http, 1000, () => {
+      if (!this.init)
+        window.location.reload();
+      initFromGS($sessionStorage.GameState);
+    });
+
+    if (gs == null) {
+      return;
+    }
+
+    initFromGS(gs);
+
+    function initFromGS(gs) {
+        self.init = true;
+        var question = gs.Question;
+        self.ToWin = gs.Licitation.Pool;
+        self.Question = question.Content;
+        var hints = [];
+        hints.push(question.Tip1);
+        hints.push(question.Tip2);
+        hints.push(question.Tip3);
+        hints.push(question.Tip4);
+        
+
+        self.hintEnabled = gs.State == 4;
+        self.HintA = hints[0];
+        self.HintB = hints[1];
+        self.HintC = hints[2];
+        self.HintD = hints[3];
+
+        self.Time = gs.Timer;
+        if(self.Time <= 0)
+        self.Time = "Koniec czasu!";
+
+
+    };
+    this.QuestionNumber = 6;
+    this.Class = "black";
+
   }
 });
 
@@ -461,10 +485,32 @@ module('winScore').
 component('winScore', {
   templateUrl: "winScore/winscore.template.html",
 
-  controller: function WinStateController($http) {
-    this.Class = "blue";
-    this.Score = 666;
-  }
+  controller: function WinStateController($rootScope, $sessionStorage, $scope, $http) {
+    
+        var gs = $sessionStorage.GameState;
+        var self = this;
+    
+        $rootScope.AoNListen($http, 1000, () => {
+          if (!this.init)
+            window.location.reload();
+          initFromGS($sessionStorage.GameState);
+        });
+    
+        if (gs == null) {
+          return;
+        }
+    
+        initFromGS(gs);
+    
+        function initFromGS(gs) {
+            self.init = true;
+            self.Class = "red";
+            self.Score = 666;
+    
+    
+        };
+    
+      }
 });
 
 /***/ }),
