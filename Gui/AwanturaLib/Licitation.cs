@@ -28,9 +28,9 @@ namespace AwanturaLib
         public void bet(GameState gameState, int index, int amount)
         {
            
-                this.Bid[index] = Math.Min(gameState.Teams[index].Points, amount);
-            
-
+            if(amount <= gameState.Teams[index].Points)
+                this.Bid[index] = gameState.Teams[index].Points;
+                
             Pool = gameState.Pool;
             for (int i = 0; i < 4; ++i)
                 if (gameState.Teams[i].isPlaying)
