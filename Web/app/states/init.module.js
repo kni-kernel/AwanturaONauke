@@ -8,7 +8,8 @@ component('initState', {
   templateUrl: "states/init.template.html",
 
   controller: function initStateController($http, $rootScope, $scope) {
-    console.log('init');
-
+    $rootScope.master = true;
+    $rootScope.AoNListen($http, 1000, () => {
+    });
   }
 });

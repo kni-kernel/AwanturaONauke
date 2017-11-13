@@ -131,7 +131,17 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
 ]);
 
 app.run(function ($rootScope, $timeout, $sessionStorage) {
+  $rootScope.onReceive = function () {};
+  $rootScope.started = false;
   $rootScope.AoNListen = function ($http, timeoutTime, onReceive) {
+    $rootScope.onReceive = onReceive;
+    if ($rootScope.started === false) {
+      $rootScope.AoNListenMy($http, timeoutTime, onReceive);
+      $rootScope.started = true;
+    }
+
+  }
+  $rootScope.AoNListenMy = function ($http, timeoutTime, onReceive) {
     $timeout(function () {
 
       function setURL(url) {
@@ -140,7 +150,6 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
             onReceive();
         } else
           window.location.href = url;
-
       }
 
       var ip = window.location.hostname;
@@ -175,10 +184,10 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         timeout: 4000
       }).then(data => {
         parseResponse(data.data);
-        $rootScope.AoNListen($http, 1500, onReceive);
+        $rootScope.AoNListenMy($http, 1500, $rootScope.onReceive);
       }, data => {
         console.log('error');
-        $rootScope.AoNListen($http, 2500, onReceive);
+        $rootScope.AoNListenMy($http, 2500, $rootScope.onReceive);
         //console.log(data);
         //parseResponse(data.data);
       });
@@ -200,8 +209,9 @@ component('initState', {
   templateUrl: "states/init.template.html",
 
   controller: function initStateController($http, $rootScope, $scope) {
-    console.log('init');
-
+    $rootScope.master = true;
+    $rootScope.AoNListen($http, 1000, () => {
+    });
   }
 });
 
@@ -443,6 +453,13 @@ component('question', {
       var question = gs.Question;
       self.ToWin = gs.Licitation.Pool;
       self.Question = question.Content;
+      self.MasterEnabled = false;
+      if($rootScope.master === true)
+      {
+        console.log("Master on!");
+        self.MasterEnabled = true;
+        self.Answer = question.Tip1;
+      }
       var hints = [];
       hints.push(question.Tip1);
       hints.push(question.Tip2);
@@ -552,18 +569,22 @@ component('oneOnOne', {
         function initFromGS(gs) {
             self.Categories = [];
             self.init = true;
-            for(let i = 0; i < gs.OneOnOneCategories.length; ++i)
-            {
-                var cat = gs.OneOnOneCategories[i];
-                
+
+            for (var property in gs.OneOnOneCategories) {
+              if (gs.OneOnOneCategories.hasOwnProperty(property)) {
+                var cat =
+                {
+                  Key : property,
+                  Value : gs.OneOnOneCategories[property]
+                };
                 var item = 
                 {
                     Name: cat.Key,
                     Class: (cat.Value == "true" || cat.Value == "True" || cat.Value == true) ? "enabled" :"disabled"
                 };
-
                 self.Categories.push(item);
-            }
+              }
+          }
             
     
         };

@@ -25,18 +25,22 @@ component('oneOnOne', {
         function initFromGS(gs) {
             self.Categories = [];
             self.init = true;
-            for(let i = 0; i < gs.OneOnOneCategories.length; ++i)
-            {
-                var cat = gs.OneOnOneCategories[i];
-                
+
+            for (var property in gs.OneOnOneCategories) {
+              if (gs.OneOnOneCategories.hasOwnProperty(property)) {
+                var cat =
+                {
+                  Key : property,
+                  Value : gs.OneOnOneCategories[property]
+                };
                 var item = 
                 {
                     Name: cat.Key,
                     Class: (cat.Value == "true" || cat.Value == "True" || cat.Value == true) ? "enabled" :"disabled"
                 };
-
                 self.Categories.push(item);
-            }
+              }
+          }
             
     
         };

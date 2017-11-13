@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows;
 
 namespace AwanturaLib
 {
@@ -85,6 +85,7 @@ namespace AwanturaLib
             if(gamestate.State != States.Licitation)
                 return gamestate;
             updateAllPoints(gamestate);
+            gamestate.TimerEnabled = false;
             gamestate = AssignBlackBoxToTeam(gamestate, WinnerIndex(gamestate));
             gamestate.State = States.Idle;
             return gamestate;
@@ -95,10 +96,20 @@ namespace AwanturaLib
         {
             if(gamestate.State != States.Licitation)
                 return gamestate;
+            var qs = QuestionsSet.Current;
+
+            if (qs.Questions[CategoryName].Where(q => q.Used == false).Count() == 0)
+            {
+                MessageBox.Show("Nie ma już pytań w tej kategorii");
+                return gamestate;
+            }
+
             updateAllPoints(gamestate);
             gamestate.State = States.Question;
             gamestate.CurrentTeam = WinnerIndex(gamestate);
-            gamestate = RandomQuestion(gamestate, CategoryName, QuestionsSet.Current);
+            gamestate.TimerEnabled = false;
+            gamestate = RandomQuestion(gamestate, CategoryName, qs);
+            gamestate.Question.Used = true;
             gamestate.Timer = 60;
             gamestate.TimerEnabled = true;
             return gamestate;
@@ -126,6 +137,7 @@ namespace AwanturaLib
             if(gamestate.State != States.Licitation)
                 return gamestate;
             updateAllPoints(gamestate);
+            gamestate.TimerEnabled = false;
             gamestate = AssignHint(gamestate, WinnerIndex(gamestate));
             gamestate.State = States.Idle;
             return gamestate;
@@ -135,6 +147,7 @@ namespace AwanturaLib
         //QUESTION
         public GameState RandomQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
         {
+           
             gamestate.Question = qs.Questions[CategoryName].Where(q => q.Used == false)
                 .TakeRandom(Random);
             return gamestate;
@@ -290,6 +303,9 @@ namespace AwanturaLib
 
         public GameState RemoveCategory(GameState gamestate, string categoryName)
         {
+            if (gamestate.OneOnOneCategories.Count(x => x.Value == true) == 1) //jeśli jest jedna aktywna kategoria to jej nie usuwamy ;)
+                return gamestate;
+
             gamestate.OneOnOneCategories[categoryName] = false;
             return gamestate;
         }
