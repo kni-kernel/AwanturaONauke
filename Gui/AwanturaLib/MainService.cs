@@ -305,7 +305,7 @@ namespace AwanturaLib
             do
                 {
                     var category = QuestionsSet.Current.Questions.Keys.ToArray().TakeRandom(rand);
-                if(gamestate.OneOnOneCategories.ContainsKey(category))
+                if(gamestate.OneOnOneCategories.ContainsKey(category) == false)
                     {
                         gamestate.OneOnOneCategories.Add(category, true);
                    }
