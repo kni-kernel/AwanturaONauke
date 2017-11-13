@@ -25,6 +25,13 @@ component('question', {
       var question = gs.Question;
       self.ToWin = gs.Licitation.Pool;
       self.Question = question.Content;
+      self.MasterEnabled = false;
+      if($rootScope.master === true)
+      {
+        console.log("Master on!");
+        self.MasterEnabled = true;
+        self.Answer = question.Tip1;
+      }
       var hints = [];
       hints.push(question.Tip1);
       hints.push(question.Tip2);

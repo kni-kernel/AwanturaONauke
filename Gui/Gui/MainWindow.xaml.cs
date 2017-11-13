@@ -63,7 +63,11 @@ namespace Gui
                 lock (VM)
                 {
                     VM.Timer--;
-                    GS = mainService.SetTimer(GS, VM.Timer, true);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        GS = mainService.SetTimer(GS, VM.Timer, true);
+                    });
+                    
                     webService.UpdateGameState(GS);
                 }
         }

@@ -38,7 +38,17 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
 ]);
 
 app.run(function ($rootScope, $timeout, $sessionStorage) {
+  $rootScope.onReceive = function () {};
+  $rootScope.started = false;
   $rootScope.AoNListen = function ($http, timeoutTime, onReceive) {
+    $rootScope.onReceive = onReceive;
+    if ($rootScope.started === false) {
+      $rootScope.AoNListenMy($http, timeoutTime, onReceive);
+      $rootScope.started = true;
+    }
+
+  }
+  $rootScope.AoNListenMy = function ($http, timeoutTime, onReceive) {
     $timeout(function () {
 
       function setURL(url) {
@@ -47,7 +57,6 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
             onReceive();
         } else
           window.location.href = url;
-
       }
 
       var ip = window.location.hostname;
@@ -82,10 +91,10 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         timeout: 4000
       }).then(data => {
         parseResponse(data.data);
-        $rootScope.AoNListen($http, 1500, onReceive);
+        $rootScope.AoNListenMy($http, 1500, $rootScope.onReceive);
       }, data => {
         console.log('error');
-        $rootScope.AoNListen($http, 2500, onReceive);
+        $rootScope.AoNListenMy($http, 2500, $rootScope.onReceive);
         //console.log(data);
         //parseResponse(data.data);
       });
