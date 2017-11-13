@@ -1,13 +1,22 @@
 win-score
 {
     @extend question;
-    .top
+    
+}
+
+win-state
+{
+    win-score
     {
-        text-align:center;
-    }
-    .bottom
-    {
-        min-height:auto;
-        padding:3rem 1rem;
+        .top
+        {
+            text-align:center;
+        }
+        .bottom
+        {
+            min-height:auto;
+            padding:1rem 1rem !important;
+            font-size: 20vh !important;
+        }
     }
 }

@@ -134,12 +134,13 @@ question .inner, win-score .inner {
     display: inline-block;
     width: 40vw; }
 
-win-score .top {
+win-state win-score .top {
   text-align: center; }
 
-win-score .bottom {
+win-state win-score .bottom {
   min-height: auto;
-  padding: 3rem 1rem; }
+  padding: 1rem 1rem !important;
+  font-size: 20vh !important; }
 
 one-state one-on-one .category {
   width: 100%;
