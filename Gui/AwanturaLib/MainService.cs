@@ -121,7 +121,7 @@ namespace AwanturaLib
             if(gamestate.State != States.Licitation)
                 return gamestate;
             updateAllPoints(gamestate);
-            gamestate = AssignHint(gamestate, WinnerIndex(gamestate));
+            gamestate = AssignHint(gamestate);
             gamestate.State = States.Idle;
             return gamestate;
         }
@@ -187,9 +187,9 @@ namespace AwanturaLib
         }
 
 
-        public GameState AssignHint(GameState gamestate, int Index)
+        public GameState AssignHint(GameState gamestate)
         {
-            gamestate.Teams[Index].Hints += 1;
+            gamestate.Teams[gamestate.CurrentTeam].Hints += 1;
             gamestate.State = States.Idle;
             return gamestate;
         }

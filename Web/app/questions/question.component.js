@@ -21,31 +21,31 @@ component('question', {
     initFromGS(gs);
 
     function initFromGS(gs) {
-        self.init = true;
-        var question = gs.Question;
-        self.ToWin = gs.Licitation.Pool;
-        self.Question = question.Content;
-        var hints = [];
-        hints.push(question.Tip1);
-        hints.push(question.Tip2);
-        hints.push(question.Tip3);
-        hints.push(question.Tip4);
-        
+      self.init = true;
+      var question = gs.Question;
+      self.ToWin = gs.Licitation.Pool;
+      self.Question = question.Content;
+      var hints = [];
+      hints.push(question.Tip1);
+      hints.push(question.Tip2);
+      hints.push(question.Tip3);
+      hints.push(question.Tip4);
 
-        self.hintEnabled = gs.State == 4;
-        self.HintA = hints[0];
-        self.HintB = hints[1];
-        self.HintC = hints[2];
-        self.HintD = hints[3];
 
-        self.Time = gs.Timer;
-        if(self.Time <= 0)
+      self.hintEnabled = gs.State == 4;
+      self.HintA = hints[0];
+      self.HintB = hints[1];
+      self.HintC = hints[2];
+      self.HintD = hints[3];
+
+      self.Time = gs.Timer;
+      if (self.Time <= 0)
         self.Time = "Koniec czasu!";
-
+      self.Class = gs.Teams[gs.CurrentTeam].ClassName;
 
     };
     this.QuestionNumber = 6;
-    this.Class = "black";
+
 
   }
 });

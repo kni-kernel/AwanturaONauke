@@ -34,16 +34,16 @@ component('score', {
 
         var team = gs.Teams[i];
         if (team != null && team.isPlaying) {
-          var team = {
-            Score: (team.Points > 0 ? team.Points : "-"), //;// + " " + team.Hints,
+          var vmTeam = {
+            Score: (team.Points > 200 ? team.Points : "-"), //;// + " " + team.Hints,
             Enabled: team.isPlaying,
             Name: team.Name,
             Class: "teamScore " + team.ClassName
           };
 
-          if (gs.State == 1)
-            team.Score -= gs.Licitation.Bid[i];
-          self.Teams.push(team);
+          if (gs.State == 1 && team.Points > 200)
+          vmTeam.Score -= gs.Licitation.Bid[i];
+          self.Teams.push(vmTeam);
         }
       }
 
@@ -62,7 +62,7 @@ component('score', {
           if (team != null && team.isPlaying)
             self.Auctions.push({
               Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
-              Score: gs.Licitation.Bid[i]
+              Score: team.Points > 200 ? gs.Licitation.Bid[i] : "-"
             });
         }
       } else
