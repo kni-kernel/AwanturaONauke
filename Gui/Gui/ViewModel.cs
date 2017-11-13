@@ -1,6 +1,7 @@
 ﻿using AwanturaLib;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
@@ -63,119 +64,41 @@ namespace Gui
 
 
         //nazwy zespolow
-        private string team1; public string Team1
-        {
-            get { return team1; }
-            set { team1 = value; OnPropertyChanged(); }
-        }
-        private string team2; public string Team2
-        {
-            get { return team2; }
-            set { team2 = value; OnPropertyChanged(); }
-        }
-        private string team3; public string Team3
-        {
-            get { return team3; }
-            set { team3 = value; OnPropertyChanged(); }
-        }
-        private string team4; public string Team4
-        {
-            get { return team4; }
-            set { team4 = value; OnPropertyChanged(); }
-        }
-        private string team5; public string Team5
-        {
-            get { return team5; }
-            set { team5 = value; OnPropertyChanged(); }
-        }
 
-        // druzyny w grze CHECKBOX
-        private bool ingame1; public bool inGame1
+        public ObservableCollection<string> TeamNames { get; set; } = new ObservableCollection<string>()
         {
-            get { return ingame1; }
-            set { ingame1 = value; OnPropertyChanged(); }
-        }
-        private bool ingame2; public bool inGame2
-        {
-            get { return ingame2; }
-            set { ingame2 = value; OnPropertyChanged(); }
-        }
-        private bool ingame3; public bool inGame3
-        {
-            get { return ingame3; }
-            set { ingame3 = value; OnPropertyChanged(); }
-        }
-        private bool ingame4; public bool inGame4
-        {
-            get { return ingame4; }
-            set { ingame4 = value; OnPropertyChanged(); }
-        }
-        private bool ingame5; public bool inGame5
-        {
-            get { return ingame5; }
-            set { ingame5 = value; OnPropertyChanged(); }
-        }
+            "","","","",""
+        };
 
-        // stan kont druzyn
-        private int saldo1; public int Saldo1
+        public ObservableCollection<bool> ArePlaying { get; set; } = new ObservableCollection<bool>()
         {
-            get { return saldo1; }
-            set { saldo1 = value; OnPropertyChanged(); }
-        }
-        private int saldo2; public int Saldo2
-        {
-            get { return saldo2; }
-            set { saldo2 = value; OnPropertyChanged(); }
-        }
-        private int saldo3; public int Saldo3
-        {
-            get { return saldo3; }
-            set { saldo3 = value; OnPropertyChanged(); }
-        }
-        private int saldo4; public int Saldo4
-        {
-            get { return saldo4; }
-            set { saldo4 = value; OnPropertyChanged(); }
-        }
-        private int saldo5; public int Saldo5
-        {
-            get { return saldo5; }
-            set { saldo5 = value; OnPropertyChanged(); }
-        }
+            true, true, true, true, true
+        };
 
-        // oferty w licytacji
-        private int bid1; public int Bid1
-        {
-            get { return bid1; }
-            set { bid1 = value; OnPropertyChanged(); }
-        }
-        private int bid2; public int Bid2
-        {
-            get { return bid2; }
-            set { bid2 = value; OnPropertyChanged(); }
-        }
-        private int bid3; public int Bid3
-        {
-            get { return bid3; }
-            set { bid3 = value; OnPropertyChanged(); }
-        }
-        private int bid4; public int Bid4
-        {
-            get { return bid4; }
-            set { bid4 = value; OnPropertyChanged(); }
-        }
-        private int bid5; public int Bid5
-        {
-            get { return bid5; }
-            set { bid5 = value; OnPropertyChanged(); }
-        }
+        public ObservableCollection<int> Points { get; set; } = new ObservableCollection<int>()
+            {
+            0,0,0,0,0
+        };
+
+        public string State { get; set; }
+
+
+        public ObservableCollection<int> Bids { get; set; } = new ObservableCollection<int>()
+            {
+            0,0,0,0,0
+        };
+
 
         //pula do wygrania
-        private int sumbids; public int SumBids
+
+        private int pool;
+
+        public int Pool
         {
-            get { return sumbids; }
-            set { sumbids = value; OnPropertyChanged(); }
+            get { return pool; }
+            set { pool = value; OnPropertyChanged(); }
         }
+
 
         //podana odpowiedz przez zespol
         private string answer; public string Answer

@@ -60,12 +60,35 @@
 /******/ 	__webpack_require__.p = "";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 632);
+/******/ 	return __webpack_require__(__webpack_require__.s = 0);
 /******/ })
 /************************************************************************/
-/******/ ({
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
 
-/***/ 1372:
+//libs
+//require("express");
+// require("./bower_components/fs/lib/fs.js")
+// require("../node_modules/steal-tools/index.js")
+// require("./bower_components/express/index.js")
+
+
+
+__webpack_require__(1);
+__webpack_require__(2);
+__webpack_require__(3);
+__webpack_require__(5);
+__webpack_require__(7);
+__webpack_require__(9);
+__webpack_require__(11);
+__webpack_require__(13);
+__webpack_require__(15);
+__webpack_require__(17);
+
+
+/***/ }),
+/* 1 */
 /***/ (function(module, exports) {
 
 // Define the `phonecatApp` module
@@ -167,17 +190,34 @@ app.run(function ($rootScope, $interval, $sessionStorage) {
 });
 
 /***/ }),
+/* 2 */
+/***/ (function(module, exports) {
 
-/***/ 1373:
+angular.module('initState', []);
+
+var app = 
+
+angular.
+module('initState').
+component('initState', {
+  templateUrl: "states/init.template.html",
+
+  controller: function initStateController($http, $rootScope, $scope) {
+    console.log('init');
+
+  }
+});
+
+/***/ }),
+/* 3 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('idleState', ["score"]);
 
-__webpack_require__(1374);
+__webpack_require__(4);
 
 /***/ }),
-
-/***/ 1374:
+/* 4 */
 /***/ (function(module, exports) {
 
 var app = 
@@ -193,17 +233,15 @@ component('idleState', {
 });
 
 /***/ }),
-
-/***/ 1375:
+/* 5 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('questionState', ["question"]);
 
-__webpack_require__(1376);
+__webpack_require__(6);
 
 /***/ }),
-
-/***/ 1376:
+/* 6 */
 /***/ (function(module, exports) {
 
 angular.
@@ -217,17 +255,15 @@ component('questionState', {
 });
 
 /***/ }),
-
-/***/ 1377:
+/* 7 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('winState', ["winScore"]);
 
-__webpack_require__(1378);
+__webpack_require__(8);
 
 /***/ }),
-
-/***/ 1378:
+/* 8 */
 /***/ (function(module, exports) {
 
 angular.
@@ -241,24 +277,21 @@ component('winState', {
 });
 
 /***/ }),
-
-/***/ 1379:
+/* 9 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('oneState', ["oneOnOne"]);
 
-__webpack_require__(1380);
+__webpack_require__(10);
 
 /***/ }),
-
-/***/ 1380:
+/* 10 */
 /***/ (function(module, exports) {
 
 angular.
 module('oneState').
 component('oneState', {
   templateUrl: "states/one.template.html",
-<<<<<<< HEAD
 
   controller: function OneStateController($http, $rootScope) {
     $rootScope.AoNListen($http);
@@ -266,39 +299,15 @@ component('oneState', {
 });
 
 /***/ }),
-
-/***/ 1381:
+/* 11 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('score', []);
 
-__webpack_require__(1382);
+__webpack_require__(12);
 
 /***/ }),
-
-/***/ 1382:
-/***/ (function(module, exports) {
-
-throw new Error("Module parse failed: Unexpected token (41:54)\nYou may need an appropriate loader to handle this file type.\n|         if(team != null && team.isPlaying)\r\n|         self.Teams.push({\r\n|           Score: (team.Points > 0 ? team.Points : \"-\");// + \" \" + team.Hints,\r\n|           Enabled: team.isPlaying,\r\n|           Name: team.Name,\r");
-=======
-
-  controller: function OneStateController($http, $rootScope) {
-    $rootScope.AoNListen($http);
-  }
-});
-
-/***/ }),
-
-/***/ 1381:
-/***/ (function(module, exports, __webpack_require__) {
-
-angular.module('score', []);
-
-__webpack_require__(1382);
-
-/***/ }),
-
-/***/ 1382:
+/* 12 */
 /***/ (function(module, exports) {
 
 angular.
@@ -307,7 +316,7 @@ component('score', {
   templateUrl: "score/score.template.html",
 
   controller: function ScoreController($rootScope, $sessionStorage, $scope, $http) {
-    
+
     var gs = $sessionStorage.GameState;
     var self = this;
     self.Teams = [];
@@ -315,103 +324,100 @@ component('score', {
     self.isAuction = false;
 
     console.log($scope);
-    $rootScope.AoNListen($http, () =>  {
-      if(!this.init)
+    $rootScope.AoNListen($http, () => {
+      if (!this.init)
         window.location.reload();
-        initFromGS($sessionStorage.GameState);
-        //$rootScope.$$phase || $rootScope.$apply();
+      initFromGS($sessionStorage.GameState);
+      //$rootScope.$$phase || $rootScope.$apply();
     });
 
-    if(gs == null)
-    {
+    if (gs == null) {
       return;
     }
     initFromGS(gs);
-    function initFromGS(gs)
-    {
+
+    function initFromGS(gs) {
       self.init = true;
       self.Teams = [];
       self.Auctions = [];
       self.isAuction = false;
-      
-  
-      for(let i = 0;i < gs.Teams.length; ++i)
-      {
-  
+
+
+      for (let i = 0; i < gs.Teams.length; ++i) {
+
         var team = gs.Teams[i];
-        if(team != null && team.isPlaying)
-        self.Teams.push({
-          Score: (team.Points > 0 ? team.Points : "-"),//;// + " " + team.Hints,
-          Enabled: team.isPlaying,
-          Name: team.Name,
-          Class: "teamScore " + team.ClassName
-        });
+        if (team != null && team.isPlaying) {
+          var team = {
+            Score: (team.Points > 0 ? team.Points : "-"), //;// + " " + team.Hints,
+            Enabled: team.isPlaying,
+            Name: team.Name,
+            Class: "teamScore " + team.ClassName
+          };
+
+          if (gs.State == 1)
+            team.Score -= gs.Licitation.Bid[i];
+          self.Teams.push(team);
+        }
       }
-  
+
       self.Teams.push({
         Score: gs.Pool,
         Enabled: true,
         Name: "Pula",
         Class: "pool teamScore"
       });
-  
-      if(gs.State == 1)
-      {
+
+      if (gs.State == 1) {
         self.isAuction = true;
 
-        for(let i = 0;i < gs.Teams.length; ++i)
-        {
+        for (let i = 0; i < gs.Teams.length; ++i) {
           var team = gs.Teams[i];
-          if(team != null && team.isPlaying)
-          self.Auctions.push({
-            Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
-            Score:gs.Licitation.Bid[i]
-        });
+          if (team != null && team.isPlaying)
+            self.Auctions.push({
+              Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
+              Score: gs.Licitation.Bid[i]
+            });
         }
-      }
-      else
-      self.isAuction = false;
-  
-      
-  
-  
-   
-      
-  
-  
+      } else
+        self.isAuction = false;
+
+
+
+
+
+
+
+
       self.teamScoreStyle = {
         width: 1.0 / self.Teams.length * 100.0 + "%",
-        display:"inline-block"
+        display: "inline-block"
       }
-  
+
       self.teamAuctionStyle = {
         width: 1.0 / self.Teams.length * 100.0 + "%",
-        display:"inline-flex"
+        display: "inline-flex"
       }
-  
+
       self.auctionStyle = {
         width: ((1.0 / self.Teams.length * 100.0) * (self.Teams.length - 1)) + "%",
       };
     }
 
-    
-    
+
+
   }
 });
->>>>>>> 3d47c2a08573a2506103bccf37cb9050fbf292f2
 
 /***/ }),
-
-/***/ 1383:
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('question', []);
 
-__webpack_require__(1384);
+__webpack_require__(14);
 
 /***/ }),
-
-/***/ 1384:
+/* 14 */
 /***/ (function(module, exports) {
 
 angular.
@@ -437,17 +443,15 @@ component('question', {
 });
 
 /***/ }),
-
-/***/ 1385:
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('winScore', []);
 
-__webpack_require__(1386);
+__webpack_require__(16);
 
 /***/ }),
-
-/***/ 1386:
+/* 16 */
 /***/ (function(module, exports) {
 
 angular.
@@ -462,17 +466,15 @@ component('winScore', {
 });
 
 /***/ }),
-
-/***/ 1387:
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('oneOnOne', []);
 
-__webpack_require__(1388);
+__webpack_require__(18);
 
 /***/ }),
-
-/***/ 1388:
+/* 18 */
 /***/ (function(module, exports) {
 
 angular.
@@ -534,51 +536,5 @@ component('oneOnOne', {
   }
 });
 
-/***/ }),
-
-/***/ 1412:
-/***/ (function(module, exports) {
-
-angular.module('initState', []);
-
-var app = 
-
-angular.
-module('initState').
-component('initState', {
-  templateUrl: "states/init.template.html",
-
-  controller: function initStateController($http, $rootScope, $scope) {
-    console.log('init');
-
-  }
-});
-
-/***/ }),
-
-/***/ 632:
-/***/ (function(module, exports, __webpack_require__) {
-
-//libs
-//require("express");
-// require("./bower_components/fs/lib/fs.js")
-// require("../node_modules/steal-tools/index.js")
-// require("./bower_components/express/index.js")
-
-
-
-__webpack_require__(1372);
-__webpack_require__(1412);
-__webpack_require__(1373);
-__webpack_require__(1375);
-__webpack_require__(1377);
-__webpack_require__(1379);
-__webpack_require__(1381);
-__webpack_require__(1383);
-__webpack_require__(1385);
-__webpack_require__(1387);
-
-
 /***/ })
-
-/******/ });
+/******/ ]);

@@ -4,7 +4,7 @@ component('score', {
   templateUrl: "score/score.template.html",
 
   controller: function ScoreController($rootScope, $sessionStorage, $scope, $http) {
-    
+
     var gs = $sessionStorage.GameState;
     var self = this;
     self.Teams = [];
@@ -12,90 +12,86 @@ component('score', {
     self.isAuction = false;
 
     console.log($scope);
-    $rootScope.AoNListen($http, () =>  {
-      if(!this.init)
+    $rootScope.AoNListen($http, () => {
+      if (!this.init)
         window.location.reload();
-        initFromGS($sessionStorage.GameState);
-        //$rootScope.$$phase || $rootScope.$apply();
+      initFromGS($sessionStorage.GameState);
+      //$rootScope.$$phase || $rootScope.$apply();
     });
 
-    if(gs == null)
-    {
+    if (gs == null) {
       return;
     }
     initFromGS(gs);
-    function initFromGS(gs)
-    {
+
+    function initFromGS(gs) {
       self.init = true;
       self.Teams = [];
       self.Auctions = [];
       self.isAuction = false;
-      
-  
-      for(let i = 0;i < gs.Teams.length; ++i)
-      {
-  
+
+
+      for (let i = 0; i < gs.Teams.length; ++i) {
+
         var team = gs.Teams[i];
-        if(team != null && team.isPlaying)
-        self.Teams.push({
-<<<<<<< HEAD
-          Score: (team.Points > 0 ? team.Points : "-");// + " " + team.Hints,
-=======
-          Score: (team.Points > 0 ? team.Points : "-"),//;// + " " + team.Hints,
->>>>>>> 3d47c2a08573a2506103bccf37cb9050fbf292f2
-          Enabled: team.isPlaying,
-          Name: team.Name,
-          Class: "teamScore " + team.ClassName
-        });
+        if (team != null && team.isPlaying) {
+          var team = {
+            Score: (team.Points > 0 ? team.Points : "-"), //;// + " " + team.Hints,
+            Enabled: team.isPlaying,
+            Name: team.Name,
+            Class: "teamScore " + team.ClassName
+          };
+
+          if (gs.State == 1)
+            team.Score -= gs.Licitation.Bid[i];
+          self.Teams.push(team);
+        }
       }
-  
+
       self.Teams.push({
         Score: gs.Pool,
         Enabled: true,
         Name: "Pula",
         Class: "pool teamScore"
       });
-  
-      if(gs.State == 1)
-      {
+
+      if (gs.State == 1) {
         self.isAuction = true;
 
-        for(let i = 0;i < gs.Teams.length; ++i)
-        {
+        for (let i = 0; i < gs.Teams.length; ++i) {
           var team = gs.Teams[i];
-          if(team != null && team.isPlaying)
-          self.Auctions.push({
-            Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
-            Score:gs.Licitation.Bid[i]
-        });
+          if (team != null && team.isPlaying)
+            self.Auctions.push({
+              Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
+              Score: gs.Licitation.Bid[i]
+            });
         }
-      }
-      else
-      self.isAuction = false;
-  
-      
-  
-  
-   
-      
-  
-  
+      } else
+        self.isAuction = false;
+
+
+
+
+
+
+
+
       self.teamScoreStyle = {
         width: 1.0 / self.Teams.length * 100.0 + "%",
-        display:"inline-block"
+        display: "inline-block"
       }
-  
+
       self.teamAuctionStyle = {
         width: 1.0 / self.Teams.length * 100.0 + "%",
-        display:"inline-flex"
+        display: "inline-flex"
       }
-  
+
       self.auctionStyle = {
         width: ((1.0 / self.Teams.length * 100.0) * (self.Teams.length - 1)) + "%",
       };
     }
 
-    
-    
+
+
   }
 });
