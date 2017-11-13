@@ -286,7 +286,7 @@ namespace AwanturaLib
         public GameState ToOneOnOne(GameState gamestate)
         {
             gamestate.State = States.OneOnOne;
-
+            gamestate = OneOnOneCategories(gamestate, QuestionsSet.Current);
             return gamestate;
         }
 
