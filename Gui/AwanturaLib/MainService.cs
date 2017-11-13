@@ -1,4 +1,4 @@
-﻿﻿using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -286,6 +286,7 @@ namespace AwanturaLib
         public GameState ToOneOnOne(GameState gamestate)
         {
             gamestate.State = States.OneOnOne;
+
             return gamestate;
         }
 
@@ -300,10 +301,16 @@ namespace AwanturaLib
         public GameState OneOnOneCategories(GameState gamestate, int numberOfCategories, QuestionsSet questionset)
         {
             gamestate.OneOnOneCategories = new Dictionary<string, bool>();
-            for (int i = 0; i < numberOfCategories; i++)
-            {
-                gamestate.OneOnOneCategories.Add(questionset.Questions.Keys.ToArray().TakeRandom(Random), true);
-            }
+            var rand = new Random();
+            do
+                {
+                    var category = QuestionsSet.Current.Questions.Keys.ToArray().TakeRandom(rand);
+                if(gamestate.OneOnOneCategories.ContainsKey(category))
+                    {
+                        gamestate.OneOnOneCategories.Add(category, true);
+                   }
+               } while(gamestate.OneOnOneCategories.Keys.Count < 9);
+            
             return gamestate;
         }
 
