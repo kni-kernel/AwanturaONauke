@@ -142,11 +142,8 @@ namespace Gui
             var categoryName = (string)menuItem.Header;
 
             VM.ChosenCategory = categoryName;
-            //Dictionary<String, List<Question>> questions = new Dictionary<String, List<Question>>();
-            //podać nazwe kategorii i pobrać do listy List<Questions>
 
-            //wyslac wybrana kategorie do servera
-            //pobrać wylosowane pytanie
+            GS = mainService.RandomQuestion(GS, categoryName, QuestionsSet.Current);
         }
 
         private void StartLicitation(object sender, RoutedEventArgs args)
@@ -292,6 +289,33 @@ namespace Gui
                     }
                 }
             }
+        }
+
+        private void playingChecked(object sender, RoutedEventArgs e)
+        {
+            var checkBox = sender as CheckBox;
+
+            if (checkBox != null)
+            {
+                int? tag = getTeamNumberFromTag(checkBox.Tag);
+                if (tag.HasValue)
+                {
+                    GS.Teams[tag.Value].isPlaying = checkBox.IsChecked == true;
+                    UpdateALL(GS);
+                }
+            }
+        }
+
+        private int? getTeamNumberFromTag(object tag)
+        {
+            string strTag = tag as string;
+            if (strTag != null)
+            {
+                int number;
+                if (int.TryParse(strTag, out number))
+                    return number;
+            }
+            return null;
         }
     }
 }

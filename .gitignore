@@ -15,6 +15,7 @@ Piaskownica/Program.cs
 # Build results
 [Dd]ebug/
 [Rr]elease/
+/temp/*
 *_i.c
 *_p.c
 *.ilk

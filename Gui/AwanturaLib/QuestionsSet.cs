@@ -6,6 +6,17 @@ namespace AwanturaLib {
 
     [Serializable]
     public class QuestionsSet {
+        private static QuestionsSet current;
+        public static QuestionsSet Current
+        {
+            get
+            {
+                if (current != null)
+                    return current;
+
+                return current = new StorageService().DeserializeFromXMLFile<QuestionsSet>("pytania.xml");
+            }
+        }
 
         public Dictionary<String, List<Question>> Questions { get; set; }
 
