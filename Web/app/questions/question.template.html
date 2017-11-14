@@ -9,9 +9,13 @@
 
     </div>
     <div ng-class="$ctrl.Class" class="bottom">
-        <div class="centerHorizontalFlex centerVerticalFlex">
+        <div class="centerHorizontalFlex centerVerticalFlex" >
             {{$ctrl.Question}}
+            
         </div>
+        <div ng-if="$ctrl.MasterEnabled">
+                Odpowiedź : {{$ctrl.Answer}}
+            </div>
         <div class="hints" ng-if="$ctrl.hintEnabled">
             <div class="row">
                 <div class="hint">

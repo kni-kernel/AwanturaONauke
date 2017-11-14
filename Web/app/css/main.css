@@ -167,3 +167,10 @@ one-state one-on-one .category.disabled {
 .centerHorizontalFlex {
   display: flex;
   justify-content: center; }
+
+.logo {
+  position: absolute;
+  height: 20vh;
+  width: 20vh;
+  top: 0;
+  left: 0; }

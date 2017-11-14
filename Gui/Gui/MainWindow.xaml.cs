@@ -63,7 +63,11 @@ namespace Gui
                 lock (VM)
                 {
                     VM.Timer--;
-                    GS = mainService.SetTimer(GS, VM.Timer, true);
+                    this.Dispatcher.Invoke(() =>
+                    {
+                        GS = mainService.SetTimer(GS, VM.Timer, true);
+                    });
+
                     webService.UpdateGameState(GS);
                 }
         }
@@ -73,7 +77,8 @@ namespace Gui
             /// do stworzenia menu z kategoriami na starcie
 
             String[] categories = mainService.GetCategoriesNames();
-            foreach(var category in categories) {
+            foreach (var category in categories)
+            {
                 VM.Categories.Add(category, true);
             }
 
@@ -97,6 +102,13 @@ namespace Gui
             VM.Pool = GS.Pool;
             VM.Timer = gameState.Timer;
             VM.TimerEnabled = gameState.TimerEnabled;
+            VM.Question = gameState?.Question?.Content;
+            VM.Hint1 = gameState?.Question?.Tip1;
+            VM.Hint2 = gameState?.Question?.Tip2;
+            VM.Hint3 = gameState?.Question?.Tip3;
+            VM.Hint4 = gameState?.Question?.Tip4;
+
+
 
             for (int i = 0; i < 5; ++i)
             {
@@ -221,7 +233,7 @@ namespace Gui
         private void StartMasters(object sender, RoutedEventArgs args)
         {
             UpdateALL(mainService.StartSecondRound(GS, 10000));
-            
+
         }
 
         private void UpdateALL(GameState GS)
@@ -242,7 +254,15 @@ namespace Gui
         // wykorzystaj podpowiedź
         private void useHintButton_Click(object sender, RoutedEventArgs e)
         {
-
+            int price;
+            string txt = (HintCost)?.Text;
+            if (txt != null)
+            {
+                if (int.TryParse(txt, out price) && price > 0)
+                {
+                    GS = mainService.BuyHint(GS, price);
+                }
+            }
             /// button WEŹ PODPOWIEDŹ
             /// z tym że musi sprawdzić czy drużyna może użyć za darmo podpowiedzi
             /// albo poprosić o kwote do zapłaty
@@ -251,7 +271,7 @@ namespace Gui
         private void startTimeButton_Click(object sender, RoutedEventArgs e)
         {
             VM.TimerEnabled = true;
-            GS = mainService.SetTimer(GS, VM.Timer, false);
+            GS = mainService.SetTimer(GS, VM.Timer, true);
         }
 
         private void stopTimeButton_Click(object sender, RoutedEventArgs e)
@@ -296,7 +316,7 @@ namespace Gui
             tb.Focus();
             string text = (string)tb.Text;
         }
-        
+
         private void SetAnswerToSend(TextBox tb)
         {
 
@@ -319,12 +339,15 @@ namespace Gui
             }
         }
 
-        private void KeyUpTeam(object sender, KeyEventArgs e) {
-            if (e.Key == Key.Enter) {
+        private void KeyUpTeam(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
                 int teamNumber;
                 string tag = (sender as TextBox)?.Tag as string;
 
-                if (int.TryParse(tag, out teamNumber)) {
+                if (int.TryParse(tag, out teamNumber))
+                {
                     mainService.setTeamName(VM.gameState, (sender as TextBox)?.Text, teamNumber);
                     //VM.gameState.Teams[teamNumber].Name = (sender as TextBox)?.Text;
                     ImportGameState(VM.gameState);
@@ -343,7 +366,7 @@ namespace Gui
                 {
                     int teamNumber;
                     int bid;
-                    
+
                     if (int.TryParse(txt, out teamNumber) && int.TryParse(tb.Text as string, out bid))
                     {
                         bid *= 100;

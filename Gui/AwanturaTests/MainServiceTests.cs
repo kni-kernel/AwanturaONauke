@@ -88,6 +88,7 @@ namespace AwanturaTests
 
             //TODO: Fin!
         }
+
         private GameState CreateSampleGamestate()
         {
             return new GameState()

@@ -81,6 +81,7 @@ __webpack_require__(3);
 __webpack_require__(5);
 __webpack_require__(7);
 __webpack_require__(9);
+__webpack_require__(19);
 __webpack_require__(11);
 __webpack_require__(13);
 __webpack_require__(15);
@@ -101,7 +102,8 @@ var app = angular.module('AoN', [
   "oneState",
   "initState",
   "ngRoute",
-  "ngStorage"
+  "ngStorage",
+  "logo"
 ]);
 
 angular.
@@ -131,7 +133,19 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
 ]);
 
 app.run(function ($rootScope, $timeout, $sessionStorage) {
+  $rootScope.onReceive = function () {};
+  $rootScope.started = false;
   $rootScope.AoNListen = function ($http, timeoutTime, onReceive) {
+    $rootScope.onReceive = onReceive;
+    if ($rootScope.started === false) {
+      $rootScope.AoNListenMy($http, timeoutTime, onReceive);
+      $rootScope.started = true;
+    }
+
+  }
+
+
+  $rootScope.AoNListenMy = function ($http, timeoutTime, onReceive) {
     $timeout(function () {
 
       function setURL(url) {
@@ -140,14 +154,13 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
             onReceive();
         } else
           window.location.href = url;
-
       }
 
       var ip = window.location.hostname;
       var address = "http://" + ip + ":8002";
 
       function parseResponse(data) {
-        console.log(data);
+      //  console.log(data);
         if (data == null || data.Pool == null) {
           return;
         }
@@ -175,10 +188,10 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         timeout: 4000
       }).then(data => {
         parseResponse(data.data);
-        $rootScope.AoNListen($http, 1500, onReceive);
+        $rootScope.AoNListenMy($http, 1500, $rootScope.onReceive);
       }, data => {
         console.log('error');
-        $rootScope.AoNListen($http, 2500, onReceive);
+        $rootScope.AoNListenMy($http, 2500, $rootScope.onReceive);
         //console.log(data);
         //parseResponse(data.data);
       });
@@ -200,8 +213,9 @@ component('initState', {
   templateUrl: "states/init.template.html",
 
   controller: function initStateController($http, $rootScope, $scope) {
-    console.log('init');
-
+    $rootScope.master = true;
+    $rootScope.AoNListen($http, 1000, () => {
+    });
   }
 });
 
@@ -436,6 +450,26 @@ component('question', {
       return;
     }
 
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+    
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+    
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+    
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+    
+      return array;
+    }
+    
+
     initFromGS(gs);
 
     function initFromGS(gs) {
@@ -443,28 +477,38 @@ component('question', {
       var question = gs.Question;
       self.ToWin = gs.Licitation.Pool;
       self.Question = question.Content;
-      var hints = [];
-      hints.push(question.Tip1);
-      hints.push(question.Tip2);
-      hints.push(question.Tip3);
-      hints.push(question.Tip4);
+      self.MasterEnabled = false;
+      if($rootScope.master === true)
+      {
+        console.log("Master on!");
+        self.MasterEnabled = true;
+        self.Answer = question.Tip1;
+      }
+      if(self.hintEnabled !== true)
+      {
+        var hints = [];
+        hints.push(question.Tip1);
+        hints.push(question.Tip2);
+        hints.push(question.Tip3);
+        hints.push(question.Tip4);
 
+        hints = shuffle(hints);
 
-      self.hintEnabled = gs.State == 4;
-      self.HintA = hints[0];
-      self.HintB = hints[1];
-      self.HintC = hints[2];
-      self.HintD = hints[3];
+        self.hintEnabled = gs.State == 4;
+        self.HintA = hints[0];
+        self.HintB = hints[1];
+        self.HintC = hints[2];
+        self.HintD = hints[3];
+      }
 
       self.Time = gs.Timer;
       if (self.Time <= 0)
         self.Time = "Koniec czasu!";
       self.Class = gs.Teams[gs.CurrentTeam].ClassName;
 
+      self.QuestionNumber = gs.QuestionCount;
+
     };
-    this.QuestionNumber = 6;
-
-
   }
 });
 
@@ -552,23 +596,111 @@ component('oneOnOne', {
         function initFromGS(gs) {
             self.Categories = [];
             self.init = true;
-            for(let i = 0; i < gs.OneOnOneCategories.length; ++i)
-            {
-                var cat = gs.OneOnOneCategories[i];
-                
+
+            for (var property in gs.OneOnOneCategories) {
+              if (gs.OneOnOneCategories.hasOwnProperty(property)) {
+                var cat =
+                {
+                  Key : property,
+                  Value : gs.OneOnOneCategories[property]
+                };
                 var item = 
                 {
                     Name: cat.Key,
                     Class: (cat.Value == "true" || cat.Value == "True" || cat.Value == true) ? "enabled" :"disabled"
                 };
-
                 self.Categories.push(item);
-            }
+              }
+          }
             
     
         };
     
       }
+});
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+angular.module('logo', []);
+
+angular.
+module('logo').
+component('logo', {
+    templateUrl: "logo/logo.template.html",
+
+    controller: function LogoController($rootScope, $sessionStorage, $scope, $interval, $timeout) {
+        var self = this;
+        var state = 0; //0 rising, 1 plateau, 2 - falling
+        var temp = 0;
+        var current = 0;
+        var alpha = 0.0;
+
+        self.kernel =
+        {
+            opacity: 0.0
+        };
+        self.wfiis = 
+        {
+            opacity: 0.0
+        };
+        self.agh = 
+        {
+            opacity : 0.0
+        };
+        
+        $timeout(function()
+    {
+        $interval(function () {
+            var alphas = [0.0,0.0,0.0];
+                if (state == 0) {
+                    alpha += 0.05;
+                    if (alpha >= 1.0) {
+                        state = 1;
+                        alpha = 1.0;
+                    }
+
+                }
+            if (state == 1) {
+                if (temp >= 60) {
+                    state = 2;
+                    temp = 0;
+                } else
+                    ++temp;
+            }
+            if (state == 2) {
+                alpha -= 0.05;
+                if (alpha <= 0.0) {
+                    alpha = 0.0;
+                    state = 0;
+                    current = (current + 1) % 3;
+                }
+            }
+            var gs = $sessionStorage.GameState;
+
+            if(gs.State !== 2)
+                alphas[current] = alpha;
+
+            self.kernel =
+            {
+                opacity: alphas[0]
+            };
+            self.wfiis = 
+            {
+                opacity: alphas[1]
+            };
+            self.agh = 
+            {
+                opacity : alphas[2]
+            };
+            console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
+
+            
+        }, 50);
+    }, 3000);
+
+}
 });
 
 /***/ })

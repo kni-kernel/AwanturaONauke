@@ -15,6 +15,7 @@ namespace AwanturaLib
         public Dictionary<string, bool> OneOnOneCategories { get; set; }
         public int Timer { get; set; }
         public bool TimerEnabled { get; set; } = false;
+        public int QuestionCount { get; set; } = 0;
     }
 }
 
