@@ -28,7 +28,7 @@ namespace Gui
         private static WebService webService;
         public GameState GS
         {
-            get => VM.gameState;
+            get { return VM.gameState; }
             set { UpdateALL(value); }
         }
         public ViewModel VM { get; set; } = new ViewModel();
@@ -42,7 +42,7 @@ namespace Gui
             ImportCategories();
             webService = new WebService(8002);
             var gs = mainService.StartGame();
-            gs = mainService.StartFirtRound(gs);
+            gs = mainService.StartFirstRound(gs);
             ImportGameState(gs);
             webService.UpdateGameState(gs);
 

@@ -19,7 +19,7 @@ namespace ConsoleApp
             int interval = 2500;
 
             var gs = ms.StartGame();
-            gs = ms.StartFirtRound(gs);
+            gs = ms.StartFirstRound(gs);
             update(ws, interval, gs);
             gs = ms.StartLicitation(gs);
             update(ws, interval, gs);

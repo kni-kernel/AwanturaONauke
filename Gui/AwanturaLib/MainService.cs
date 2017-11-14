@@ -9,6 +9,7 @@ namespace AwanturaLib
 {
     public class MainService
     {
+        private const int DEAN_INDEX = 4; 
         public static Random Random { get; set; } = new Random();
 
         public void updateTeamPoints(GameState gamestate, int Index, int amount)
@@ -230,9 +231,9 @@ namespace AwanturaLib
         }
 
 
-        public GameState StartFirtRound(GameState gamestate)
+        public GameState StartFirstRound(GameState gamestate)
         { 
-            //without deans
+            //without dean
             foreach (var team in gamestate.Teams)
             {
                 if (team.ClassName == "black")
@@ -245,39 +246,23 @@ namespace AwanturaLib
                 team.Hints = 0;
                 team.isPlaying = true;
             }
-                return gamestate;
+            return gamestate;
         }
 
 
         public GameState StartSecondRound(GameState gamestate,  int mastersPoints)
         {
-            //the best team from first round
-            int max = gamestate.Teams[0].Points;
-            int maxindex = 0;
+            int maxValue = gamestate.Teams.Max(elem => elem.Points);
+            int countMaxValue = gamestate.Teams.Where(elem => elem.Points == maxValue).Count();
 
-            for (int i = 1; i < 4; i++)
-            {      
-               
-                if (max < gamestate.Teams[i].Points)
-                    {
-                        max = gamestate.Teams[i].Points;
-                        maxindex = i;
-                    }
-                else if (max == gamestate.Teams[i].Points)
-                    return gamestate;
-                 
-            }
+            Array.ForEach(gamestate.Teams, elem => elem.isPlaying = false);
+            if (countMaxValue > 1)
+                return gamestate;
+            int maxValueIndex = gamestate.Teams.ToList().IndexOf(gamestate.Teams.FirstOrDefault(elem => elem.Points == maxValue));
+            gamestate.Teams[maxValueIndex].isPlaying = true;
 
-            for (int i = 0; i < 4; i++)
-            {
-                gamestate.Teams[i].isPlaying = false;
-            }
-            
-            gamestate.Teams[maxindex].isPlaying = true;
-            
-            //deans
-            gamestate.Teams[4].Points = mastersPoints;
-            gamestate.Teams[4].isPlaying = true;
+            gamestate.Teams[DEAN_INDEX].Points = mastersPoints;
+            gamestate.Teams[DEAN_INDEX].isPlaying = true;
 
             return gamestate;
         }
@@ -288,6 +273,8 @@ namespace AwanturaLib
         {
             gamestate.State = States.OneOnOne;
             gamestate = OneOnOneCategories(gamestate, QuestionsSet.Current);
+            gamestate.Pool = 1000;
+            //TODO: Zdjąć kasę z obu drużyn - nie użyjesz tu licitation, bo ma domyślne 200 wartości początkowej w Poolu
             return gamestate;
         }
 
