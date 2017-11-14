@@ -38,10 +38,10 @@ namespace AwanturaLib
         }
         public GameState SetPlayingPoints(GameState gs, int amount)
         {
-            for(int i=0; i<TeamCount;i++)
+            for (int i = 0; i < TeamCount; i++)
             {
                 if (gs.Teams[i].isPlaying == true)
-                    updateTeamPoints(gs, i,amount);
+                    updateTeamPoints(gs, i, amount);
             }
             return gs;
         }
@@ -56,7 +56,7 @@ namespace AwanturaLib
 
         public GameState Bet(GameState gamestate, int index, int amount)
         {
-            if(gamestate.State == States.Licitation && amount > 0 && gamestate.Licitation.Bid.Max() < amount && gamestate.Teams[index].Points > 300)
+            if (gamestate.State == States.Licitation && amount > 0 && gamestate.Licitation.Bid.Max() < amount && gamestate.Teams[index].Points > 300)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
@@ -64,7 +64,7 @@ namespace AwanturaLib
 
         public GameState BetWithoutRestrictions(GameState gamestate, int index, int amount)
         {
-            if(gamestate.State == States.Licitation && amount > 0 && gamestate.Teams[index].Points > 300)
+            if (gamestate.State == States.Licitation && amount > 0 && gamestate.Teams[index].Points > 300)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
@@ -82,7 +82,7 @@ namespace AwanturaLib
 
         public GameState EndLicitationToBlackBox(GameState gamestate)
         {
-            if(gamestate.State != States.Licitation)
+            if (gamestate.State != States.Licitation)
                 return gamestate;
             updateAllPoints(gamestate);
             gamestate.TimerEnabled = false;
@@ -94,7 +94,7 @@ namespace AwanturaLib
 
         public GameState EndLicitationToQuestion(GameState gamestate, String CategoryName)
         {
-            if(gamestate.State != States.Licitation)
+            if (gamestate.State != States.Licitation)
                 return gamestate;
             var qs = QuestionsSet.Current;
 
@@ -116,7 +116,7 @@ namespace AwanturaLib
         }
         public int MaxValue(GameState gs)
         {
-            int maxValue= gs.Licitation.Bid.Max();
+            int maxValue = gs.Licitation.Bid.Max();
 
             return maxValue;
         }
@@ -134,7 +134,7 @@ namespace AwanturaLib
         }
         public GameState EndLicitationToHint(GameState gamestate)
         {
-            if(gamestate.State != States.Licitation)
+            if (gamestate.State != States.Licitation)
                 return gamestate;
             updateAllPoints(gamestate);
             gamestate.TimerEnabled = false;
@@ -142,12 +142,12 @@ namespace AwanturaLib
             gamestate.State = States.Idle;
             return gamestate;
         }
-        
+
 
         //QUESTION
         public GameState RandomQuestion(GameState gamestate, String CategoryName, QuestionsSet qs)
         {
-           
+
             gamestate.Question = qs.Questions[CategoryName].Where(q => q.Used == false)
                 .TakeRandom(Random);
             gamestate.QuestionCount += 1;
@@ -183,7 +183,7 @@ namespace AwanturaLib
         {
             gamestate.Pool = 0;
             gamestate.State = States.Idle;
-            return gamestate;   
+            return gamestate;
         }
 
 
@@ -221,7 +221,7 @@ namespace AwanturaLib
         {
             GameState gamestate = new GameState();
             gamestate.Teams = new Team[TeamCount];
-            for(int i=0; i< TeamCount; i++)
+            for (int i = 0; i < TeamCount; i++)
             {
                 gamestate.Teams[i] = new Team();
             }
@@ -245,7 +245,7 @@ namespace AwanturaLib
 
 
         public GameState StartFirtRound(GameState gamestate)
-        { 
+        {
             //without deans
             foreach (var team in gamestate.Teams)
             {
@@ -261,16 +261,28 @@ namespace AwanturaLib
             }
             //setting question counter to 0
             gamestate.QuestionCount = 0;
-                return gamestate;
+            return gamestate;
         }
 
+        public GameState BuyHint(GameState gameState, int price)
+        {
+            if (gameState.State != States.Question)
+                return gameState;
+            var team = gameState.Teams[gameState.CurrentTeam];
+            if (team.Points < price)
+                return gameState;
 
-        public GameState StartSecondRound(GameState gamestate,  int mastersPoints)
+            team.Points -= price;
+            gameState.State = States.Hint;
+            return gameState;
+        }
+
+        public GameState StartSecondRound(GameState gamestate, int mastersPoints)
         {
             //index of best team in first round
             int maxindex = 0;
 
-            for (int i = 1; i < TeamCount-1; i++)
+            for (int i = 1; i < TeamCount - 1; i++)
             {
                 if (gamestate.Teams[maxindex].Points < gamestate.Teams[i].Points)
                     maxindex = i;
@@ -280,13 +292,13 @@ namespace AwanturaLib
                 }
             }
 
-            for (int i = 0; i < TeamCount-1; i++)
+            for (int i = 0; i < TeamCount - 1; i++)
             {
                 gamestate.Teams[i].isPlaying = false;
             }
-            
+
             gamestate.Teams[maxindex].isPlaying = true;
-            
+
             //deans
             gamestate.Teams[4].Points = mastersPoints;
             gamestate.Teams[4].isPlaying = true;
@@ -321,24 +333,25 @@ namespace AwanturaLib
             gamestate.OneOnOneCategories = new Dictionary<string, bool>();
             var rand = new Random();
             do
+            {
+                var category = QuestionsSet.Current.Questions.Keys.ToArray().TakeRandom(rand);
+                if (gamestate.OneOnOneCategories.ContainsKey(category) == false)
                 {
-                    var category = QuestionsSet.Current.Questions.Keys.ToArray().TakeRandom(rand);
-                if(gamestate.OneOnOneCategories.ContainsKey(category) == false)
-                    {
-                        gamestate.OneOnOneCategories.Add(category, true);
-                   }
-               } while(gamestate.OneOnOneCategories.Keys.Count < 9);
-            
+                    gamestate.OneOnOneCategories.Add(category, true);
+                }
+            } while (gamestate.OneOnOneCategories.Keys.Count < 9);
+
             return gamestate;
         }
 
-        public String[] GetCategoriesNames() {
+        public String[] GetCategoriesNames()
+        {
 
             StorageService ss = new StorageService();
             QuestionsSet qs = ss.DeserializeFromXMLFile<QuestionsSet>(@"..\..\pytania.xml");
             return qs.Questions.Keys.ToArray();
         }
-       
-    }   
+
+    }
 }
 

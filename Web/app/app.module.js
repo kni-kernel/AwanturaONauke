@@ -8,7 +8,8 @@ var app = angular.module('AoN', [
   "oneState",
   "initState",
   "ngRoute",
-  "ngStorage"
+  "ngStorage",
+  "logo"
 ]);
 
 angular.
@@ -48,6 +49,8 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
     }
 
   }
+
+
   $rootScope.AoNListenMy = function ($http, timeoutTime, onReceive) {
     $timeout(function () {
 
@@ -63,7 +66,7 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
       var address = "http://" + ip + ":8002";
 
       function parseResponse(data) {
-        console.log(data);
+      //  console.log(data);
         if (data == null || data.Pool == null) {
           return;
         }

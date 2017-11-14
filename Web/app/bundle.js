@@ -81,6 +81,7 @@ __webpack_require__(3);
 __webpack_require__(5);
 __webpack_require__(7);
 __webpack_require__(9);
+__webpack_require__(19);
 __webpack_require__(11);
 __webpack_require__(13);
 __webpack_require__(15);
@@ -101,7 +102,8 @@ var app = angular.module('AoN', [
   "oneState",
   "initState",
   "ngRoute",
-  "ngStorage"
+  "ngStorage",
+  "logo"
 ]);
 
 angular.
@@ -141,6 +143,8 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
     }
 
   }
+
+
   $rootScope.AoNListenMy = function ($http, timeoutTime, onReceive) {
     $timeout(function () {
 
@@ -156,7 +160,7 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
       var address = "http://" + ip + ":8002";
 
       function parseResponse(data) {
-        console.log(data);
+      //  console.log(data);
         if (data == null || data.Pool == null) {
           return;
         }
@@ -446,6 +450,26 @@ component('question', {
       return;
     }
 
+    function shuffle(array) {
+      var currentIndex = array.length, temporaryValue, randomIndex;
+    
+      // While there remain elements to shuffle...
+      while (0 !== currentIndex) {
+    
+        // Pick a remaining element...
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+    
+        // And swap it with the current element.
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }
+    
+      return array;
+    }
+    
+
     initFromGS(gs);
 
     function initFromGS(gs) {
@@ -460,28 +484,31 @@ component('question', {
         self.MasterEnabled = true;
         self.Answer = question.Tip1;
       }
-      var hints = [];
-      hints.push(question.Tip1);
-      hints.push(question.Tip2);
-      hints.push(question.Tip3);
-      hints.push(question.Tip4);
+      if(self.hintEnabled !== true)
+      {
+        var hints = [];
+        hints.push(question.Tip1);
+        hints.push(question.Tip2);
+        hints.push(question.Tip3);
+        hints.push(question.Tip4);
 
+        hints = shuffle(hints);
 
-      self.hintEnabled = gs.State == 4;
-      self.HintA = hints[0];
-      self.HintB = hints[1];
-      self.HintC = hints[2];
-      self.HintD = hints[3];
+        self.hintEnabled = gs.State == 4;
+        self.HintA = hints[0];
+        self.HintB = hints[1];
+        self.HintC = hints[2];
+        self.HintD = hints[3];
+      }
 
       self.Time = gs.Timer;
       if (self.Time <= 0)
         self.Time = "Koniec czasu!";
       self.Class = gs.Teams[gs.CurrentTeam].ClassName;
 
+      self.QuestionNumber = gs.QuestionCount;
+
     };
-    this.QuestionNumber = 6;
-
-
   }
 });
 
@@ -590,6 +617,90 @@ component('oneOnOne', {
         };
     
       }
+});
+
+/***/ }),
+/* 19 */
+/***/ (function(module, exports) {
+
+angular.module('logo', []);
+
+angular.
+module('logo').
+component('logo', {
+    templateUrl: "logo/logo.template.html",
+
+    controller: function LogoController($rootScope, $sessionStorage, $scope, $interval, $timeout) {
+        var self = this;
+        var state = 0; //0 rising, 1 plateau, 2 - falling
+        var temp = 0;
+        var current = 0;
+        var alpha = 0.0;
+
+        self.kernel =
+        {
+            opacity: 0.0
+        };
+        self.wfiis = 
+        {
+            opacity: 0.0
+        };
+        self.agh = 
+        {
+            opacity : 0.0
+        };
+        
+        $timeout(function()
+    {
+        $interval(function () {
+            var alphas = [0.0,0.0,0.0];
+                if (state == 0) {
+                    alpha += 0.05;
+                    if (alpha >= 1.0) {
+                        state = 1;
+                        alpha = 1.0;
+                    }
+
+                }
+            if (state == 1) {
+                if (temp >= 60) {
+                    state = 2;
+                    temp = 0;
+                } else
+                    ++temp;
+            }
+            if (state == 2) {
+                alpha -= 0.05;
+                if (alpha <= 0.0) {
+                    alpha = 0.0;
+                    state = 0;
+                    current = (current + 1) % 3;
+                }
+            }
+            var gs = $sessionStorage.GameState;
+
+            if(gs.State !== 2)
+                alphas[current] = alpha;
+
+            self.kernel =
+            {
+                opacity: alphas[0]
+            };
+            self.wfiis = 
+            {
+                opacity: alphas[1]
+            };
+            self.agh = 
+            {
+                opacity : alphas[2]
+            };
+            console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
+
+            
+        }, 50);
+    }, 3000);
+
+}
 });
 
 /***/ })

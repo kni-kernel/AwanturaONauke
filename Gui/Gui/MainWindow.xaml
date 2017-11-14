@@ -39,7 +39,7 @@
 			<TextBlock FontSize="12" Grid.Column="1" Grid.Row="0" Text="{Binding ChosenCategory}" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Height="23" RenderTransformOrigin="1.519,0.903" Width="439" Grid.ColumnSpan="3" Margin="130.8,16,0,39.2"/>
 
 			<TextBlock FontSize="12" Grid.Column="1" Grid.Row="0" Text="PYTANIE:" VerticalAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Height="23" RenderTransformOrigin="0.474,0.517" Width="60" Margin="35.8,46,35.4,10.2"/>
-			<TextBlock FontSize="12" Grid.Column="1" Grid.Row="0" Text="{Binding Question}" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Height="23" RenderTransformOrigin="1.519,0.903" Width="439" Grid.ColumnSpan="3" Margin="130.8,46,0,9.2"/>
+			<TextBlock FontSize="12" Grid.Column="1" Grid.Row="0" Text="{Binding Question}" ToolTip="{Binding Question}" VerticalAlignment="Center" HorizontalAlignment="Left" TextWrapping="Wrap" Height="23" RenderTransformOrigin="1.519,0.903" Width="439" Grid.ColumnSpan="3" Margin="130.8,46,0,9.2"/>
 
 			<Button Click="imgButton_Click" Content="Akcje" HorizontalAlignment="Center" VerticalAlignment="Center" Width="111" RenderTransformOrigin="0.504,0.563" Grid.Row="1" Grid.Column="1" Height="26" Margin="9.8,6.8,10.4,7.2">
 				<Button.ContextMenu>
@@ -129,7 +129,7 @@
 			<TextBox Name="SumBids" Text="{Binding Pool}" TextAlignment="Center" HorizontalAlignment="Center" TextWrapping="Wrap" Grid.Row="5" Grid.Column="1" VerticalAlignment="Center" Height="24" Width="119" RenderTransformOrigin="0.144,0.62" Margin="10.2,7.6,10,6" KeyUp="KeyUpPool"/>
 
 			<TextBlock Text="Odpowiedź:" Grid.Row="6" Grid.Column="0" Height="23" TextWrapping="Wrap" VerticalAlignment="Center" Margin="29,7,0.8,7.6"></TextBlock>
-			<TextBox Name="Answer" Text="{Binding Answer}" TextAlignment="Center" Grid.Row="6" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="23" Width="119" RenderTransformOrigin="0.144,0.62" Margin="10.2,8,10,6.6" Grid.Column="1" />
+			<TextBox Name="Answer" Text="{Binding Answer}" ToolTip="{Binding Answer}" TextAlignment="Center" Grid.Row="6" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="23" Width="119" RenderTransformOrigin="0.144,0.62" Margin="10.2,8,10,6.6" Grid.Column="1" />
 
 			<Button Click="useHintButton_Click" Content="Weź podpowiedź" HorizontalAlignment="Center" VerticalAlignment="Center" Width="119" RenderTransformOrigin="0.504,0.563" Grid.Row="6" Grid.Column="2" Height="26" Margin="10,6,10.2,5.6"/>
 			<TextBox Name="HintCost" Text="{Binding HintPayment}" TextAlignment="Center" Grid.Row="6" HorizontalAlignment="Center" TextWrapping="Wrap" VerticalAlignment="Center" Height="23" Width="119" RenderTransformOrigin="0.144,0.62" Margin="9.8,8,10.4,6.6" Grid.Column="3" />
