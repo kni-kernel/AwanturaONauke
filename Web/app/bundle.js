@@ -474,9 +474,12 @@ component('question', {
 
     function initFromGS(gs) {
       self.init = true;
+      self.FileName = "";
       var question = gs.Question;
       self.ToWin = gs.Licitation.Pool;
       self.Question = question.Content;
+      if(question.FileName)
+        self.FileName = "images/" + question.FileName;
       self.MasterEnabled = false;
       if($rootScope.master === true)
       {

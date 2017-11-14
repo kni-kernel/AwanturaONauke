@@ -1,6 +1,9 @@
 <div class="timer">
     {{$ctrl.Time}}
 </div>
+<div class="image centerHorizontalFlex" ng-if="$ctrl.FileName">
+<img ng-src="{{$ctrl.FileName}}"></iframe>
+</div>
 <div class="inner">
     <div class="top">
         <span class="questionNumber">Pytanie {{$ctrl.QuestionNumber}}</span>

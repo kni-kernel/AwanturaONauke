@@ -47,6 +47,18 @@ namespace AwanturaLib
             return gs;
         }
 
+        public GameState ResetPoints(GameState gs, int amount)
+        {
+            for (int i = 0; i < TeamCount; ++i)
+                gs = SetPoints(gs, i, amount);
+            return gs;
+        }
+        public GameState SetPoints(GameState gs, int index, int amount)
+        {
+            gs.Teams[index].Points = amount;
+            return gs;
+        }
+
         //LICITATION
         public GameState StartLicitation(GameState gamestate)
         {
@@ -63,9 +75,14 @@ namespace AwanturaLib
             return gamestate;
         }
 
+        public GameState GoVabank(GameState gs, int index)
+        {
+            return Bet(gs, index, gs.Teams[index].Points);
+        }
+
         public GameState BetWithoutRestrictions(GameState gamestate, int index, int amount)
         {
-            if (gamestate.State == States.Licitation && amount > 0 && gamestate.Teams[index].Points > 300)
+            if (gamestate.State == States.Licitation && amount > 0 && gamestate.Teams[index].Points > 300 && amount <= gamestate.Teams[index].Points)
                 gamestate.Licitation.bet(gamestate, index, amount);
 
             return gamestate;
@@ -92,6 +109,41 @@ namespace AwanturaLib
             return gamestate;
         }
 
+        public GameState EndOneOnOne(GameState gamestate, bool masterWon)
+        {
+            if (gamestate.State != States.OneOnOne)
+                return gamestate;
+
+
+
+            var qs = QuestionsSet.Current;
+            var categoryName = gamestate.OneOnOneCategories.Where(c => c.Value).First().Key;
+
+            if (qs.Questions[categoryName].Where(q => q.Used == false).Count() == 0)
+            {
+                MessageBox.Show("Nie ma już pytań w tej kategorii");
+                return gamestate;
+            }
+
+            updateAllPoints(gamestate);
+            gamestate.State = States.Question;
+            if (masterWon)
+                gamestate.CurrentTeam = DEAN_INDEX;
+            else
+
+            {
+                for (int i = 0; i < DEAN_INDEX; ++i)
+                    if (gamestate.Teams[i].isPlaying)
+                        gamestate.CurrentTeam = i;
+            }
+
+            gamestate.TimerEnabled = false;
+            gamestate = RandomQuestion(gamestate, categoryName, qs);
+            gamestate.Question.Used = true;
+            gamestate.Timer = 60;
+            gamestate.TimerEnabled = true;
+            return gamestate;
+        }
 
         public GameState EndLicitationToQuestion(GameState gamestate, String CategoryName)
         {
@@ -152,6 +204,7 @@ namespace AwanturaLib
             gamestate.Question = qs.Questions[CategoryName].Where(q => q.Used == false)
                 .TakeRandom(Random);
             gamestate.QuestionCount += 1;
+            gamestate.Question.FileName = "2.jpg";
             return gamestate;
         }
 
@@ -304,8 +357,7 @@ namespace AwanturaLib
         {
             gamestate.State = States.OneOnOne;
             gamestate = OneOnOneCategories(gamestate, QuestionsSet.Current);
-            gamestate.Pool = 1000;
-            //TODO: Zdjąć kasę z obu drużyn - nie użyjesz tu licitation, bo ma domyślne 200 wartości początkowej w Poolu
+            gamestate.Licitation = new Licitation(gamestate, 500);
             return gamestate;
         }
 

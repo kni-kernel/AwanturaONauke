@@ -1,5 +1,17 @@
 @import "definitions.scss";
 question {
+
+    .image
+    {
+        min-height:40vh;
+        max-height:40vh;
+        img
+        {
+            min-height:40vh;
+            max-height:40vh;
+        }
+        margin-top:10px;
+    }
     
     .timer {
         position: absolute;
@@ -20,6 +32,7 @@ question {
         .top {
             color: $poolTopColor;
             font-size: 3.2vh;
+            max-height: 5 vh;
             background-color: black;
             padding: 0.5rem 1rem;
             .toWin {
@@ -33,7 +46,8 @@ question {
         .bottom {
             padding: 1rem 2rem;
             min-height: 30vh;
-            font-size: 3.8rem;
+            max-height:55vh;
+            font-size: 3.6rem;
             text-align: center;
         }
         .bottom.blue {

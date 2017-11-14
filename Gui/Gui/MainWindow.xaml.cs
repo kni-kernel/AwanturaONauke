@@ -125,6 +125,22 @@ namespace Gui
             if (GS.OneOnOneCategories != null)
             {
                 OnOnOneActions.Items.Clear();
+                if (GS.OneOnOneCategories.Where(c => c.Value == true).Count() == 1)
+                {
+                    var item = new MenuItem();
+                    item.Header = "mistrzowie wygrali 1 na 1";
+                    item.Tag = "DEAN";
+                    item.Click += new RoutedEventHandler(this.on1On1End);
+
+                    OnOnOneActions.Items.Add(item);
+
+                    item = new MenuItem();
+                    item.Header = "druga drużyna wygrała 1 na 1";
+                    item.Click += new RoutedEventHandler(this.on1On1End);
+
+                    OnOnOneActions.Items.Add(item);
+                }
+                else
                 foreach (var category in GS.OneOnOneCategories)
                 {
                     if (category.Value)
@@ -169,8 +185,17 @@ namespace Gui
             VM.Answer = (sender as Button).ContextMenu.Name;
         }
 
-        private void onCategoryClick(object sender, RoutedEventArgs args)
+        private void on1On1End(object sender, RoutedEventArgs args)
         {
+            bool isDeanWin = false;
+            if (((sender as MenuItem)?.Tag as string) == "DEAN")
+                isDeanWin = true;
+
+            GS = mainService.EndOneOnOne(GS, isDeanWin);
+        }
+
+        private void onCategoryClick(object sender, RoutedEventArgs args)
+        {   
             var menuItem = (sender as MenuItem);
             var categoryName = (string)menuItem.Header;
 
@@ -290,12 +315,13 @@ namespace Gui
             int amount;
             if (int.TryParse(str, out amount))
             {
-
+                GS = mainService.ResetPoints(GS, amount);
             }
         }
 
         private void OnWindowKeyUp(object sender, KeyEventArgs e)
         {
+
             if (e.Key == Key.F1)
                 SetLicitationForUse(Bid1);
             if (e.Key == Key.F2)
@@ -312,6 +338,7 @@ namespace Gui
 
         private void SetLicitationForUse(TextBox tb)
         {
+            GS = GS; //refresh XD
             tb.Text = "";
             tb.Focus();
             string text = (string)tb.Text;
@@ -361,16 +388,23 @@ namespace Gui
             {
                 var tb = sender as TextBox;
                 string txt = tb.Tag as string;
-
-                if (tb != null)
+                int teamNumber;
+                if (tb != null && int.TryParse(txt, out teamNumber))
                 {
-                    int teamNumber;
+                   
                     int bid;
 
-                    if (int.TryParse(txt, out teamNumber) && int.TryParse(tb.Text as string, out bid))
+                    if (tb.Text == "V" || tb.Text == "v")
+                    {
+                        GS = mainService.GoVabank(GS, teamNumber);
+                    }
+                    else if (int.TryParse(tb.Text as string, out bid))
                     {
                         bid *= 100;
-                        GS = mainService.Bet(GS, teamNumber, bid);
+                        if (Keyboard.IsKeyDown(Key.LeftCtrl) || Keyboard.IsKeyDown(Key.RightCtrl))
+                            GS = mainService.BetWithoutRestrictions(GS, teamNumber, bid);
+                        else
+                            GS = mainService.Bet(GS, teamNumber, bid);
                         ImportGameState(GS);
                         webService.UpdateGameState(GS);
                     }
@@ -403,6 +437,24 @@ namespace Gui
                     return number;
             }
             return null;
+        }
+
+        private void SaldoKeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Enter)
+            {
+                if (sender is TextBox)
+                {
+                    var tb = sender as TextBox;
+                    int amount;
+                    int teamNumber;
+
+                    if (int.TryParse(tb.Tag as string, out teamNumber) && int.TryParse(tb.Text, out amount))
+                    {
+                        GS = mainService.SetPoints(GS, teamNumber, amount);
+                    }
+                }
+            }
         }
     }
 }
