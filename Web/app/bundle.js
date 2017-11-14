@@ -81,11 +81,11 @@ __webpack_require__(3);
 __webpack_require__(5);
 __webpack_require__(7);
 __webpack_require__(9);
-__webpack_require__(19);
 __webpack_require__(11);
-__webpack_require__(13);
-__webpack_require__(15);
-__webpack_require__(17);
+__webpack_require__(12);
+__webpack_require__(14);
+__webpack_require__(16);
+__webpack_require__(18);
 
 
 /***/ }),
@@ -165,15 +165,15 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
           return;
         }
         $sessionStorage.GameState = data;
-
+        console.log($rootScope.master);
         if (data != null) {
           if (data.State == 0)
             setURL("#!/Idle");
           if (data.State == 1)
             setURL("#!/Idle");
-          if (data.State == 2)
+          if (data.State == 2 && $rootScope.master === false)
             setURL("#!/OneOnOne");
-          if (data.State == 3)
+          if (data.State == 3 || $rootScope.master === true)
             setURL("#!/Question");
           if (data.State == 4)
             setURL("#!/Question");
@@ -311,14 +311,98 @@ component('oneState', {
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports) {
+
+angular.module('logo', []);
+
+angular.
+module('logo').
+component('logo', {
+    templateUrl: "logo/logo.template.html",
+
+    controller: function LogoController($rootScope, $sessionStorage, $scope, $interval, $timeout) {
+        var self = this;
+        var state = 0; //0 rising, 1 plateau, 2 - falling
+        var temp = 0;
+        var current = 0;
+        var alpha = 0.0;
+
+        self.kernel =
+        {
+            opacity: 0.0
+        };
+        self.wfiis = 
+        {
+            opacity: 0.0
+        };
+        self.agh = 
+        {
+            opacity : 0.0
+        };
+        
+        $timeout(function()
+    {
+        $interval(function () {
+            var alphas = [0.0,0.0,0.0];
+                if (state == 0) {
+                    alpha += 0.05;
+                    if (alpha >= 1.0) {
+                        state = 1;
+                        alpha = 1.0;
+                    }
+
+                }
+            if (state == 1) {
+                if (temp >= 60) {
+                    state = 2;
+                    temp = 0;
+                } else
+                    ++temp;
+            }
+            if (state == 2) {
+                alpha -= 0.05;
+                if (alpha <= 0.0) {
+                    alpha = 0.0;
+                    state = 0;
+                    current = (current + 1) % 3;
+                }
+            }
+            var gs = $sessionStorage.GameState;
+
+            if(gs.State !== 2)
+                alphas[current] = alpha;
+
+            self.kernel =
+            {
+                opacity: alphas[0]
+            };
+            self.wfiis = 
+            {
+                opacity: alphas[1]
+            };
+            self.agh = 
+            {
+                opacity : alphas[2]
+            };
+           // console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
+
+            
+        }, 50);
+    }, 3000);
+
+}
+});
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('score', []);
 
-__webpack_require__(12);
+__webpack_require__(13);
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 angular.
@@ -369,25 +453,36 @@ component('score', {
           self.Teams.push(vmTeam);
         }
       }
-
+      if(gs.State == 0)
+      {
       self.Teams.push({
         Score: gs.Pool,
         Enabled: true,
         Name: "Pula",
         Class: "pool teamScore"
       });
+    }
 
       if (gs.State == 1) {
         self.isAuction = true;
-
+        var pool = gs.Pool;
         for (let i = 0; i < gs.Teams.length; ++i) {
           var team = gs.Teams[i];
           if (team != null && team.isPlaying)
+          {
+            pool += team.Points > 200 ? gs.Licitation.Bid[i] : 0;
             self.Auctions.push({
               Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
               Score: team.Points > 200 ? gs.Licitation.Bid[i] : "-"
             });
+          }
         }
+        self.Teams.push({
+          Score: pool,
+          Enabled: true,
+          Name: "Pula",
+          Class: "pool teamScore"
+        });
       } else
         self.isAuction = false;
 
@@ -419,15 +514,15 @@ component('score', {
 });
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('question', []);
 
-__webpack_require__(14);
+__webpack_require__(15);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 angular.
@@ -516,15 +611,15 @@ component('question', {
 });
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('winScore', []);
 
-__webpack_require__(16);
+__webpack_require__(17);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 angular.
@@ -561,15 +656,15 @@ component('winScore', {
 });
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('oneOnOne', []);
 
-__webpack_require__(18);
+__webpack_require__(19);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 angular.
@@ -620,90 +715,6 @@ component('oneOnOne', {
         };
     
       }
-});
-
-/***/ }),
-/* 19 */
-/***/ (function(module, exports) {
-
-angular.module('logo', []);
-
-angular.
-module('logo').
-component('logo', {
-    templateUrl: "logo/logo.template.html",
-
-    controller: function LogoController($rootScope, $sessionStorage, $scope, $interval, $timeout) {
-        var self = this;
-        var state = 0; //0 rising, 1 plateau, 2 - falling
-        var temp = 0;
-        var current = 0;
-        var alpha = 0.0;
-
-        self.kernel =
-        {
-            opacity: 0.0
-        };
-        self.wfiis = 
-        {
-            opacity: 0.0
-        };
-        self.agh = 
-        {
-            opacity : 0.0
-        };
-        
-        $timeout(function()
-    {
-        $interval(function () {
-            var alphas = [0.0,0.0,0.0];
-                if (state == 0) {
-                    alpha += 0.05;
-                    if (alpha >= 1.0) {
-                        state = 1;
-                        alpha = 1.0;
-                    }
-
-                }
-            if (state == 1) {
-                if (temp >= 60) {
-                    state = 2;
-                    temp = 0;
-                } else
-                    ++temp;
-            }
-            if (state == 2) {
-                alpha -= 0.05;
-                if (alpha <= 0.0) {
-                    alpha = 0.0;
-                    state = 0;
-                    current = (current + 1) % 3;
-                }
-            }
-            var gs = $sessionStorage.GameState;
-
-            if(gs.State !== 2)
-                alphas[current] = alpha;
-
-            self.kernel =
-            {
-                opacity: alphas[0]
-            };
-            self.wfiis = 
-            {
-                opacity: alphas[1]
-            };
-            self.agh = 
-            {
-                opacity : alphas[2]
-            };
-            console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
-
-            
-        }, 50);
-    }, 3000);
-
-}
 });
 
 /***/ })

@@ -42,37 +42,45 @@ namespace AwanturaLib {
                 {
                     using (TcpClient client = m_server.AcceptTcpClient())
                     {
-
-                        Thread.Sleep(10);
-
-                        NetworkStream stream = client.GetStream();
-                        Byte[] bytes = new Byte[client.Available];
-
-                        stream.Read(bytes, 0, bytes.Length);
-                        String request = Encoding.UTF8.GetString(bytes);
-                        Console.WriteLine(request);
-
-                        if (new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request))
-                        {
-
-                            StreamWriter writer = new StreamWriter(client.GetStream());
-
-                            SendObject(writer, m_state);
-
-
-                            Console.WriteLine("Data has been sent.");
-                        }
-                        else
-                        {
-
-                            Console.WriteLine("Nope. Only GETs!!");
-                            Console.WriteLine(request);
-                            Console.WriteLine("-----");
-                        }
+                        ThreadPool.QueueUserWorkItem(manageConnection, client);
+                        
 
                     }
                 }
                 catch (Exception e) { }
+            }
+        }
+
+        private void manageConnection(object objClient)
+        {
+            var client = objClient as TcpClient;
+            if (client == null)
+                return;
+            Thread.Sleep(50);
+
+            NetworkStream stream = client.GetStream();
+            Byte[] bytes = new Byte[client.Available];
+
+            stream.Read(bytes, 0, bytes.Length);
+            String request = Encoding.UTF8.GetString(bytes);
+            Console.WriteLine(request);
+
+            if (new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request))
+            {
+
+                StreamWriter writer = new StreamWriter(client.GetStream());
+
+                SendObject(writer, m_state);
+
+
+                Console.WriteLine("Data has been sent.");
+            }
+            else
+            {
+
+                Console.WriteLine("Nope. Only GETs!!");
+                Console.WriteLine(request);
+                Console.WriteLine("-----");
             }
         }
 

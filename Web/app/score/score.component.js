@@ -46,25 +46,36 @@ component('score', {
           self.Teams.push(vmTeam);
         }
       }
-
+      if(gs.State == 0)
+      {
       self.Teams.push({
         Score: gs.Pool,
         Enabled: true,
         Name: "Pula",
         Class: "pool teamScore"
       });
+    }
 
       if (gs.State == 1) {
         self.isAuction = true;
-
+        var pool = gs.Pool;
         for (let i = 0; i < gs.Teams.length; ++i) {
           var team = gs.Teams[i];
           if (team != null && team.isPlaying)
+          {
+            pool += team.Points > 200 ? gs.Licitation.Bid[i] : 0;
             self.Auctions.push({
               Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
               Score: team.Points > 200 ? gs.Licitation.Bid[i] : "-"
             });
+          }
         }
+        self.Teams.push({
+          Score: pool,
+          Enabled: true,
+          Name: "Pula",
+          Class: "pool teamScore"
+        });
       } else
         self.isAuction = false;
 

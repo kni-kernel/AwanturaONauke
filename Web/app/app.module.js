@@ -71,15 +71,15 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
           return;
         }
         $sessionStorage.GameState = data;
-
+        console.log($rootScope.master);
         if (data != null) {
           if (data.State == 0)
             setURL("#!/Idle");
           if (data.State == 1)
             setURL("#!/Idle");
-          if (data.State == 2)
+          if (data.State == 2 && $rootScope.master === false)
             setURL("#!/OneOnOne");
-          if (data.State == 3)
+          if (data.State == 3 || $rootScope.master === true)
             setURL("#!/Question");
           if (data.State == 4)
             setURL("#!/Question");

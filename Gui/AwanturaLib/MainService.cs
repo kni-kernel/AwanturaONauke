@@ -204,7 +204,6 @@ namespace AwanturaLib
             gamestate.Question = qs.Questions[CategoryName].Where(q => q.Used == false)
                 .TakeRandom(Random);
             gamestate.QuestionCount += 1;
-            gamestate.Question.FileName = "2.jpg";
             return gamestate;
         }
 
