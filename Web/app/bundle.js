@@ -81,12 +81,12 @@ __webpack_require__(3);
 __webpack_require__(5);
 __webpack_require__(7);
 __webpack_require__(9);
-__webpack_require__(20);
 __webpack_require__(11);
 __webpack_require__(12);
-__webpack_require__(14);
-__webpack_require__(16);
-__webpack_require__(18);
+__webpack_require__(13);
+__webpack_require__(15);
+__webpack_require__(17);
+__webpack_require__(19);
 __webpack_require__(21);
 
 
@@ -117,7 +117,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
     $locationProvider.hashPrefix('!');
 
     $routeProvider.
-    when('/Init', {
+    when('/Master', {
       template: '<init-State></init-State>'
     }).
     when('/Idle', {
@@ -174,17 +174,17 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         if (data != null) {
           if (data.State == 0)
             setURL("#!/Idle");
-          if (data.State == 1)
+          else if (data.State == 1)
             setURL("#!/Idle");
-          if (data.State == 2 && $rootScope.master === false)
+          else if (data.State == 2 && ($rootScope.master === false || data.IsLastQuestionInOneOnOne === false))
             setURL("#!/OneOnOne");
-          if (data.State == 3 || $rootScope.master === true)
+          else if (data.State == 3 || ($rootScope.master === true && data.State == 2 && data.IsLastQuestionInOneOnOne === true))
             setURL("#!/Question");
-          if (data.State == 4)
+          else if (data.State == 4)
             setURL("#!/Question");
-          if (data.State == 5)
+          else if (data.State == 5)
             setURL("#!/Win");
-          if (data.State == 6)
+          else if (data.State == 6)
             setURL("#!/Hint");
         }
       }
@@ -320,6 +320,22 @@ component('oneState', {
 /* 11 */
 /***/ (function(module, exports) {
 
+angular.module('hintState', ["hint"]);
+
+angular.
+module('hintState').
+component('hintState', {
+  templateUrl: "states/hint.template.html",
+
+  controller: function HintStateController($http, $rootScope, $scope) {
+    
+  }
+});
+
+/***/ }),
+/* 12 */
+/***/ (function(module, exports) {
+
 angular.module('logo', []);
 
 angular.
@@ -401,15 +417,15 @@ component('logo', {
 });
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('score', []);
 
-__webpack_require__(13);
+__webpack_require__(14);
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports) {
 
 angular.
@@ -493,7 +509,7 @@ component('score', {
 
                 if(gs.Licitation.Bid[i] < gs.Teams[j].Points)
                 {
-                  console.log(gs.Licitation.Bid[i] + " < " + gs.Teams[j].Points + "(" + i +", " + j + ")");
+                 // console.log(gs.Licitation.Bid[i] + " < " + gs.Teams[j].Points + "(" + i +", " + j + ")");
                   isDone = false;
                   break; 
                 }
@@ -549,15 +565,15 @@ component('score', {
 });
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('question', []);
 
-__webpack_require__(15);
+__webpack_require__(16);
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports) {
 
 angular.
@@ -679,15 +695,15 @@ component('question', {
 });
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('winScore', []);
 
-__webpack_require__(17);
+__webpack_require__(18);
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports) {
 
 angular.
@@ -724,15 +740,15 @@ component('winScore', {
 });
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('oneOnOne', []);
 
-__webpack_require__(19);
+__webpack_require__(20);
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
 angular.
@@ -783,22 +799,6 @@ component('oneOnOne', {
         };
     
       }
-});
-
-/***/ }),
-/* 20 */
-/***/ (function(module, exports) {
-
-angular.module('hintState', ["hint"]);
-
-angular.
-module('hintState').
-component('hintState', {
-  templateUrl: "states/hint.template.html",
-
-  controller: function HintStateController($http, $rootScope, $scope) {
-    
-  }
 });
 
 /***/ }),

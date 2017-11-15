@@ -21,7 +21,7 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
     $locationProvider.hashPrefix('!');
 
     $routeProvider.
-    when('/Init', {
+    when('/Master', {
       template: '<init-State></init-State>'
     }).
     when('/Idle', {
@@ -78,17 +78,17 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         if (data != null) {
           if (data.State == 0)
             setURL("#!/Idle");
-          if (data.State == 1)
+          else if (data.State == 1)
             setURL("#!/Idle");
-          if (data.State == 2 && $rootScope.master === false)
+          else if (data.State == 2 && ($rootScope.master === false || data.IsLastQuestionInOneOnOne === false))
             setURL("#!/OneOnOne");
-          if (data.State == 3 || $rootScope.master === true)
+          else if (data.State == 3 || ($rootScope.master === true && data.State == 2 && data.IsLastQuestionInOneOnOne === true))
             setURL("#!/Question");
-          if (data.State == 4)
+          else if (data.State == 4)
             setURL("#!/Question");
-          if (data.State == 5)
+          else if (data.State == 5)
             setURL("#!/Win");
-          if (data.State == 6)
+          else if (data.State == 6)
             setURL("#!/Hint");
         }
       }

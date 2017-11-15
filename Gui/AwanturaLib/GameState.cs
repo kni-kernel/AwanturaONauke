@@ -17,6 +17,7 @@ namespace AwanturaLib
         public bool TimerEnabled { get; set; } = false;
         public int QuestionCount { get; set; } = 0;
         public int HintPrice { get; set; } = 0;
+        public bool IsLastQuestionInOneOnOne { get; set; } = false;
     }
 }
 

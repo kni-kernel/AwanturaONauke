@@ -394,6 +394,7 @@ namespace AwanturaLib
             gamestate.State = States.OneOnOne;
             gamestate = OneOnOneCategories(gamestate, QuestionsSet.Current);
             gamestate.Licitation = new Licitation(gamestate, 500);
+            gamestate.IsLastQuestionInOneOnOne = false;
             return gamestate;
         }
 
@@ -401,11 +402,21 @@ namespace AwanturaLib
         public GameState RemoveCategory(GameState gamestate, string categoryName)
         {
             if (gamestate.OneOnOneCategories.Count(x => x.Value == true) == 1) { //jeśli jest jedna aktywna kategoria to jej nie usuwamy ;)
-                gamestate = RandomQuestion(gamestate, categoryName, QuestionsSet.Current);
                 return gamestate;
             }
 
             gamestate.OneOnOneCategories[categoryName] = false;
+
+
+            if (gamestate.OneOnOneCategories.Count(x => x.Value == true) == 1)
+            { //jeśli jest jedna aktywna kategoria to dajemy random question
+                if (gamestate.IsLastQuestionInOneOnOne == false)
+                {
+                    gamestate = RandomQuestion(gamestate, categoryName, QuestionsSet.Current);
+                    gamestate.IsLastQuestionInOneOnOne = true;
+                }
+            }
+
             return gamestate;
         }
 

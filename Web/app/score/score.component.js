@@ -79,7 +79,7 @@ component('score', {
 
                 if(gs.Licitation.Bid[i] < gs.Teams[j].Points)
                 {
-                  console.log(gs.Licitation.Bid[i] + " < " + gs.Teams[j].Points + "(" + i +", " + j + ")");
+                 // console.log(gs.Licitation.Bid[i] + " < " + gs.Teams[j].Points + "(" + i +", " + j + ")");
                   isDone = false;
                   break; 
                 }
