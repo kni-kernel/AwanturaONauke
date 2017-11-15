@@ -13,6 +13,7 @@ namespace AwanturaLib
         OneOnOne = 2,
         Question = 3,
         Hint = 4,
-        Win = 5
+        Win = 5,
+        BuyableHint = 6
     };
 }

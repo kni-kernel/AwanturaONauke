@@ -21,3 +21,120 @@
     top:0;
     left:0;
 }
+
+hint
+{
+    position: absolute;
+    bottom:10vh;
+    left: 25vw;
+    .HintPrice
+    {
+        font-size: 8vh;
+        padding: 4vh 10vw;
+        width : 50vw;
+    }
+
+    .info 
+    {
+        background-color:black;
+        font-size: 4vh;
+        padding: 1vh 5vw;
+    }
+
+    .points
+    {
+        font-size: 8vh;
+        padding: 4vh 10vw;
+        width:50vw;
+    }
+
+    .info.yellow
+    {
+
+            color:$yellowTopColor;
+    }
+
+    .info.green
+    {
+  
+            color:$greenTopColor;
+
+    }
+
+    .info.red
+    {
+ 
+            color:$redTopColor;
+   
+    }
+
+    .info.black
+    {
+     
+            color:$blackTopColor;
+       
+    }
+
+
+    
+
+    .HintPrice.blue
+    {
+        background-color: $blueBackground;
+        color:$blueBottomColor;
+    }
+
+    .HintPrice.green
+    {
+        background-color: $greenBackground;
+        color:$greenBottomColor;
+    }
+
+    .HintPrice.yellow
+    {
+        background-color: $yellowBackground;
+        color:$yellowBottomColor;
+    }
+
+    .HintPrice.red
+    {
+        background-color: $redBackground;
+        color:$redBottomColor;
+    }
+
+    .HintPrice.black
+    {
+        background-color: $blackBackground;
+        color:$blackBottomColor;
+    }
+
+    .points.blue
+    {
+        background-color: $blueBackground;
+        color:$blueBottomColor;
+    }
+
+    .points.green
+    {
+        background-color: $greenBackground;
+        color:$greenBottomColor;
+    }
+
+    .points.yellow
+    {
+        background-color: $yellowBackground;
+        color:$yellowBottomColor;
+    }
+
+    .points.red
+    {
+        background-color: $redBackground;
+        color:$redBottomColor;
+    }
+
+    .points.black
+    {
+        background-color: $blackBackground;
+        color:$blackBottomColor;
+    }
+}

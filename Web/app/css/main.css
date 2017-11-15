@@ -4,6 +4,9 @@ score {
   bottom: 0;
   left: 0;
   right: 0; }
+  score .done {
+    font-size: 9vh;
+    min-height: 30vh; }
   score .auction .description {
     background-color: black;
     color: #AEAEAE;
@@ -184,3 +187,58 @@ one-state one-on-one .category.disabled {
   width: 20vh;
   top: 0;
   left: 0; }
+
+hint {
+  position: absolute;
+  bottom: 10vh;
+  left: 25vw; }
+  hint .HintPrice {
+    font-size: 8vh;
+    padding: 4vh 10vw;
+    width: 50vw; }
+  hint .info {
+    background-color: black;
+    font-size: 4vh;
+    padding: 1vh 5vw; }
+  hint .points {
+    font-size: 8vh;
+    padding: 4vh 10vw;
+    width: 50vw; }
+  hint .info.yellow {
+    color: #605C37; }
+  hint .info.green {
+    color: #506D4E; }
+  hint .info.red {
+    color: #613838; }
+  hint .info.black {
+    color: #7C7170; }
+  hint .HintPrice.blue {
+    background-color: #000F57;
+    color: #9EAADD; }
+  hint .HintPrice.green {
+    background-color: #1B3B1D;
+    color: #A1B4A1; }
+  hint .HintPrice.yellow {
+    background-color: #654D08;
+    color: #B7A582; }
+  hint .HintPrice.red {
+    background-color: #630808;
+    color: #b68181; }
+  hint .HintPrice.black {
+    background-color: #5B5454;
+    color: #BDB7B5; }
+  hint .points.blue {
+    background-color: #000F57;
+    color: #9EAADD; }
+  hint .points.green {
+    background-color: #1B3B1D;
+    color: #A1B4A1; }
+  hint .points.yellow {
+    background-color: #654D08;
+    color: #B7A582; }
+  hint .points.red {
+    background-color: #630808;
+    color: #b68181; }
+  hint .points.black {
+    background-color: #5B5454;
+    color: #BDB7B5; }

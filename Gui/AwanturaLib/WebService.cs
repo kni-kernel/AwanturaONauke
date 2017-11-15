@@ -9,15 +9,18 @@ using System.Threading;
 using Newtonsoft.Json;
 
 
-namespace AwanturaLib {
+namespace AwanturaLib
+{
 
-    public class WebService {
+    public class WebService
+    {
 
         private TcpListener m_server;
         private GameState m_state;
         private Thread m_listener;
 
-        public WebService(int port = 80) {
+        public WebService(int port = 80)
+        {
 
             m_server = new TcpListener(IPAddress.Any, port);
             m_server.Start();
@@ -29,23 +32,23 @@ namespace AwanturaLib {
             m_listener.Start("Listening");
         }
 
-        public void UpdateGameState(GameState state) {
+        public void UpdateGameState(GameState state)
+        {
 
             Interlocked.Exchange(ref m_state, state);
         }
 
-        private void Listen(object data) {
+        private void Listen(object data)
+        {
 
-            while(true) {
+            while (true)
+            {
 
                 try
                 {
-                    using (TcpClient client = m_server.AcceptTcpClient())
-                    {
-                        ThreadPool.QueueUserWorkItem(manageConnection, client);
-                        
+                    TcpClient client = m_server.AcceptTcpClient();
+                    ThreadPool.QueueUserWorkItem(manageConnection, client);
 
-                    }
                 }
                 catch (Exception e) { }
             }
@@ -54,42 +57,55 @@ namespace AwanturaLib {
         private void manageConnection(object objClient)
         {
             var client = objClient as TcpClient;
-            if (client == null)
-                return;
-            Thread.Sleep(50);
-
-            NetworkStream stream = client.GetStream();
-            Byte[] bytes = new Byte[client.Available];
-
-            stream.Read(bytes, 0, bytes.Length);
-            String request = Encoding.UTF8.GetString(bytes);
-            Console.WriteLine(request);
-
-            if (new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request))
+            try
             {
 
-                StreamWriter writer = new StreamWriter(client.GetStream());
+                if (client == null)
+                    return;
+                Thread.Sleep(50);
 
-                SendObject(writer, m_state);
+                NetworkStream stream = client.GetStream();
+                Byte[] bytes = new Byte[client.Available];
 
-
-                Console.WriteLine("Data has been sent.");
-            }
-            else
-            {
-
-                Console.WriteLine("Nope. Only GETs!!");
+                stream.Read(bytes, 0, bytes.Length);
+                String request = Encoding.UTF8.GetString(bytes);
                 Console.WriteLine(request);
-                Console.WriteLine("-----");
+
+                if (new Regex("GET").IsMatch(request) || new Regex("POST").IsMatch(request))
+                {
+
+                    StreamWriter writer = new StreamWriter(client.GetStream());
+
+                    SendObject(writer, m_state);
+
+
+                    Console.WriteLine("Data has been sent.");
+                }
+                else
+                {
+
+                    Console.WriteLine("Nope. Only GETs!!");
+                    Console.WriteLine(request);
+                    Console.WriteLine("-----");
+                }
+            }
+            catch (Exception e)
+            {
+            }
+            finally
+            {
+                client.Close();
+                client.Dispose();
             }
         }
 
-        private void SendObject<T>(StreamWriter s, T o) {
+        private void SendObject<T>(StreamWriter s, T o)
+        {
             var json = JsonConvert.SerializeObject(o);
 
             string httpHeaders = "HTTP/1.1 200 OK" + "\r\n";
             httpHeaders += "Cache-Control: no-cache" + "\r\n";
-        //    httpHeaders += $"Content-Length: {json.Length + 20}" + "\r\n";
+            //    httpHeaders += $"Content-Length: {json.Length + 20}" + "\r\n";
             httpHeaders += "Content-Type: application/json" + "\r\n";
             httpHeaders += "Access-Control-Allow-Origin: *";
 
@@ -97,7 +113,7 @@ namespace AwanturaLib {
 
             s.WriteLine(httpHeaders);
             s.WriteLine(json);
-           // s.Write("                                ");
+            // s.Write("                                ");
             s.Flush();
         }
     }

@@ -220,6 +220,7 @@ namespace AwanturaLib
         public GameState ToIdle(GameState gamestate)
         {
             gamestate.State = States.Idle;
+            gamestate.TimerEnabled = false;
             return gamestate;
         }
 
@@ -228,14 +229,17 @@ namespace AwanturaLib
         {
             gamestate.Pool = gamestate.Licitation.Pool;
             gamestate.State = States.Idle;
+            gamestate.TimerEnabled = false;
             return gamestate;
         }
 
 
         public GameState WrongGuessSecondRound(GameState gamestate)
         {
-            gamestate.Pool = 0;
+            gamestate.Pool = gamestate.Licitation.Pool;
+            //gamestate.Pool = 0;
             gamestate.State = States.Idle;
+            gamestate.TimerEnabled = false;
             return gamestate;
         }
 
@@ -249,6 +253,9 @@ namespace AwanturaLib
                 gamestate.Teams[Index].Hints -= 1;
                 gamestate.State = States.Hint;
             }
+
+            gamestate.Timer = 60;
+
             return gamestate;
         }
 
@@ -317,15 +324,45 @@ namespace AwanturaLib
             return gamestate;
         }
 
+        public GameState GoToBuyableHint(GameState gs, int price)
+        {
+            if (gs.State != States.Question)
+                return gs;
+            gs.HintPrice = price;
+            gs.State = States.BuyableHint;
+            gs.TimerEnabled = false;
+            return gs;
+        }
+
+        public GameState DoNotBuyHint(GameState gs)
+        {
+            if (gs.State != States.BuyableHint)
+                return gs;
+            gs.State = States.Question;
+            gs.TimerEnabled = true;
+            return gs;
+        }
+
+        public GameState BuyHint(GameState gs)
+        {
+            if (gs.State != States.BuyableHint)
+                return gs;
+
+            return BuyHint(gs, gs.HintPrice);
+
+        }
+
         public GameState BuyHint(GameState gameState, int price)
         {
-            if (gameState.State != States.Question)
+            if (gameState.State != States.BuyableHint)
                 return gameState;
             var team = gameState.Teams[gameState.CurrentTeam];
-            if (team.Points < price)
+            if (team.Points - gameState.Licitation.Bid[gameState.CurrentTeam] < price)
                 return gameState;
 
             team.Points -= price;
+            gameState.Timer = 60;
+            gameState.TimerEnabled = true;
             gameState.State = States.Hint;
             return gameState;
         }

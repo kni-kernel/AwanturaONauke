@@ -42,34 +42,62 @@ component('score', {
           };
 
           if (gs.State == 1 && team.Points > 200)
-          vmTeam.Score -= gs.Licitation.Bid[i];
+            vmTeam.Score -= gs.Licitation.Bid[i];
           self.Teams.push(vmTeam);
         }
       }
-      if(gs.State == 0)
-      {
-      self.Teams.push({
-        Score: gs.Pool,
-        Enabled: true,
-        Name: "Pula",
-        Class: "pool teamScore"
-      });
-    }
+      if (gs.State == 0) {
+        self.Teams.push({
+          Score: gs.Pool,
+          Enabled: true,
+          Name: "Pula",
+          Class: "pool teamScore"
+        });
+      }
 
       if (gs.State == 1) {
         self.isAuction = true;
+        self.isDone = false;
         var pool = gs.Pool;
         for (let i = 0; i < gs.Teams.length; ++i) {
           var team = gs.Teams[i];
-          if (team != null && team.isPlaying)
-          {
+          if (team != null && team.isPlaying) {
             pool += team.Points > 200 ? gs.Licitation.Bid[i] : 0;
             self.Auctions.push({
               Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
               Score: team.Points > 200 ? gs.Licitation.Bid[i] : "-"
             });
+
+           for(let i = 0; i < gs.Teams.length; ++i)
+           {
+             var isDone = true;
+             for(let j = 0; j < gs.Teams.length; ++j)
+             {
+                if(i == j) continue;
+                if(gs.Teams[j].isPlaying == false)
+                continue;
+
+                if(gs.Licitation.Bid[i] < gs.Teams[j].Points)
+                {
+                  console.log(gs.Licitation.Bid[i] + " < " + gs.Teams[j].Points + "(" + i +", " + j + ")");
+                  isDone = false;
+                  break; 
+                }
+             }
+             if(isDone)
+             {
+               console.log
+                self.isDone = true;
+                break;
+             }
+           }
+              
           }
         }
+        
+
+          console.log(self.isDone);
+
         self.Teams.push({
           Score: pool,
           Enabled: true,

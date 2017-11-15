@@ -7,6 +7,7 @@ var app = angular.module('AoN', [
   "winState",
   "oneState",
   "initState",
+  "hintState",
   "ngRoute",
   "ngStorage",
   "logo"
@@ -31,6 +32,9 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
     }).
     when('/Question', {
       template: '<question-State></question-State>'
+    }).
+    when('/Hint', {
+      template: '<hint-State></hint-State>'
     }).
     when('/Win', {
       template: '<win-State></win-State>'
@@ -66,12 +70,11 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
       var address = "http://" + ip + ":8002";
 
       function parseResponse(data) {
-      //  console.log(data);
+        //  console.log(data);
         if (data == null || data.Pool == null) {
           return;
         }
         $sessionStorage.GameState = data;
-        console.log($rootScope.master);
         if (data != null) {
           if (data.State == 0)
             setURL("#!/Idle");
@@ -85,6 +88,8 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
             setURL("#!/Question");
           if (data.State == 5)
             setURL("#!/Win");
+          if (data.State == 6)
+            setURL("#!/Hint");
         }
       }
 
@@ -94,10 +99,10 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         timeout: 4000
       }).then(data => {
         parseResponse(data.data);
-        $rootScope.AoNListenMy($http, 1500, $rootScope.onReceive);
+        $rootScope.AoNListenMy($http, 900, $rootScope.onReceive);
       }, data => {
         console.log('error');
-        $rootScope.AoNListenMy($http, 2500, $rootScope.onReceive);
+        $rootScope.AoNListenMy($http, 1500, $rootScope.onReceive);
         //console.log(data);
         //parseResponse(data.data);
       });
