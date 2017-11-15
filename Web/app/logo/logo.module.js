@@ -69,7 +69,7 @@ component('logo', {
             {
                 opacity : alphas[2]
             };
-            console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
+           // console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
 
             
         }, 50);

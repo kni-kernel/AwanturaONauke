@@ -80,5 +80,38 @@ component('question', {
       self.QuestionNumber = gs.QuestionCount;
 
     };
+
+    self.fullSize = false;
+    self.imageStyle = {};
+    self.divStyle = {};
+    $scope.onImageClick = function()
+    {
+      console.log("click!" + self.fullSize);
+      if(self.fullSize == false)
+      {
+        self.divStyle =
+        {
+        };
+        self.imageStyle = 
+        {
+          position: "absolute",
+          top: "0",
+          "z-index" : 999,
+          height: "100vh",
+          "max-height": "100vh",
+          "max-width" : "100vw",
+          "margin" : 0
+          
+        };
+      }
+      else
+      {
+        self.imageStyle = {};
+        self.divStyle = {};
+      }
+      self.fullSize = !self.fullSize;
+    }
+
+
   }
 });

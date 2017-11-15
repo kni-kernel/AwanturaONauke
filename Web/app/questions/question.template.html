@@ -1,8 +1,9 @@
 <div class="timer">
     {{$ctrl.Time}}
 </div>
-<div class="image centerHorizontalFlex" ng-if="$ctrl.FileName">
-<img ng-src="{{$ctrl.FileName}}"></iframe>
+
+<div ng-style="$ctrl.divStyle" ng-click="onImageClick()" class="image centerHorizontalFlex" ng-if="$ctrl.FileName">
+    <img ng-style="$ctrl.imageStyle"  ng-src="{{$ctrl.FileName}}"></img>
 </div>
 <div class="inner">
     <div class="top">

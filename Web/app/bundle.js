@@ -81,11 +81,13 @@ __webpack_require__(3);
 __webpack_require__(5);
 __webpack_require__(7);
 __webpack_require__(9);
-__webpack_require__(19);
+__webpack_require__(20);
 __webpack_require__(11);
-__webpack_require__(13);
-__webpack_require__(15);
-__webpack_require__(17);
+__webpack_require__(12);
+__webpack_require__(14);
+__webpack_require__(16);
+__webpack_require__(18);
+__webpack_require__(21);
 
 
 /***/ }),
@@ -101,6 +103,7 @@ var app = angular.module('AoN', [
   "winState",
   "oneState",
   "initState",
+  "hintState",
   "ngRoute",
   "ngStorage",
   "logo"
@@ -125,6 +128,9 @@ config(['$locationProvider', '$routeProvider', '$httpProvider',
     }).
     when('/Question', {
       template: '<question-State></question-State>'
+    }).
+    when('/Hint', {
+      template: '<hint-State></hint-State>'
     }).
     when('/Win', {
       template: '<win-State></win-State>'
@@ -160,25 +166,26 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
       var address = "http://" + ip + ":8002";
 
       function parseResponse(data) {
-      //  console.log(data);
+        //  console.log(data);
         if (data == null || data.Pool == null) {
           return;
         }
         $sessionStorage.GameState = data;
-
         if (data != null) {
           if (data.State == 0)
             setURL("#!/Idle");
           if (data.State == 1)
             setURL("#!/Idle");
-          if (data.State == 2)
+          if (data.State == 2 && $rootScope.master === false)
             setURL("#!/OneOnOne");
-          if (data.State == 3)
+          if (data.State == 3 || $rootScope.master === true)
             setURL("#!/Question");
           if (data.State == 4)
             setURL("#!/Question");
           if (data.State == 5)
             setURL("#!/Win");
+          if (data.State == 6)
+            setURL("#!/Hint");
         }
       }
 
@@ -188,10 +195,10 @@ app.run(function ($rootScope, $timeout, $sessionStorage) {
         timeout: 4000
       }).then(data => {
         parseResponse(data.data);
-        $rootScope.AoNListenMy($http, 1500, $rootScope.onReceive);
+        $rootScope.AoNListenMy($http, 900, $rootScope.onReceive);
       }, data => {
         console.log('error');
-        $rootScope.AoNListenMy($http, 2500, $rootScope.onReceive);
+        $rootScope.AoNListenMy($http, 1500, $rootScope.onReceive);
         //console.log(data);
         //parseResponse(data.data);
       });
@@ -311,14 +318,98 @@ component('oneState', {
 
 /***/ }),
 /* 11 */
+/***/ (function(module, exports) {
+
+angular.module('logo', []);
+
+angular.
+module('logo').
+component('logo', {
+    templateUrl: "logo/logo.template.html",
+
+    controller: function LogoController($rootScope, $sessionStorage, $scope, $interval, $timeout) {
+        var self = this;
+        var state = 0; //0 rising, 1 plateau, 2 - falling
+        var temp = 0;
+        var current = 0;
+        var alpha = 0.0;
+
+        self.kernel =
+        {
+            opacity: 0.0
+        };
+        self.wfiis = 
+        {
+            opacity: 0.0
+        };
+        self.agh = 
+        {
+            opacity : 0.0
+        };
+        
+        $timeout(function()
+    {
+        $interval(function () {
+            var alphas = [0.0,0.0,0.0];
+                if (state == 0) {
+                    alpha += 0.05;
+                    if (alpha >= 1.0) {
+                        state = 1;
+                        alpha = 1.0;
+                    }
+
+                }
+            if (state == 1) {
+                if (temp >= 60) {
+                    state = 2;
+                    temp = 0;
+                } else
+                    ++temp;
+            }
+            if (state == 2) {
+                alpha -= 0.05;
+                if (alpha <= 0.0) {
+                    alpha = 0.0;
+                    state = 0;
+                    current = (current + 1) % 3;
+                }
+            }
+            var gs = $sessionStorage.GameState;
+
+            if(gs.State !== 2)
+                alphas[current] = alpha;
+
+            self.kernel =
+            {
+                opacity: alphas[0]
+            };
+            self.wfiis = 
+            {
+                opacity: alphas[1]
+            };
+            self.agh = 
+            {
+                opacity : alphas[2]
+            };
+           // console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
+
+            
+        }, 50);
+    }, 3000);
+
+}
+});
+
+/***/ }),
+/* 12 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('score', []);
 
-__webpack_require__(12);
+__webpack_require__(13);
 
 /***/ }),
-/* 12 */
+/* 13 */
 /***/ (function(module, exports) {
 
 angular.
@@ -365,29 +456,68 @@ component('score', {
           };
 
           if (gs.State == 1 && team.Points > 200)
-          vmTeam.Score -= gs.Licitation.Bid[i];
+            vmTeam.Score -= gs.Licitation.Bid[i];
           self.Teams.push(vmTeam);
         }
       }
-
-      self.Teams.push({
-        Score: gs.Pool,
-        Enabled: true,
-        Name: "Pula",
-        Class: "pool teamScore"
-      });
+      if (gs.State == 0) {
+        self.Teams.push({
+          Score: gs.Pool,
+          Enabled: true,
+          Name: "Pula",
+          Class: "pool teamScore"
+        });
+      }
 
       if (gs.State == 1) {
         self.isAuction = true;
-
+        self.isDone = false;
+        var pool = gs.Pool;
         for (let i = 0; i < gs.Teams.length; ++i) {
           var team = gs.Teams[i];
-          if (team != null && team.isPlaying)
+          if (team != null && team.isPlaying) {
+            pool += team.Points > 200 ? gs.Licitation.Bid[i] : 0;
             self.Auctions.push({
               Class: "teamAuction centerVerticalFlex centerHorizontalFlex " + team.ClassName,
               Score: team.Points > 200 ? gs.Licitation.Bid[i] : "-"
             });
+
+           for(let i = 0; i < gs.Teams.length; ++i)
+           {
+             var isDone = true;
+             for(let j = 0; j < gs.Teams.length; ++j)
+             {
+                if(i == j) continue;
+                if(gs.Teams[j].isPlaying == false)
+                continue;
+
+                if(gs.Licitation.Bid[i] < gs.Teams[j].Points)
+                {
+                  console.log(gs.Licitation.Bid[i] + " < " + gs.Teams[j].Points + "(" + i +", " + j + ")");
+                  isDone = false;
+                  break; 
+                }
+             }
+             if(isDone)
+             {
+               console.log
+                self.isDone = true;
+                break;
+             }
+           }
+              
+          }
         }
+        
+
+          console.log(self.isDone);
+
+        self.Teams.push({
+          Score: pool,
+          Enabled: true,
+          Name: "Pula",
+          Class: "pool teamScore"
+        });
       } else
         self.isAuction = false;
 
@@ -419,15 +549,15 @@ component('score', {
 });
 
 /***/ }),
-/* 13 */
+/* 14 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('question', []);
 
-__webpack_require__(14);
+__webpack_require__(15);
 
 /***/ }),
-/* 14 */
+/* 15 */
 /***/ (function(module, exports) {
 
 angular.
@@ -512,19 +642,52 @@ component('question', {
       self.QuestionNumber = gs.QuestionCount;
 
     };
+
+    self.fullSize = false;
+    self.imageStyle = {};
+    self.divStyle = {};
+    $scope.onImageClick = function()
+    {
+      console.log("click!" + self.fullSize);
+      if(self.fullSize == false)
+      {
+        self.divStyle =
+        {
+        };
+        self.imageStyle = 
+        {
+          position: "absolute",
+          top: "0",
+          "z-index" : 999,
+          height: "100vh",
+          "max-height": "100vh",
+          "max-width" : "100vw",
+          "margin" : 0
+          
+        };
+      }
+      else
+      {
+        self.imageStyle = {};
+        self.divStyle = {};
+      }
+      self.fullSize = !self.fullSize;
+    }
+
+
   }
 });
 
 /***/ }),
-/* 15 */
+/* 16 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('winScore', []);
 
-__webpack_require__(16);
+__webpack_require__(17);
 
 /***/ }),
-/* 16 */
+/* 17 */
 /***/ (function(module, exports) {
 
 angular.
@@ -561,15 +724,15 @@ component('winScore', {
 });
 
 /***/ }),
-/* 17 */
+/* 18 */
 /***/ (function(module, exports, __webpack_require__) {
 
 angular.module('oneOnOne', []);
 
-__webpack_require__(18);
+__webpack_require__(19);
 
 /***/ }),
-/* 18 */
+/* 19 */
 /***/ (function(module, exports) {
 
 angular.
@@ -623,87 +786,58 @@ component('oneOnOne', {
 });
 
 /***/ }),
-/* 19 */
+/* 20 */
 /***/ (function(module, exports) {
 
-angular.module('logo', []);
+angular.module('hintState', ["hint"]);
 
 angular.
-module('logo').
-component('logo', {
-    templateUrl: "logo/logo.template.html",
+module('hintState').
+component('hintState', {
+  templateUrl: "states/hint.template.html",
 
-    controller: function LogoController($rootScope, $sessionStorage, $scope, $interval, $timeout) {
+  controller: function HintStateController($http, $rootScope, $scope) {
+    
+  }
+});
+
+/***/ }),
+/* 21 */
+/***/ (function(module, exports) {
+
+angular.module('hint', []);
+
+angular.
+module('hint').
+component('hint', {
+    templateUrl: "hint/hint.template.html",
+
+    controller: function LogoController($rootScope, $sessionStorage, $scope, $interval, $timeout, $http) {
+        var gs = $sessionStorage.GameState;
         var self = this;
-        var state = 0; //0 rising, 1 plateau, 2 - falling
-        var temp = 0;
-        var current = 0;
-        var alpha = 0.0;
-
-        self.kernel =
-        {
-            opacity: 0.0
-        };
-        self.wfiis = 
-        {
-            opacity: 0.0
-        };
-        self.agh = 
-        {
-            opacity : 0.0
-        };
-        
-        $timeout(function()
-    {
-        $interval(function () {
-            var alphas = [0.0,0.0,0.0];
-                if (state == 0) {
-                    alpha += 0.05;
-                    if (alpha >= 1.0) {
-                        state = 1;
-                        alpha = 1.0;
-                    }
-
-                }
-            if (state == 1) {
-                if (temp >= 60) {
-                    state = 2;
-                    temp = 0;
-                } else
-                    ++temp;
-            }
-            if (state == 2) {
-                alpha -= 0.05;
-                if (alpha <= 0.0) {
-                    alpha = 0.0;
-                    state = 0;
-                    current = (current + 1) % 3;
-                }
-            }
-            var gs = $sessionStorage.GameState;
-
-            if(gs.State !== 2)
-                alphas[current] = alpha;
-
-            self.kernel =
-            {
-                opacity: alphas[0]
-            };
-            self.wfiis = 
-            {
-                opacity: alphas[1]
-            };
-            self.agh = 
-            {
-                opacity : alphas[2]
-            };
-            console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
-
+    
+        $rootScope.AoNListen($http, 1000, () => {
+          if (!this.init)
+            window.location.reload();
+          initFromGS($sessionStorage.GameState);
+        });
+    
+        if (gs == null) {
+          return;
+        }
+    
+        initFromGS(gs);
+    
+        function initFromGS(gs) {
+            self.init = true;
+            self.Class = gs.Teams[gs.CurrentTeam].ClassName;
+            self.Points = gs.Teams[gs.CurrentTeam].Points - gs.Licitation.Bid[gs.CurrentTeam];
+            self.HintPrice = gs.HintPrice;
             
-        }, 50);
-    }, 3000);
+        };
+    
+    }
 
-}
 });
 
 /***/ })

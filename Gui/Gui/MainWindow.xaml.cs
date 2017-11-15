@@ -65,7 +65,7 @@ namespace Gui
                     VM.Timer--;
                     this.Dispatcher.Invoke(() =>
                     {
-                        GS = mainService.SetTimer(GS, VM.Timer, true);
+                        VM.gameState = mainService.SetTimer(GS, VM.Timer, true);
                     });
 
                     webService.UpdateGameState(GS);
@@ -96,64 +96,67 @@ namespace Gui
         }
         public void ImportGameState(GameState gameState)
         {
-            VM.gameState = gameState;
-
-            VM.State = GS.State.ToString();
-            VM.Pool = GS.Pool;
-            VM.Timer = gameState.Timer;
-            VM.TimerEnabled = gameState.TimerEnabled;
-            VM.Question = gameState?.Question?.Content;
-            VM.Hint1 = gameState?.Question?.Tip1;
-            VM.Hint2 = gameState?.Question?.Tip2;
-            VM.Hint3 = gameState?.Question?.Tip3;
-            VM.Hint4 = gameState?.Question?.Tip4;
-
-
-
-            for (int i = 0; i < 5; ++i)
+           // lock (VM)
             {
-                VM.TeamNames[i] = GS.Teams[i].Name;
-                VM.Points[i] = GS.Teams[i].Points;
-                VM.ArePlaying[i] = GS.Teams[i].isPlaying;
-                VM.HintCount[i] = GS.Teams[i].Hints;
-                if (GS.Licitation != null)
+                VM.gameState = gameState;
+
+                VM.State = GS.State.ToString();
+                VM.Pool = GS.Pool;
+                VM.Timer = gameState.Timer;
+                VM.TimerEnabled = gameState.TimerEnabled;
+                VM.Question = gameState?.Question?.Content;
+                VM.Hint1 = gameState?.Question?.Tip1;
+                VM.Hint2 = gameState?.Question?.Tip2;
+                VM.Hint3 = gameState?.Question?.Tip3;
+                VM.Hint4 = gameState?.Question?.Tip4;
+
+
+
+                for (int i = 0; i < 5; ++i)
                 {
-                    VM.Bids[i] = GS.Licitation.Bid[i];
+                    VM.TeamNames[i] = GS.Teams[i].Name;
+                    VM.Points[i] = GS.Teams[i].Points;
+                    VM.ArePlaying[i] = GS.Teams[i].isPlaying;
+                    VM.HintCount[i] = GS.Teams[i].Hints;
+                    if (GS.Licitation != null)
+                    {
+                        VM.Bids[i] = GS.Licitation.Bid[i];
+                    }
                 }
-            }
 
-            if (GS.OneOnOneCategories != null)
-            {
-                OnOnOneActions.Items.Clear();
-                if (GS.OneOnOneCategories.Where(c => c.Value == true).Count() == 1)
+                if (GS.OneOnOneCategories != null)
                 {
-                    var item = new MenuItem();
-                    item.Header = "mistrzowie wygrali 1 na 1";
-                    item.Tag = "DEAN";
-                    item.Click += new RoutedEventHandler(this.on1On1End);
-
-                    OnOnOneActions.Items.Add(item);
-
-                    item = new MenuItem();
-                    item.Header = "druga drużyna wygrała 1 na 1";
-                    item.Click += new RoutedEventHandler(this.on1On1End);
-
-                    OnOnOneActions.Items.Add(item);
-                }
-                else
-                foreach (var category in GS.OneOnOneCategories)
-                {
-                    if (category.Value)
+                    OnOnOneActions.Items.Clear();
+                    if (GS.OneOnOneCategories.Where(c => c.Value == true).Count() == 1)
                     {
                         var item = new MenuItem();
-                        item.Header = category.Key;
-                        item.Click += new RoutedEventHandler(this.onDeleteCategoryClick);
+                        item.Header = "mistrzowie wygrali 1 na 1";
+                        item.Tag = "DEAN";
+                        item.Click += new RoutedEventHandler(this.on1On1End);
+
+                        OnOnOneActions.Items.Add(item);
+
+                        item = new MenuItem();
+                        item.Header = "druga drużyna wygrała 1 na 1";
+                        item.Click += new RoutedEventHandler(this.on1On1End);
 
                         OnOnOneActions.Items.Add(item);
                     }
+                    else
+                        foreach (var category in GS.OneOnOneCategories)
+                        {
+                            if (category.Value)
+                            {
+                                var item = new MenuItem();
+                                item.Header = category.Key;
+                                item.Click += new RoutedEventHandler(this.onDeleteCategoryClick);
+
+                                OnOnOneActions.Items.Add(item);
+                            }
+                        }
                 }
+                VM.Timer = VM.gameState.Timer;
             }
-            VM.Timer = VM.gameState.Timer;
         }
 
 
@@ -233,6 +236,21 @@ namespace Gui
             GS = mainService.UseHint(GS);
         }
 
+        private void OfferHint(object sender, RoutedEventArgs args)
+        {
+            var tb = HintCost;
+            int price;
+            if (int.TryParse(tb.Text, out price) && price > 0)
+            {
+                GS = mainService.GoToBuyableHint(GS, price);
+            }
+        }
+
+        private void NotAcceptHint(object sender, RoutedEventArgs args)
+        {
+            GS = mainService.DoNotBuyHint(GS);
+        }
+
         private void StartLicitation(object sender, RoutedEventArgs args)
         {
             VM.gameState = mainService.StartLicitation(VM.gameState);
@@ -285,7 +303,7 @@ namespace Gui
             {
                 if (int.TryParse(txt, out price) && price > 0)
                 {
-                    GS = mainService.BuyHint(GS, price);
+                    GS = mainService.BuyHint(GS);
                 }
             }
             /// button WEŹ PODPOWIEDŹ
@@ -304,8 +322,7 @@ namespace Gui
             VM.TimerEnabled = false;
             lock (VM)
             {
-                VM.Timer = -1;
-                GS = mainService.SetTimer(GS, -1, false);
+                GS = mainService.SetTimer(GS, VM.Timer, false);
             }
         }
 

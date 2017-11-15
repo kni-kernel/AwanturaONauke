@@ -44,15 +44,23 @@
 			<Button Click="imgButton_Click" Content="Akcje" HorizontalAlignment="Center" VerticalAlignment="Center" Width="111" RenderTransformOrigin="0.504,0.563" Grid.Row="1" Grid.Column="1" Height="26" Margin="9.8,6.8,10.4,7.2">
 				<Button.ContextMenu>
 					<ContextMenu>
+						<MenuItem IsEnabled="false" Header="---Licytacja----"></MenuItem>
 						<MenuItem Header="Zacznij licytacje" Click="StartLicitation"></MenuItem>
 						<MenuItem Header="Skończ licytacje i daj podpowiedź" Click="EndLicitationHint"></MenuItem>
 						<MenuItem Header="Skończ licytacje i daj wygrać czarną skrzynke" Click="EndLicitationBlackBox"></MenuItem>
+						<MenuItem IsEnabled="false" Header="---Pytania----"></MenuItem>
 						<MenuItem Header="Wygrali runde" Click="RoundWin"></MenuItem>
 						<MenuItem Header="Nahapali się zywcięstwem(przejdź z win na Idle)" Click="RoundWinStop"></MenuItem>
 						<MenuItem Header="Przegrali runde" Click="RoundLose"></MenuItem>
+						
+						<MenuItem IsEnabled="false" Header="---Podpowiedzi----"></MenuItem>
 						<MenuItem Header="Pokaż podpowiedź" Click="ShowHintIfHave"></MenuItem>
+						<MenuItem Header="Zaoferuj podpowiedź" Click="OfferHint"></MenuItem>
+						<MenuItem Header="Nie przyjmij podpowiedzi" Click="NotAcceptHint"></MenuItem>
+						<MenuItem IsEnabled="false" Header="---Runda 2----"></MenuItem>
 						<MenuItem Header="Zacznij OneOnOne" Click="StartOneOnOne"></MenuItem>
 						<MenuItem Header="Zacznij Mistrzów" Click="StartMasters"></MenuItem>
+						
 					</ContextMenu>
 				</Button.ContextMenu>
 			</Button>

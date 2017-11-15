@@ -1,6 +1,11 @@
 @import "definitions.scss";
 score
 {
+    .done
+    {
+        font-size:9vh;
+        min-height: 30vh;
+    }
     position:absolute;
     width:100vw;
     bottom:0;
