@@ -138,7 +138,7 @@ namespace AwanturaLib
             }
 
             gamestate.TimerEnabled = false;
-            gamestate = RandomQuestion(gamestate, categoryName, qs);
+            //gamestate = RandomQuestion(gamestate, categoryName, qs);
             gamestate.Question.Used = true;
             gamestate.Timer = 60;
             gamestate.TimerEnabled = true;
@@ -401,7 +401,7 @@ namespace AwanturaLib
         public GameState RemoveCategory(GameState gamestate, string categoryName)
         {
             if (gamestate.OneOnOneCategories.Count(x => x.Value == true) == 1) { //jeśli jest jedna aktywna kategoria to jej nie usuwamy ;)
-                //gamestate = RandomQuestion(gamestate, categoryName, QuestionsSet.Current);
+                gamestate = RandomQuestion(gamestate, categoryName, QuestionsSet.Current);
                 return gamestate;
             }
 
