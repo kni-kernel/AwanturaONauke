@@ -290,7 +290,7 @@ namespace AwanturaLib
             gamestate.Teams[1].Name = "Zieloni";
             gamestate.Teams[2].Name = "Żółci";
             gamestate.Teams[3].Name = "Czerwoni";
-            gamestate.Teams[4].Name = "Czarni";
+            gamestate.Teams[4].Name = "Mistrzowie";
 
             gamestate.Teams[0].ClassName = "blue";
             gamestate.Teams[1].ClassName = "green";

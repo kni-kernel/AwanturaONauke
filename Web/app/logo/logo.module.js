@@ -24,11 +24,30 @@ component('logo', {
         {
             opacity : 0.0
         };
+        self.bozon =
+        {
+            opacity : 0.0
+        }
+
+        self.w2 = 
+        {
+            opacity : 0.0
+        }
+
+        self.w3 =
+        {
+            opacity: 0.0
+        }
+
+        self.w4 = 
+        {
+            opacity :0.0
+        }
         
         $timeout(function()
     {
         $interval(function () {
-            var alphas = [0.0,0.0,0.0];
+            var alphas = [0.0,0.0,0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0];
                 if (state == 0) {
                     alpha += 0.05;
                     if (alpha >= 1.0) {
@@ -49,7 +68,7 @@ component('logo', {
                 if (alpha <= 0.0) {
                     alpha = 0.0;
                     state = 0;
-                    current = (current + 1) % 3;
+                    current = (current + 1) % 7;
                 }
             }
             var gs = $sessionStorage.GameState;
@@ -69,6 +88,24 @@ component('logo', {
             {
                 opacity : alphas[2]
             };
+            self.bozon =
+            {
+                opacity: alphas[3]
+            };
+            self.w2 = 
+            {
+                opacity: alphas[4]
+            };
+            self.w3 = 
+            {
+                opacity: alphas[5]
+            };
+            self.w4 = 
+            {
+                opacity: alphas[6]
+            };
+
+        
            // console.log(alphas[0] + ", " + alphas[1] + ", " + alphas[2] + " - " + state);
 
             

@@ -109,6 +109,7 @@ namespace Gui
                 VM.Hint2 = gameState?.Question?.Tip2;
                 VM.Hint3 = gameState?.Question?.Tip3;
                 VM.Hint4 = gameState?.Question?.Tip4;
+                VM.Filename = gameState?.Question?.FileName;
 
 
 

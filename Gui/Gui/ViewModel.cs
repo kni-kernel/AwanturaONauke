@@ -134,6 +134,15 @@ namespace Gui
             set { timer = value; OnPropertyChanged(); }
         }
 
+        private string filename;
+
+        public string Filename
+        {
+            get { return filename; }
+            set { filename = value;  OnPropertyChanged(); }
+        }
+
+
         public bool TimerEnabled { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
